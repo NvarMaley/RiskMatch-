@@ -45,19 +45,31 @@ Each ID is a possible issue. To check it off, attach notebook reference (chapter
 
 ### Detailed Setup
 
-- [ ] **INFRA.01** — Verify Python, virtual environment, dependencies and reproducible versions.
+- [x] **INFRA.01** — Verify Python, virtual environment, dependencies and reproducible versions.
+
+  Evidence (2026-11-24, D001 approved): Python 3.12.6, isolated `.venv`, fresh install from `requirements.lock`, no broken requirements; local Python and JavaScript tests passed. Previous environment preserved as `.venv-legacy`. CI now targets Python 3.12; actual remote CI is INFRA.06. Notebook — Shared Setup / INFRA.01.
+
 - [ ] **INFRA.02** — Run INSTALL.command, START.command and STOP.command; check both local ports and logs.
+  Local installer and health checks executed; web `/api/health` returned success and Jupyter `/lab` returned HTTP 302 after local runtime/proxy fixes. STOP requires process inspection, denied by assisted environment; owner must verify stop in normal Terminal.
 - [ ] **INFRA.03** — Open RiskMatch_V3.ipynb and verify contents, Python kernel and executable cells.
+  Notebook structure and local Python 3.12 kernel execution verified; synthetic smoke script added. Pending completion of INFRA.02 prerequisite.
 - [ ] **INFRA.04** — Create a separate private GitHub repository, initialize Git and check status and exclusions before commit.
+  Local `main` and remote `origin/main` were confirmed at initial commit `143a2b8`; data exclusions checked. Repository privacy and current push require owner verification.
 - [ ] **INFRA.05** — Configure remote, collaborator invitations, branches, protected main and reviews.
+  Remote configured. Authorized collaborator identities and GitHub settings must be confirmed by owner.
 - [ ] **INFRA.06** — Check PR CI, test fresh installation and run tests.
+  Fresh local install and tests passed, redesigned CI includes notebook smoke and privacy path checks. Remote CI and PR not yet verified.
 - [ ] **INFRA.07** — Define ticket/branch/commit naming, owner, dependencies and validation evidence.
+  Conventions documented in CONTRIBUTING.md; pending INFRA.06.
 - [ ] **INFRA.08** — Create experiment registry and data/version conventions; prohibit secrets and private data in Git.
+  docs/EXPERIMENT_REGISTRY.md and exclusion checker implemented; pending INFRA.07.
 
 ### Shared Contracts, Minimal Backtest and First RiskMatch
 
-- [ ] **SYS.01** — Define GoalSpec, ForecastBundle, RiskReport, StrategySpec, OptimizerSpec and PortfolioCandidate separately; specify inputs/outputs, units and versions.
-- [ ] **SYS.02** — Define eligibility registry by method: instrument, required data, capacity, leverage, margin, frequency and unavailable diagnostics.
+- [x] **SYS.01** — Define GoalSpec, ForecastBundle, RiskReport, StrategySpec, OptimizerSpec and PortfolioCandidate separately; specify inputs/outputs, units and versions.
+  Evidence: src/riskmatch/contracts.py, schema 1.0.0, architecture and synthetic notebook contract demo; no financial models validated.
+- [x] **SYS.02** — Define eligibility registry by method: instrument, required data, capacity, leverage, margin, frequency and unavailable diagnostics.
+  Evidence: src/riskmatch/eligibility.py, tests/unit/test_contracts.py; 64 catalog methods default to unavailable until independently validated. Requirements are conservative planning rules, not final financial eligibility.
 - [ ] **UNIV.01** — Apply Treasury-only rule before allocation: classify issuer and type, verify PIT ETF holdings, reject corporate debt, MBS, agencies, municipals, foreign sovereigns, mixed ETFs and missing metadata; test acceptance/rejection.
 - [ ] **EXT.01** — Revalidate coverage, liquidity, license, vintage and availability of extended security master (securities, Treasuries, futures, fundamentals); document strategies blocked by missing data.
 - [ ] **BT00.01** — Define minimal ETF/cash ledger: trades, positions, fees, dividends/total return without double counting, NAV and flows.
@@ -926,8 +938,10 @@ Notebook: [chapter 27](notebooks/RiskMatch_V3.ipynb#chapitre-27) · Guide chapte
 ### 27 — A. Detailed Tasks
 
 
-- [ ] **CH27.01** — Define versioned schemas ClientProfile, ConstraintSet, Card, MarketSnapshot, ForecastBundle, RiskReport, PortfolioCandidate, Evaluation and Selection.
-- [ ] **CH27.02** — Standardize as_of, run_id, versions, units, status, warnings and provenance on every output.
+- [x] **CH27.01** — Define versioned schemas ClientProfile, ConstraintSet, Card, MarketSnapshot, ForecastBundle, RiskReport, PortfolioCandidate, Evaluation and Selection.
+  Evidence: src/riskmatch/contracts.py, architecture, synthetic notebook cell g00-contract-demo. Detailed mandate fields remain chapter 01.
+- [x] **CH27.02** — Standardize as_of, run_id, versions, units, status, warnings and provenance on every output.
+  Evidence: RunMetadata required on all new schema outputs; tests/unit/test_contracts.py verifies UTC, provenance and units. Legacy demo API remains explicitly experimental until CH27.07–08.
 - [ ] **CH27.03** — Integrate the ten engines via explicit interfaces; reject failed/infeasible outputs before order simulation.
 - [ ] **CH27.04** — Build mandate, behavioral discovery, score, universe/availability, asset analytics and strategy/optimizer configurator screens.
 - [ ] **CH27.05** — Build interactive frontier, candidate matching, side-by-side comparison, exposure attribution, stress/fan chart and monitoring screens.
@@ -935,8 +949,10 @@ Notebook: [chapter 27](notebooks/RiskMatch_V3.ipynb#chapitre-27) · Guide chapte
 - [ ] **CH27.07** — Define API routes for profiles, sessions/cards/responses, risk reports, portfolio runs/candidates/swipes and paper selection.
 - [ ] **CH27.08** — Use schema validation, clear errors, idempotency and authorization by resource for multi-user future architecture.
 - [ ] **CH27.09** — Keep local-only services bound to loopback; verify actual start/stop procedures and port availability.
+  Both services explicitly bind loopback and returned HTTP responses; STOP verification pending INFRA.02.
 - [ ] **CH27.10** — Add privacy consent, role separation, data minimization, local storage backups and tested restoration.
 - [ ] **CH27.11** — Verify secrets, licenses and client data stay out of Git/notebooks/logs; configure CI and collaborator permissions.
+  Path-level exclusions and synthetic-only CI implemented. Collaborator permission and independent license review pending.
 - [ ] **CH27.12** — Test UI accessibility, touch/keyboard, error/loading/empty states and responsive layouts.
 - [ ] **CH27.13** — Execute unit, optimizer, regression, integration, workflow and reproducibility tests; log evidence per backlog task.
 - [ ] **CH27.14** — Perform independent financial model, psychometric, privacy/security and applicable legal review before any real-service release.

@@ -28,10 +28,11 @@ The original V2 animated opening and visual/audio identity are retained. The int
 - [Dependency registry](docs/TASK_DEPENDENCIES.csv): direct prerequisites and topological order; `python scripts/task_dependencies.py --ready` lists available tickets.
 - [Data and security](docs/DATA_SECURITY.md): licenses, privacy and controls.
 - [Contributing](CONTRIBUTING.md): branches, reviews and conventions.
+- [Experiment registry](docs/EXPERIMENT_REGISTRY.md): run IDs, data versions and validation evidence.
 
 ## Start on Mac
 
-1. Double-click `INSTALL.command` (already executed on this Mac).
+1. Install Python 3.12 (the shared development and CI baseline), then double-click `INSTALL.command`. It creates an isolated `.venv` and installs the pinned dependencies from `requirements.lock`. An older environment that inherits system packages must be stopped and renamed to `.venv-legacy` before rerunning the installer.
 2. Double-click `START.command`. Web App: http://127.0.0.1:3000 ; JupyterLab: http://127.0.0.1:8888/lab (authenticated link in `.run/jupyter.log`).
 3. Open the [checklist](CHECKLIST_A_Z.md) and [single notebook](notebooks/RiskMatch_V3.ipynb). Follow prerequisites and work on chapters 01 and 12 together.
 4. Double-click `STOP.command` to stop the V3 services.
@@ -44,6 +45,8 @@ If macOS prevents opening a .command file, run the same script in Terminal from 
 # Local tests (no server required)
 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests/unit
 .venv/bin/python scripts/check_notebooks.py
+.venv/bin/python scripts/execute_notebook.py
+.venv/bin/python scripts/check_git_exclusions.py
 .venv/bin/python scripts/task_dependencies.py --check
 .venv/bin/python scripts/task_dependencies.py --ready
 ```
@@ -56,18 +59,16 @@ The prototype uses a local Python standard-library HTTP server and HTML/CSS/JS. 
 
 ## Publish on GitHub
 
-Create a separate empty **private** repository, e.g. RiskMatch-V3 (do not overwrite TindeRisk), then:
+The dedicated RiskMatch V3 repository is [RiskMatch-](https://github.com/NvarMaley/RiskMatch-). The initial commit is already published. Use the existing remote, not a new repository; confirm private visibility and authorized collaborators before adding restricted research material. For subsequent changes, inspect status and exclusions, then follow the branch and PR workflow in CONTRIBUTING.md. During initial infrastructure bootstrap, the owner may publish the reviewed bootstrap changes directly before branch protection is installed:
 
 ```bash
-git init -b main
 git add .
 git status
-git commit -m "Initialize RiskMatch V3"
-git remote add origin REPOSITORY_URL
-git push -u origin main
+git commit -m "G00: reproducible environment and shared contracts"
+git push origin main
 ```
 
-Local permissions previously prevented Git initialization and server launch from the assisted session. Run commands in Terminal if needed. CI, issue and PR templates are included; no remote publication is implied. Invite authorized collaborators, protect main, require review and CI. Never publish client data, API keys or licensed market data.
+Git metadata and process inspection are protected in the assisted session; run Git commands and stop checks in Terminal when needed. CI, issue and PR templates are included; remote CI and collaborator settings must be verified. Invite authorized collaborators, protect main, require review and CI. Never publish client data, API keys or licensed market data.
 
 ## Positioning
 
