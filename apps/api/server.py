@@ -14,7 +14,7 @@ from riskmatch.market_data.security_master import universe_report
 from riskmatch.market_data.source_catalog import source_report
 from riskmatch.market_data.point_in_time import snapshot_report
 from riskmatch.market_data.returns import returns_report
-from riskmatch.analytics.descriptive_report import descriptive_report, assets as descriptive_assets, compare as descriptive_compare, compare_series
+from riskmatch.analytics.descriptive_report import descriptive_report, assets as descriptive_assets, compare as descriptive_compare, compare_series, client_catalog
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -71,12 +71,14 @@ class Handler(SimpleHTTPRequestHandler):
                 if as_of > date.today() or as_of < date(1900,1,1):
                     raise ValueError("invalid_universe_date")
                 return self.respond(returns_report(ROOT, as_of))
-            if self.path in ("/api/statistics","/api/statistics/assets","/api/statistics/compare"):
+            if self.path in ("/api/statistics","/api/statistics/assets","/api/statistics/compare","/api/statistics/catalog"):
                 as_of = date.fromisoformat(data["as_of"])
                 if as_of>date.today() or as_of<date(1900,1,1):
                     raise ValueError("invalid_universe_date")
                 if self.path=="/api/statistics":
                     return self.respond(descriptive_report(ROOT,as_of))
+                if self.path=="/api/statistics/catalog":
+                    return self.respond(client_catalog(ROOT,as_of))
                 if self.path=="/api/statistics/assets":
                     return self.respond(descriptive_assets(ROOT,data["source"],as_of))
                 if "series" in data:

@@ -69,15 +69,19 @@ test("Universe research renders the asset library and opens an explained statist
   const context={document:{getElementById:get},window:{RM:{t:k=>k,language:"fr"}}};
   vm.runInNewContext(fs.readFileSync(path.join(__dirname,"../../apps/web/asset-research.js"),"utf8"), context);
   await context.window.AssetResearch.load(async endpoint=>{
-    if(endpoint==="statistics")return {datasets:[{rows:2}],sources:[{source:"listed_daily",frequency:"daily"}],covariance_checks:[]};
-    if(endpoint==="statistics/assets")return {assets:["A","B"],labels:{A:"Asset A"},kinds:["total_return"],first:"2025-01-01",last:"2025-01-02"};
+    if(endpoint==="statistics/catalog")return {items:[{id:"asset-a",name:"Asset A",ticker:"A",category:"equity_etf",provider:"Fixture source",series:[{source:"listed_daily",instrument:"A",frequency:"daily",kinds:["total_return"],first:"2025-01-01",last:"2025-01-02"}]},{id:"asset-b",name:"Asset B",ticker:"B",category:"stock",provider:"Fixture source",series:[]}]};
     if(endpoint==="statistics/compare")return {assets:[{source:"listed_daily",instrument:"A",statistics:{count:2,missing:0,mean:.01},distribution:{histogram:[],cdf:[],qq:[]}}],matrix:{count:2,psd:true,covariance:[[.01]],pearson:[[1]],spearman:[[1]]},frequency:"daily",currency:"USD"};
     return {rows:[]};
   },"2025-01-02");
-  assert.match(get("universe-statistics").innerHTML,/Fiches des actifs/);
+  assert.match(get("universe-statistics").innerHTML,/Catalogue/);
   assert.match(get("universe-statistics").innerHTML,/Asset A/);
-  await context.window.AssetResearch.openListed("A");
+  assert.doesNotMatch(get("universe-statistics").innerHTML,/classement local|3'658/);
+  await context.window.AssetResearch.open("asset-a");
+  assert.match(get("universe-statistics").innerHTML,/Retour au catalogue/);
   assert.match(get("universe-statistics").innerHTML,/Moyenne arithmétique/);
   assert.match(get("universe-statistics").innerHTML,/1.00%/);
   assert.match(get("universe-statistics").innerHTML,/Dépendance temporelle/);
+  assert.doesNotMatch(get("universe-statistics").innerHTML,/catalog-card/);
+  await context.window.AssetResearch.open("asset-b");
+  assert.match(get("universe-statistics").innerHTML,/Aucune série statistique exploitable/);
 });

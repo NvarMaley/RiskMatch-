@@ -5,9 +5,9 @@
   const tr=(en,fr)=>window.RM.language==="fr"?fr:en;
   const num=(v,d=4)=>Number.isFinite(v)?Number(v).toPrecision(d):"—";
   const pct=v=>Number.isFinite(v)?(100*v).toFixed(2)+"%":"—";
-  let api,report,available,source="listed_daily",query="",page=0,mode="library",active=null,tray=[],result=null,revision=0;
+  let api,catalog,category="all",query="",page=0,mode="library",active=null,tray=[],result=null,revision=0;
   let cutoff, start,end,currency="USD",kind="total_return",error="";
-  const key=a=>a.source+":"+a.instrument;
+  const classes={all:["All assets","Tous les actifs"],equity_etf:["Equity ETFs","ETF actions"],reit_etf:["Real estate ETFs","ETF immobiliers"],commodity_etp:["Commodities","Matières premières"],treasury_etf:["Treasury ETFs","ETF souverains"],stock:["Stocks","Actions"],treasury:["Government bonds","Obligations d’État"],crypto:["Crypto","Cryptomonnaies"],cash:["Cash","Liquidités"]};
   const descriptions={
     mean:["Arithmetic mean","Moyenne arithmétique","Average observed return per period.","Moyenne des rendements observés par période."],
     geometric_mean:["Geometric mean","Moyenne géométrique","Constant compounded return per period.","Rendement constant équivalent après capitalisation."],
@@ -29,8 +29,8 @@
     listed_daily:["Listed products · 2026 daily","Produits cotés · journalier 2026"],
     etf_crsp_daily:["Listed products · CRSP history","Produits cotés · historique CRSP"],
     etf_crsp_monthly:["Listed products · CRSP monthly","Produits cotés · mensuel CRSP"],
-    stock_monthly:["Individual stocks · historical cohorts","Actions individuelles · cohortes historiques"],
-    stock_ticker_reference:["Individual stocks · recent ticker reference","Actions individuelles · référence récente"],
+    stock_monthly:["CRSP · monthly","CRSP · mensuel"],
+    stock_ticker_reference:["DoltHub · daily","DoltHub · journalier"],
     treasury_marks:["US Treasury individual securities","Titres souverains américains individuels"],
     nominal_bond_scenario:["Nominal Treasury conditional scenario","Obligations nominales · scénario conditionnel"],
     bill_marks:["Treasury bills","Bons du Trésor"],btc:["Bitcoin","Bitcoin"],eth:["Ethereum","Ethereum"],
@@ -84,7 +84,7 @@
   }
   function assetDetail(a){
     const s=a.statistics,r=a.rolling||{},c=a.cross_section||{},serial=a.serial||{};
-    return `<article class="research-detail"><h2>${esc(a.instrument)} · ${esc(label(a.source))}</h2><p>${tr("Observed / missing","Observations / manquantes")}: ${s.count} / ${s.missing} · ${esc(result.currency)} · ${esc(result.frequency)}</p><progress max="${s.count+s.missing||1}" value="${s.count}"></progress>
+    return `<article class="research-detail"><h2>${esc(displayAsset(a))} · ${esc(label(a.source))}</h2><p>${tr("Observed / missing","Observations / manquantes")}: ${s.count} / ${s.missing} · ${esc(result.currency)} · ${esc(result.frequency)}</p><progress max="${s.count+s.missing||1}" value="${s.count}"></progress>
       <div class="research-charts">${lineChart(a.prices,tr("Observed price","Prix observé"),a.price_units||tr("No price series for this source.","Pas de série de prix pour cette source."))}${lineChart(a.history,tr("Return history","Historique des rendements"),tr("Each observation is a source-specific return interval; gaps remain missing.","Chaque observation correspond à un intervalle de rendement de la source ; les lacunes restent manquantes."),pct)}</div>
       <h3>${tr("Return and dispersion","Rendement et dispersion")}</h3><div class="research-metrics">${Object.keys(descriptions).map(k=>metric(k,s[k])).join("")}</div><div class="research-charts">${bars([["Mean",s.mean],["Median",s.median],["Geometric",s.geometric_mean]],tr("Central tendency","Tendance centrale"),tr("Periodic returns are comparable within the selected frequency.","Les rendements périodiques sont comparables à fréquence identique."))}${bars([[tr("Volatility","Volatilité"),s.volatility],[tr("Downside","Baissière"),s.downside_deviation]],tr("Dispersion","Dispersion"),tr("Both bars use the selected period; annualized volatility is shown separately.","Les deux barres utilisent la période sélectionnée ; la volatilité annualisée est affichée séparément."))}${box(a)}${histogram(a)}${lineChart(a.distribution.cdf,"ECDF",tr("Fraction of observations at or below a return.","Proportion des observations inférieures ou égales à un rendement."))}${lineChart(a.distribution.qq,"Normal QQ",tr("Normal quantiles on the horizontal axis; observed return quantiles on the vertical axis. Curvature indicates departure from normality.","Quantiles normaux en abscisse ; quantiles observés en ordonnée. La courbure indique un écart à la normalité."),pct)}</div>
       <div class="research-charts">${bars([[tr("Period","Période"),s.volatility],[tr("Annualized","Annualisée"),s.annualized_volatility]],tr("Volatility scaling","Annualisation de la volatilité"),tr("Annualized volatility depends on the number of periods per year.","La volatilité annualisée dépend du nombre de périodes par an."))}${bars([[tr("Variance","Variance"),s.variance],[tr("Volatility squared","Volatilité au carré"),s.volatility**2]],tr("Variance and volatility","Variance et volatilité"),tr("Both values are in squared decimal return units.","Les deux valeurs sont en unités de rendement décimal au carré."),num)}${bars([[tr("Skewness","Asymétrie"),s.skewness],[tr("Excess kurtosis","Kurtosis excédentaire"),s.excess_kurtosis]],tr("Moments against normal reference","Moments face à la normale"),tr("A normal distribution has zero skewness and zero excess kurtosis.","Une distribution normale a une asymétrie et une kurtosis excédentaire nulles."),num)}</div>
@@ -94,75 +94,78 @@
   function matrixChart(matrix,assets,title,explanation){
     if(!matrix)return `<p>${esc(title)} · ${tr("Insufficient common intervals.","Intervalles communs insuffisants.")}</p>`;
     const scale=Math.max(...matrix.flat().filter(Number.isFinite).map(Math.abs),1e-12);
-    return `<figure class="research-chart"><figcaption>${esc(title)}</figcaption><div class="universe-table-wrap"><table class="research-matrix"><thead><tr><th></th>${assets.map(a=>`<th>${esc(a.instrument)}</th>`).join("")}</tr></thead><tbody>${matrix.map((row,i)=>`<tr><th>${esc(assets[i].instrument)}</th>${row.map(v=>`<td style="background:${Number.isFinite(v)?(v<0?"rgba(218,96,111,":"rgba(80,173,195,")+(Math.abs(v)/scale*.75+.08)+")":"transparent"}">${num(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><small>${esc(explanation)}</small></figure>`;
+    return `<figure class="research-chart"><figcaption>${esc(title)}</figcaption><div class="universe-table-wrap"><table class="research-matrix"><thead><tr><th></th>${assets.map(a=>`<th>${esc(displayAsset(a))}</th>`).join("")}</tr></thead><tbody>${matrix.map((row,i)=>`<tr><th>${esc(displayAsset(assets[i]))}</th>${row.map(v=>`<td style="background:${Number.isFinite(v)?(v<0?"rgba(218,96,111,":"rgba(80,173,195,")+(Math.abs(v)/scale*.75+.08)+")":"transparent"}">${num(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><small>${esc(explanation)}</small></figure>`;
+  }
+  function displayAsset(a){
+    const choices=mode==="compare"?tray:active?[active]:[];
+    return choices.find(c=>{const s=c.item.series[c.index];return s?.source===a.source&&s?.instrument===a.instrument;})?.item.ticker||a.instrument;
   }
   function renderResult(){
     if(!result)return "";
     const a=result.assets,m=result.matrix;
-    return `${a.length>1?`<article><h2>${tr("Asset comparison","Comparaison des actifs")}</h2><p>${tr("Exact common intervals","Intervalles communs exacts")}: ${m.count} · PSD: ${m.psd??"—"}</p><div class="research-charts">${bars(a.map(x=>[x.instrument,x.statistics.mean]),tr("Mean return","Rendement moyen"),tr("Same selected frequency and currency.","Fréquence et devise sélectionnées identiques."))}${bars(a.map(x=>[x.instrument,x.statistics.volatility]),tr("Sample volatility","Volatilité échantillon"),tr("Same selected frequency; compare risk per period.","Fréquence sélectionnée identique ; comparaison du risque par période."))}</div>${matrixChart(m.covariance,a,"Covariance",tr("Joint movement in squared decimal return units; same complete intervals for every asset.","Variations conjointes en unités de rendement décimal au carré ; mêmes intervalles complets pour tous les actifs."))}${matrixChart(m.pearson,a,"Pearson",tr("Linear correlation between −1 and +1.","Corrélation linéaire entre −1 et +1."))}${matrixChart(m.spearman,a,"Spearman",tr("Rank correlation; useful for monotonic non-linear relationships.","Corrélation des rangs ; utile pour les relations monotones non linéaires."))}</article>`:""}${a.map(assetDetail).join("")}`;
+    return `${a.length>1?`<article><h2>${tr("Asset comparison","Comparaison des actifs")}</h2><p>${tr("Exact common intervals","Intervalles communs exacts")}: ${m.count} · PSD: ${m.psd??"—"}</p><div class="research-charts">${bars(a.map(x=>[displayAsset(x),x.statistics.mean]),tr("Mean return","Rendement moyen"),tr("Same selected frequency and currency.","Fréquence et devise sélectionnées identiques."))}${bars(a.map(x=>[displayAsset(x),x.statistics.volatility]),tr("Sample volatility","Volatilité échantillon"),tr("Same selected frequency; compare risk per period.","Fréquence sélectionnée identique ; comparaison du risque par période."))}</div>${matrixChart(m.covariance,a,"Covariance",tr("Joint movement in squared decimal return units; same complete intervals for every asset.","Variations conjointes en unités de rendement décimal au carré ; mêmes intervalles complets pour tous les actifs."))}${matrixChart(m.pearson,a,"Pearson",tr("Linear correlation between −1 and +1.","Corrélation linéaire entre −1 et +1."))}${matrixChart(m.spearman,a,"Spearman",tr("Rank correlation; useful for monotonic non-linear relationships.","Corrélation des rangs ; utile pour les relations monotones non linéaires."))}</article>`:""}${a.map(assetDetail).join("")}`;
   }
   function render(){
     const host=$("universe-statistics");if(!host)return;
-    if(!report?.sources?.length){host.innerHTML=`<article><p>${tr("Statistical research data are unavailable at this cutoff.","Les statistiques ne sont pas disponibles à cette date.")}</p></article>`;return;}
-    const list=(available?.assets||[]).filter(id=>!query||`${id} ${available.labels?.[id]||""}`.toLowerCase().includes(query.toLowerCase()));
-    const per=32,shown=list.slice(page*per,(page+1)*per);
-    host.innerHTML=`<article class="research-hub"><h2>${tr("07 · Asset research","07 · Analyse des actifs")}</h2><p class="muted">${tr("Explore individual assets or compare up to eight on common intervals. Historical research only.","Explore les fiches individuelles ou compare jusqu’à huit actifs sur des intervalles communs. Recherche historique uniquement.")}</p>
-      <div class="research-tabs"><button id="research-library" class="${mode==="library"?"primary":""}">${tr("Asset library","Fiches des actifs")}</button><button id="research-compare" class="${mode==="compare"?"primary":""}">${tr("Asset comparator","Comparateur d’actifs")} (${tray.length}/8)</button></div>
-      <div class="mandate-grid universe-controls"><label>${tr("Source / frequency","Source / fréquence")}<select id="research-source">${report.sources.map(r=>`<option value="${esc(r.source)}" ${source===r.source?"selected":""}>${esc(label(r.source))}</option>`).join("")}</select></label><label>${tr("Search name, ticker or identifier","Rechercher nom, ticker ou identifiant")}<input id="research-search" type="search" value="${esc(query)}"></label></div>
-      <p>${list.length.toLocaleString()} ${tr("available identifiers","identifiants disponibles")}</p><div class="research-asset-grid">${shown.map(id=>`<div class="research-asset"><b>${esc(available.labels?.[id]||id)}</b><small>${esc(id)}</small><div><button data-research-open="${esc(id)}">${tr("View","Fiche")}</button><button data-research-add="${esc(id)}">${tray.some(a=>key(a)===source+":"+id)?"✓":tr("+ Compare","+ Comparer")}</button></div></div>`).join("")}</div>
-      <div class="research-pagination"><button id="research-prev" ${page===0?"disabled":""}>←</button><span>${page+1} / ${Math.max(1,Math.ceil(list.length/per))}</span><button id="research-next" ${(page+1)*per>=list.length?"disabled":""}>→</button></div>
-      ${mode==="compare"?`<h3>${tr("Selected assets","Actifs sélectionnés")}</h3><div class="research-tray">${tray.map((a,i)=>`<button data-research-remove="${i}">${esc(a.label||a.instrument)} · ${esc(label(a.source))} ×</button>`).join("")}</div>`:active?`<h3>${esc(active.label||active.instrument)}</h3>`:""}
-      <div class="mandate-grid universe-controls"><label>${tr("Start","Début")}<input id="research-start" type="date" value="${esc(start||"")}"></label><label>${tr("End","Fin")}<input id="research-end" type="date" value="${esc(end||"")}"></label><label>${tr("Currency","Devise")}<select id="research-currency"><option ${currency==="USD"?"selected":""}>USD</option><option ${currency==="CHF"?"selected":""}>CHF</option></select></label><label>${tr("Return kind","Type de rendement")}<select id="research-kind"><option value="total_return" ${kind==="total_return"?"selected":""}>${tr("Total return","Rendement total")}</option><option value="price_return" ${kind==="price_return"?"selected":""}>${tr("Price return","Rendement du prix")}</option></select></label></div><button class="primary" id="research-run">${mode==="compare"?tr("Compare selected assets","Comparer les actifs"):tr("Update asset analysis","Actualiser la fiche")}</button><p role="status">${esc(error)}</p></article><div id="research-results">${renderResult()}</div>`;
+    if(!catalog){host.textContent=tr("Loading catalogue…","Chargement du catalogue…");return;}
+    const tabs=`<div class="research-tabs"><button id="research-library" class="${mode==="library"?"primary":""}">${tr("Catalogue","Catalogue")}</button><button id="research-compare" class="${mode==="compare"?"primary":""}">${tr("Compare assets","Comparer les actifs")} (${tray.length})</button></div>`;
+    const list=catalog.items.filter(a=>(category==="all"||a.category===category)&&(!query||`${a.name} ${a.ticker}`.toLowerCase().includes(query.toLowerCase())));
+    const per=24,shown=list.slice(page*per,(page+1)*per);
+    const library=`<div class="mandate-grid universe-controls"><label>${tr("Asset class","Classe d’actifs")}<select id="research-category">${Object.entries(classes).map(([k,v])=>`<option value="${k}" ${category===k?"selected":""}>${tr(...v)}</option>`).join("")}</select></label><label>${tr("Search name or ticker","Rechercher un nom ou ticker")}<input id="research-search" type="search" placeholder="SPY, Bitcoin…" value="${esc(query)}"></label></div><div class="research-asset-grid">${shown.map(a=>`<article class="catalog-card"><h3>${esc(a.name)}</h3><p class="catalog-ticker">${esc(a.ticker)}</p><p class="catalog-provider">${tr("Source","Source")} · ${esc(a.provider)}</p><button class="primary" data-research-open="${esc(a.id)}">${tr("Open statistics","Ouvrir la fiche")} →</button></article>`).join("")}</div>${!shown.length?`<p>${tr("No matching assets.","Aucun actif correspondant.")}</p>`:""}<div class="research-pagination"><button id="research-prev" ${page===0?"disabled":""}>←</button><span>${page+1} / ${Math.max(1,Math.ceil(list.length/per))}</span><button id="research-next" ${(page+1)*per>=list.length?"disabled":""}>→</button></div>`;
+    const options=(a,idx)=>a.series.map((s,i)=>`<option value="${i}" ${idx===i?"selected":""}>${esc(label(s.source))} · ${esc(s.first)} – ${esc(s.last)}</option>`).join("");
+    const controls=`<div class="mandate-grid universe-controls"><label>${tr("Start","Début")}<input id="research-start" type="date" value="${esc(start||"")}"></label><label>${tr("End","Fin")}<input id="research-end" type="date" value="${esc(end||"")}"></label><label>${tr("Currency","Devise")}<select id="research-currency"><option ${currency==="USD"?"selected":""}>USD</option><option ${currency==="CHF"?"selected":""}>CHF</option></select></label><label>${tr("Return kind","Type de rendement")}<select id="research-kind"><option value="total_return" ${kind==="total_return"?"selected":""}>${tr("Total return","Rendement total")}</option><option value="price_return" ${kind==="price_return"?"selected":""}>${tr("Price return","Rendement du prix")}</option></select></label></div>`;
+    const detail=active?`<div class="catalog-detail-header"><button id="research-back">← ${tr("Back to catalogue","Retour au catalogue")}</button><small>${esc(active.item.ticker)}</small><h2>${esc(active.item.name)}</h2><p>${tr("Source","Source")} · ${esc(active.item.provider)}</p>${active.item.series.length?`<button id="research-add">${tray.some(a=>a.item.id===active.item.id)?tr("In comparison","Dans le comparateur"):tr("+ Add to comparison","+ Ajouter à la comparaison")}</button>`:""}</div>${active.item.series.length?`<div class="universe-controls"><label>${tr("Historical series / frequency","Historique / fréquence")}<select id="research-series">${options(active.item,active.index)}</select></label></div>${controls}<button class="primary" id="research-run">${tr("Update analysis","Actualiser la fiche")}</button>`:`<p>${tr("No usable statistical series is available for this asset at the selected date.","Aucune série statistique exploitable n’est disponible pour cet actif à la date sélectionnée.")}</p>`}`:"";
+    const compare=`<h2>${tr("Asset comparison","Comparateur d’actifs")}</h2>${tray.length?tray.map((a,i)=>`<div class="catalog-tray-item"><b>${esc(a.item.name)} · ${esc(a.item.ticker)}</b><select aria-label="${tr("Series","Série")}" data-tray-series="${i}">${options(a.item,a.index)}</select><button data-research-remove="${i}">×</button></div>`).join("")+controls+`<button class="primary" id="research-run">${tr("Compare selected assets","Comparer les actifs")}</button>`:`<p>${tr("Open an asset profile and add it to the comparison.","Ouvre une fiche et ajoute l’actif au comparateur.")}</p>`}`;
+    host.innerHTML=`<section class="research-hub">${tabs}${mode==="library"?library:mode==="detail"?detail:compare}<p role="status">${esc(error)}</p></section><div id="research-results">${mode==="library"?"":renderResult()}</div>`;
     const on=(id,event,fn)=>{const el=$(id);if(el)el[event]=fn;};
-    on("research-source","onchange",()=>{source=$("research-source").value;query="";page=0;loadAssets();});
+    on("research-category","onchange",()=>{category=$("research-category").value;page=0;render();});
     on("research-search","oninput",()=>{query=$("research-search").value;page=0;render();$("research-search").focus();$("research-search").setSelectionRange(query.length,query.length);});
     on("research-prev","onclick",()=>{page--;render();});on("research-next","onclick",()=>{page++;render();});
-    on("research-library","onclick",()=>{mode="library";result=null;render();});
-    on("research-compare","onclick",()=>{mode="compare";result=null;render();});
+    const go=next=>{revision++;mode=next;result=null;error="";if(next==="compare")setRange(tray);render();};
+    on("research-library","onclick",()=>go("library"));on("research-back","onclick",()=>go("library"));
+    on("research-compare","onclick",()=>go("compare"));
+    on("research-series","onchange",()=>{active.index=Number($("research-series").value);setRange([active]);render();run();});
+    on("research-add","onclick",add);
     on("research-run","onclick",run);
     on("research-start","onchange",()=>{start=$("research-start").value;});
     on("research-end","onchange",()=>{end=$("research-end").value;});
     on("research-currency","onchange",()=>{currency=$("research-currency").value;});
     on("research-kind","onchange",()=>{kind=$("research-kind").value;});
-    host.querySelectorAll("[data-research-open]").forEach(el=>el.onclick=()=>open(source,el.dataset.researchOpen));
-    host.querySelectorAll("[data-research-add]").forEach(el=>el.onclick=()=>add(source,el.dataset.researchAdd));
-    host.querySelectorAll("[data-research-remove]").forEach(el=>el.onclick=()=>{tray.splice(Number(el.dataset.researchRemove),1);result=null;render();});
+    host.querySelectorAll("[data-research-open]").forEach(el=>el.onclick=()=>open(el.dataset.researchOpen));
+    host.querySelectorAll("[data-research-remove]").forEach(el=>el.onclick=()=>{revision++;tray.splice(Number(el.dataset.researchRemove),1);setRange(tray);result=null;render();});
+    host.querySelectorAll("[data-tray-series]").forEach(el=>el.onchange=()=>{revision++;tray[Number(el.dataset.traySeries)].index=Number(el.value);setRange(tray);result=null;render();});
   }
-  async function loadAssets(){
-    const own=++revision;
-    available=null;render();
-    try{const data=await api("statistics/assets",{as_of:cutoff,source});
-      if(own!==revision)return;
-      available=data;if(!active&&!tray.length){start=data.first;end=data.last;}
-      render();
-    }catch(e){if(own===revision){error=e.message;render();}}
+  function setRange(choices){
+    const series=choices.map(a=>a.item.series[a.index]).filter(Boolean);
+    if(!series.length)return;
+    start=series.map(s=>s.first).sort().at(-1);
+    end=series.map(s=>s.last).sort()[0];
+    kind=series.every(s=>s.kinds.includes("total_return"))?"total_return":"price_return";
   }
-  const choice=(s,id)=>({source:s,instrument:id,label:available?.labels?.[id]||id,kinds:available?.kinds||[],frequency:report.sources.find(r=>r.source===s)?.frequency});
-  async function open(s,id){
-    if(!report?.sources?.some(r=>r.source===s))return;
-    if(source!==s||!available){source=s;query="";page=0;await loadAssets();}
-    if(!available?.assets?.includes(id)){error=tr("No return series available for this identifier.","Aucune série de rendement disponible pour cet identifiant.");render();return;}
-    active=choice(s,id);mode="library";result=null;start=available.first;end=available.last;kind=available.kinds.includes("total_return")?"total_return":"price_return";error="";render();await run();
+  async function open(id){
+    const item=catalog?.items.find(a=>a.id===id);
+    if(!item)return;
+    revision++;active={item,index:0};mode="detail";result=null;error="";setRange([active]);render();
+    $("universe-statistics").scrollIntoView?.({block:"start"});
+    if(item.series.length)await run();
   }
-  function add(s,id){
-    const item=choice(s,id);
-    if(tray.some(a=>key(a)===key(item)))return;
+  function add(){
+    if(!active||tray.some(a=>a.item.id===active.item.id))return;
     if(tray.length>=8){error=tr("Select at most eight assets.","Sélectionne au maximum huit actifs.");render();return;}
-    if(tray.length&&tray[0].frequency!==item.frequency){error=tr("Choose assets with the same frequency.","Choisis des actifs de même fréquence.");render();return;}
-    if(!tray.length){start=available.first;end=available.last;}
-    else{start=start>available.first?start:available.first;end=end<available.last?end:available.last;}
-    tray.push(item);if(tray.some(a=>!a.kinds.includes("total_return")))kind="price_return";mode="compare";result=null;error="";render();
+    tray.push({...active});render();
   }
   async function run(){
-    const series=mode==="compare"?tray:active?[active]:[];
+    const choices=mode==="compare"?tray:active?[active]:[];
+    const series=choices.map(a=>a.item.series[a.index]).filter(Boolean);
     start=$("research-start").value;end=$("research-end").value;currency=$("research-currency").value;kind=$("research-kind").value;
     if(!series.length){error=tr("Select an asset first.","Sélectionne d’abord un actif.");render();return;}
+    if(new Set(series.map(a=>a.frequency)).size>1){error=tr("Choose the same frequency for all assets.","Choisis la même fréquence pour tous les actifs.");render();return;}
     if(series.some(a=>a.kinds.length&&!a.kinds.includes(kind))){error=tr("The selected return kind is unavailable for one or more assets.","Le type de rendement est indisponible pour un ou plusieurs actifs.");render();return;}
     const own=++revision;error=tr("Calculating…","Calcul en cours…");result=null;render();
     try{const data=await api("statistics/compare",{as_of:cutoff,series:series.map(({source,instrument})=>({source,instrument})),start,end,currency,kind});
-      if(own===revision){result=data;error="";render();$("research-results").scrollIntoView({behavior:"smooth",block:"start"});}
+      if(own===revision){result=data;error="";render();}
     }catch(e){if(own===revision){error=e.message;render();}}
   }
-  async function load(fetcher,asOf){api=fetcher;cutoff=asOf;if(!report){$("universe-statistics").textContent=tr("Loading research…","Chargement des analyses…");}try{report=await api("statistics",{as_of:cutoff});if(!report.sources?.length){render();return;}if(!report.sources.some(r=>r.source===source))source=report.sources[0].source;await loadAssets();}catch(e){$("universe-statistics").textContent=e.message;}}
-  window.AssetResearch={load,render,openListed:ticker=>open("listed_daily",ticker)};
+  async function load(fetcher,asOf){api=fetcher;cutoff=asOf;const own=++revision;try{const next=await api("statistics/catalog",{as_of:cutoff});if(own===revision){catalog=next;mode="library";active=null;result=null;error="";render();}}catch(e){if(own===revision)$("universe-statistics").textContent=e.message;}}
+  window.AssetResearch={load,render,open};
 })();

@@ -68,6 +68,84 @@ def assets(root,source,as_of):
             "kinds":[kind for kind,count in (("price_return",entry["price_returns"]),("total_return",entry["total_returns"])) if count]}
 
 
+def client_catalog(root,as_of):
+    """Present distinct client-facing instruments and their actual research series."""
+    root=Path(root)
+    config=json.loads((root/"configs/universe_catalog.json").read_text())
+    report=returns_report(root,as_of)
+    series={}
+    items=[]
+    with duckdb.connect() as db:
+        if report.get("datasets"):
+            folder=root/"data/processed/returns"/report["return_id"]
+            for entry in report["datasets"]:
+                if "total_returns" not in entry:
+                    continue
+                source=entry["dataset"]
+                records=db.execute("""select instrument,
+                    min(end_date) filter(where price_return is not null or total_return is not null),
+                    max(end_date) filter(where price_return is not null or total_return is not null),
+                    count(price_return),count(total_return) from read_parquet(?) group by instrument""",
+                    [str(folder/f"{source}.parquet")]).fetchall()
+                for instrument,first,last,prices,totals in records:
+                    kinds=[kind for kind,count in (("price_return",prices),("total_return",totals)) if count]
+                    if kinds:
+                        series.setdefault((source,instrument),{"source":source,"instrument":instrument,
+                            "frequency":entry["frequency"],"first":str(first),"last":str(last),"kinds":kinds})
+        base=None
+        if report.get("datasets"):
+            pit=json.loads((root/"data/processed/pit/report.json").read_text())
+            base=root/"data/processed/pit"/pit["snapshot_id"]
+        ticker_ids={}
+        if base:
+            ticker_ids=dict(db.execute("""select ticker,arg_max(instrument,observation_date)
+                from read_parquet(?) where observation_date<=? group by ticker""",
+                [str(base/"etf_daily_volume.parquet"),as_of]).fetchall())
+        def options(pairs):
+            return [series[pair] for pair in pairs if pair in series]
+        for row in config["instruments"]:
+            ticker=row["ticker"]
+            permno=ticker_ids.get(ticker)
+            pairs=[(s,permno) for s in ("etf_crsp_daily","etf_crsp_monthly","etf_crsp_daily_weekly")]
+            pairs.extend((s,ticker) for s in ("listed_daily","listed_daily_weekly","listed_daily_monthly"))
+            items.append({"id":row["security_id"],"name":row["name"],"ticker":ticker,
+                "category":row["asset_class"],"provider":"CRSP / DoltHub","url":row["source"],"series":options(pairs)})
+        if base:
+            stocks=db.execute("""select instrument,snapshot_ticker,issuer_supports_ticker from read_parquet(?)
+                where observation_date<=? order by snapshot_ticker,instrument""",
+                [str(base/"stock_refresh_identity.parquet"),as_of]).fetchall()
+            names={}
+            try:
+                delivery=json.loads((root/"data/processed/universe/wrds_delivery.json").read_text())["tables"]["names_history"]
+                (names_path,)=root.glob("data/telecharger */"+delivery["file"])
+                if (names_path.stat().st_size,names_path.stat().st_mtime_ns)==(delivery["size"],delivery["mtime_ns"]):
+                    names=dict(db.execute("""select permno,arg_max(issuernm,try_cast(secinfostartdt as date))
+                        from read_csv(?,all_varchar=true) where try_cast(secinfostartdt as date)<=?
+                        and issuernm is not null group by permno""",[str(names_path),as_of]).fetchall())
+            except (OSError,ValueError,KeyError,duckdb.Error):
+                pass
+            for permno,ticker,confirmed in stocks:
+                pairs=[("stock_monthly",permno)]
+                if confirmed:
+                    pairs.extend((s,ticker) for s in ("stock_ticker_reference","stock_ticker_reference_weekly","stock_ticker_reference_monthly"))
+                items.append({"id":"stock:"+permno,"name":names.get(permno) or ticker or permno,"ticker":ticker or permno,
+                    "category":"stock","provider":"CRSP / DoltHub","url":"https://www.crsp.org/","series":options(pairs)})
+            bonds=db.execute("""select instrument,instrument_type,maturity from read_parquet(?)
+                where issue_date<=? and maturity>? order by maturity,instrument""",
+                [str(base/"treasury_identity.parquet"),as_of,as_of]).fetchall()
+            for identifier,kind,maturity in bonds:
+                pairs=[("treasury_marks",identifier),("bill_marks",identifier),("nominal_bond_scenario",identifier)]
+                items.append({"id":"treasury:"+identifier,"name":kind.replace("_"," ").title()+" · "+str(maturity),
+                    "ticker":identifier,"category":"treasury","provider":"U.S. Treasury / FedInvest",
+                    "url":"https://www.treasurydirect.gov/marketable-securities/","series":options(pairs)})
+        for source,ticker,name in (("btc","BTC-USD","Bitcoin"),("eth","ETH-USD","Ethereum")):
+            items.append({"id":source,"name":name,"ticker":ticker,"category":"crypto","provider":"Coinbase",
+                "url":"https://www.coinbase.com/","series":options([(s,ticker) for s in (source,source+"_weekly",source+"_monthly")])})
+        items.append({"id":"cash","name":"USD cash","ticker":"USD","category":"cash","provider":"Federal Reserve Bank of New York",
+            "url":"https://www.newyorkfed.org/markets/reference-rates/sofr","series":options([(s,"USD_CASH") for s in ("cash_sofr_index","cash_sofr_accrual")])})
+    return {"items":items,"as_of":as_of.isoformat(),"approved":False}
+
+
 def compare(root,source,instruments,start,end,currency,kind,as_of):
     if not isinstance(instruments,list) or not 1<=len(instruments)<=8 or len(set(instruments))!=len(instruments):
         raise ValueError("Select one to eight distinct assets")

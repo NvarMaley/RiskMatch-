@@ -1,9 +1,22 @@
 from datetime import date
+import json
 
 import duckdb
 import pytest
 
 from riskmatch.analytics import descriptive_report as research
+
+
+def test_client_catalog_retains_assets_without_history(tmp_path, monkeypatch):
+    (tmp_path / "configs").mkdir()
+    (tmp_path / "configs/universe_catalog.json").write_text(json.dumps({"instruments": [
+        {"security_id": "example", "ticker": "EX", "name": "Example Fund", "asset_class": "etf", "source": "https://example.com"}
+    ]}))
+    monkeypatch.setattr(research, "returns_report", lambda *args: {"datasets": []})
+    catalog = research.client_catalog(tmp_path, date(2025, 1, 3))
+    asset = catalog["items"][0]
+    assert (asset["id"], asset["name"], asset["ticker"], asset["series"]) == ("example", "Example Fund", "EX", [])
+    assert not catalog["approved"]
 
 
 def test_cross_source_comparison_aligns_exact_intervals(tmp_path,monkeypatch):
