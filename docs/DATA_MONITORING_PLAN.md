@@ -49,3 +49,9 @@ Suggested frequency: EOD equities/ETF/futures prices and spreads daily; FX/rates
 4. Decide explicitly whether Treasury-backed money-market/repo look-through is within the chosen risk universe; current strict restriction stays in force.
 
 Local commands added: `scripts/fetch_issuer_holdings.py`, `scripts/build_treasury_identity.py`, `scripts/audit_issuer_holdings.py`, `scripts/fetch_eod_updates.py`. The first three were executed and generated only ignored local artifacts. The EOD adapter correctly stops without credentials; no new live price observations are claimed. The full raw WRDS dataset and raw public downloads are not published to GitHub.
+
+## November public-source refresh
+
+Use a pinned whole-market snapshot and match historical identifiers offline. Preserve unmatched symbols for dated corporate-action review. The public exchange-bar refresh, issuer NAV workbooks and issuer reinvestment examples answer different questions. Record the latest market session and the number of sessions actually observed for each source.
+
+Read SEC portfolio reports on their public filing dates. For financial statements preserve original accession, acceptance time, currency, taxonomy and reporting duration. FedInvest marks have their own publication calendar. Futures research files have a fixed historical cutoff. Refresh the source audit before interpreting the bilingual Sources view. See [verified acquisition coverage](DATA_ACQUISITION_PLAN.md).

@@ -48,3 +48,17 @@ def test_fedinvest_receipts_and_scope(tmp_path):
     assert next(r for r in source_report(D,tmp_path)["rows"] if r["id"]=="TREASURY_DAILY")["status"]=="local_partial"
     (base/"prices-fixture.csv").write_bytes(b"tampered")
     assert fedinvest_summary(D,tmp_path) is None
+
+
+def test_futures_research_audit_respects_cutoff_and_language(tmp_path):
+    folder = tmp_path / "data/processed/universe"
+    folder.mkdir(parents=True)
+    (folder / "research_extensions.json").write_text(json.dumps({
+        "audited_on": D.isoformat(),
+        "futures": {"roots": 2, "months": 4, "last": "2024-03-28"},
+    }))
+    def futures(day):
+        return next(row for row in source_report(day, tmp_path)["rows"] if row["id"] == "FUTURES")
+    assert futures(date(2026, 11, 23))["status"] == "missing"
+    assert "2 familles" in futures(D)["evidence_fr"]
+    assert futures(D)["allocation_approved"] is False

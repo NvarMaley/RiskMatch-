@@ -132,8 +132,97 @@ def source_report(as_of, root=ROOT):
         available["FUTURES"] = ("local_partial", f"{count:,} weekly CFTC market observations across ten families. Settlement histories by expiry still required.")
     spot = [public[key] for key in ("CBBTCUSD", "CBETHUSD") if key in public]
     available["CRYPTO_SPOT"] = ("local_partial" if spot else "missing", f"{len(spot)}/2 spot series acquired. Research candidates only.")
+    extensions = local_audit("research_extensions.json")
+    translations = {}
+    def research(category, english, french):
+        available[category] = ("local_partial", english)
+        translations[category] = french
+
+    futures = extensions.get("futures")
+    if futures:
+        fields = (futures["roots"], futures["months"], futures["last"])
+        research("FUTURES",
+                 "%s roots, %s selected contract months through %s. Settlement, volume, open interest and margins remain incomplete." % fields,
+                 "%s familles, %s mois de contrat distincts jusqu’au %s. Cours de compensation, volumes, positions ouvertes et marges restent incomplets." % fields)
+    positions = extensions.get("holdings")
+    if positions:
+        fields = (positions["filings"], positions["funds"], positions.get("verified_filings", 0))
+        research("ETF_HOLDINGS",
+                 "%s filing records across %s funds. Holdings retrieved from quarterly files for %s filings. Treasury-only eligibility requires dated review." % fields,
+                 "%s déclarations pour %s ETF. Positions retrouvées dans les archives trimestrielles pour %s déclarations. Le filtre obligations d’État reste à vérifier à chaque date." % fields)
+        flagged = positions.get("filings_with_non_ust_short_term_vehicle")
+        if flagged is not None:
+            research("ETF_HOLDINGS",available["ETF_HOLDINGS"][1] + f" {flagged} filings include non-Treasury short-term vehicles.",
+                     translations["ETF_HOLDINGS"] + f" {flagged} déclarations contiennent un placement à court terme émis par un tiers.")
+    nav = extensions.get("nav")
+    if nav:
+        fields = (nav["funds"], nav["last"])
+        research("ETF_DAILY",
+                 available["ETF_DAILY"][1] + " Daily issuer NAV for %s ETFs through %s." % fields,
+                 "Valeur liquidative quotidienne de %s ETF jusqu’au %s. Les cours de marché et les distributions se contrôlent séparément." % fields)
+    bars = extensions.get("bars")
+    if bars:
+        fields = (bars["cohort_any"], bars["days"], bars["first"], bars["last"])
+        research("EQUITY_MASTER",
+                 available["EQUITY_MASTER"][1] + " Public ticker matches for %s candidates over %s sessions (%s to %s). Identifier continuity remains open." % fields,
+                 "%s candidats retrouvés par symbole sur %s séances dans l’archive (%s au %s). La continuité des identifiants reste à vérifier." % fields)
+        baseline = available["ETF_DAILY"][1]
+        minimum = min(bars["etf_days"].values(),default=0)
+        fields = (len(bars["etf_days"]),minimum,bars["days"])
+        research("ETF_DAILY",baseline + " Market bars: %s ETFs, minimum %s of %s observed sessions per ETF." % fields,
+                 (translations.get("ETF_DAILY") or "") + " Cours et volumes : %s ETF, au moins %s séances sur %s par ETF." % fields)
+    fees = extensions.get("fees")
+    if fees:
+        fields = (fees["funds"],fees["changes"])
+        en = "%s ETF fee readings and %s dated changes. " % fields
+        fr = "%s ETF avec relevé de frais et %s changements datés. " % fields
+        if fees.get("issuer_mdy"):
+            en += "Separate MDY gross fee at " + fees["issuer_mdy"] + "."
+            fr += "Frais bruts de MDY vérifiés séparément au " + fees["issuer_mdy"] + "."
+        research("COSTS_LIQUIDITY", en, fr)
+    benchmark = extensions.get("index_membership")
+    if benchmark:
+        fields = (benchmark["snapshots"],benchmark["first"],benchmark["last"])
+        research("BENCHMARKS","%s public S&P 500 membership snapshots, %s to %s. Timing, weights and other indices require review." % fields,
+                 "%s compositions historiques du S&P 500, du %s au %s. Horaires, pondérations et autres indices à vérifier." % fields)
+    valuations = local_audit("treasury_sessions.json")
+    if valuations:
+        fields = (valuations["observed_ends"],valuations["expected_ends"],valuations["days"],valuations["last"])
+        research("TREASURY_DAILY","%s/%s curve month ends with identified positive Treasury marks; %s official dates through %s. Cash flows and executable spreads pending." % fields,
+                 "%s/%s fins de mois avec valorisation positive d’un titre identifié ; %s dates officielles jusqu’au %s. Coupons et fourchettes exécutables à valider." % fields)
+    macro = extensions.get("macro_vintages")
+    if macro:
+        fields = (sum(macro.values()),len(macro))
+        research("MACRO_VINTAGES",
+                 "%s vintage columns for %s US indicators from the Philadelphia Fed. Release cutoffs require validation." % fields,
+                 "%s versions datées pour %s indicateurs américains de la Fed de Philadelphie. Les horaires de publication restent à vérifier." % fields)
+    filings = extensions.get("as_filed")
+    if filings:
+        fields = (filings["annual_matches"], filings["quarterly_matches"], filings["last"])
+        research("FUNDAMENTALS",
+                 "%s annual and %s quarterly periods matched to SEC filing timestamps through %s. Original Compustat value vintages unverified." % fields,
+                 "%s périodes annuelles et %s trimestrielles reliées aux dates de dépôt SEC jusqu’au %s. Les versions historiques des valeurs Compustat restent à vérifier." % fields)
+    facts = extensions.get("original_facts")
+    if facts and filings:
+        count = sum(r["rows"] for r in facts.values())
+        research("FUNDAMENTALS",available["FUNDAMENTALS"][1] + f" {count:,} linked original XBRL fact rows.",
+                 translations["FUNDAMENTALS"] + f" {count:,} valeurs XBRL originales reliées aux dépôts.")
+    liquidity = extensions.get("liquidity")
+    if liquidity:
+        fields = (liquidity["above_turnover_proxy"],liquidity["funds"],liquidity["as_of"])
+        english = "%s/%s ETFs above the USD 1m last-20-session turnover proxy at %s." % fields
+        french = "%s/%s ETF dépassent le seuil de 1 M USD échangé par séance sur 20 séances au %s." % fields
+        if fees:
+            english += " " + available["COSTS_LIQUIDITY"][1]
+            french += " " + translations["COSTS_LIQUIDITY"]
+        research("COSTS_LIQUIDITY",english,french)
+    crypto = extensions.get("crypto")
+    if crypto and all(t in crypto for t in ("BTC-USD","ETH-USD")):
+        fields = (crypto["BTC-USD"]["days"],crypto["ETH-USD"]["days"],crypto["ETH-USD"]["missing"])
+        research("CRYPTO_SPOT","Coinbase Exchange spot OHLCV: %s BTC/USD and %s ETH/USD UTC days; %s missing ETH days." % fields,
+                 "Coinbase Exchange au comptant : %s jours BTC/USD et %s jours ETH/USD en UTC, dont %s dates ETH absentes du calendrier." % fields)
     rows=[]
     for row in meta["entries"]:
-        status,evidence=available[row["id"]];rows.append(row|{"status":status,"evidence":evidence,"allocation_approved":False})
+        status,evidence=available[row["id"]];rows.append(row|{"status":status,"evidence":evidence,"evidence_fr":translations.get(row["id"]),"allocation_approved":False})
     return {"version":meta["version"],"as_of":as_of.isoformat(),"rows":rows,"public_receipts":public,"treasury_identity":treasury,"issuer_holdings":holdings,
             "rights_policy":"local_only_pending_entitlement_and_redistribution_review","approved_for_allocation":0}

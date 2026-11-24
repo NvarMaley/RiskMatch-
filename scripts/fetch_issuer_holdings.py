@@ -26,7 +26,10 @@ def csv_snapshot(content):
     rows=list(csv.reader(io.StringIO(content.decode("utf-8-sig"))))
     dates=[r[1] for r in rows if len(r)>1 and r[0].strip()=="Fund Holdings as of"]
     if len(dates)!=1:raise ValueError("Missing published holdings date")
-    as_of=datetime.strptime(dates[0],"%b %d, %Y").date()
+    try:
+        as_of=date.fromisoformat(dates[0])
+    except ValueError:
+        as_of=datetime.strptime(dates[0],"%b %d, %Y").date()
     if as_of>date.today():raise ValueError("Future holdings data")
     header=next((i for i,r in enumerate(rows) if {"Name","Asset Class","CUSIP","Weight (%)"}<=set(r)),None)
     if header is None:raise ValueError("Holdings schema changed")
