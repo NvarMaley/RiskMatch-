@@ -461,30 +461,43 @@ Evidence: [Volatility and covariance](docs/VOLATILITY_COVARIANCE.md), 1,474 cata
 
 Notebook: [chapter 10](notebooks/RiskMatch_V3.ipynb#chapitre-10) · Guide chapter 8.
 
-- [ ] Study and formalize: 13 factors, exposures, scores, OLS, PCA and attribution.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
-- [ ] Verify local rendering and update documentation.
-- [ ] Create a PR, obtain review and merge.
+- [x] Study and formalize: 13 factors, exposures, scores, OLS, PCA and attribution.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness of research estimators.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
+- [x] Verify local API/rendering tests and update documentation.
+- [x] Publish research implementation via owner-approved solo workflow (D003).
 
 ### 10 — A. Detailed Tasks
 
 
 - [ ] **CH10.01** — Define factor taxonomy and map all 13 factors to input data and timestamps (catalog below).
+  All 13 mapped; G07 approval and true carry/term/inflation-surprise inputs remain open.
 - [ ] **CH10.02** — Construct lagged scores, cross-sectional winsorization/z-score, coverage report and neutralization choices.
+  Eight observed scores on 336,000 dated membership rows; liquidity size-neutralized, original filings accepted before ranking.
 - [ ] **CH10.03** — Build market, size, value, profitability, investment and momentum series using published factors or reproducible definitions.
+  Published FF and momentum panels plus eight research portfolio series.
 - [ ] **CH10.04** — Estimate CAPM, Fama-French 3/5-factor and multifactor exposures with OLS, rolling OLS and ridge.
+  1,022 matched assets; FF3 is FF5 subset; price-only and retrospective targets explicit.
 - [ ] **CH10.05** — Use heteroskedasticity/autocorrelation-robust standard errors where justified; test multicollinearity and residuals.
+  HAC, VIF, condition numbers, Durbin–Watson; observation-lag HAC limitations disclosed.
 - [ ] **CH10.06** — Run PCA on declared covariance/correlation basis; report explained variance, loading stability and sign conventions.
+  Train-only published-factor correlation PCA, held-out absolute loading similarity.
 - [ ] **CH10.07** — Construct factor portfolios long/short or long-only subject to investability and costs.
+  Eight top/bottom quintile research portfolios and illustrative turnover costs; actual execution/borrow eligibility pending.
 - [ ] **CH10.08** — Compare factor returns, rank IC, exposure drift and turnover over identical OOS windows.
+  Common 36-date held-out window; 29 complete net-return periods; rolling exposure drift.
 - [ ] **CH10.09** — Compute attribution from exposure × realized factor return and reconcile residual.
+  5,725 specifications reconcile alpha + factors + residual within 1e-10.
 - [ ] **CH10.10** — Compute factor risk via BΣ_fB' and residual risk; avoid double counting close factors.
+  575-asset common factor covariance, 99 aligned intervals, diagonal/full residual PSD; conditioning/approval remains pending.
 - [ ] **CH10.11** — Build factor exposures radar/bar charts and attribution table with coverage warnings.
+  Bilingual asset exposure/rolling charts and attribution, Sources aggregate coverage.
+
+Evidence: [Factors and regressions](docs/FACTORS_REGRESSIONS.md), 1,474 examined, 1,022 regression profiles, 445 analytical references, seven unavailable; G07/G02 and original dependency gates remain open.
 
 
 

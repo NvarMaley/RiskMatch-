@@ -82,6 +82,15 @@ test("Risk coverage reports regular and descriptive profiles",async()=>{
   assert.match(el.innerHTML,/1 descriptifs uniquement/);
 });
 
+test("Factor coverage distinguishes empirical and analytical references",async()=>{
+  const el={innerHTML:"",addEventListener(){}},context={document:{getElementById:()=>el},window:{RM:{t:k=>k,language:"fr"}}};
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname,"../../apps/web/sources.js"),"utf8"),context);
+  await context.window.SourcesView.load(async endpoint=>endpoint==="factors/universe"?
+    {status:"complete",catalogue_count:2,statuses:{computed:1,analytical_reference:1},taxonomy:{market:"market"}}:{rows:[]});
+  assert.match(el.innerHTML,/10 · Facteurs et régressions/);
+  assert.match(el.innerHTML,/1 références analytiques/);
+});
+
 test("Universe research renders the asset library and opens an explained statistical profile", async () => {
   const elements=new Map();
   let savedFallback=false;
@@ -104,6 +113,11 @@ test("Universe research renders the asset library and opens an explained statist
     if(endpoint==="risk/universe/asset")return {status:"computed",frequency:"daily",kind:"total_return",currency:"USD",risk:{
       selected_model:"ewma",split:{train:60,validation:20,test:20},models:{ewma:{annualized_volatility:.2,
       test:{qlike:1,mse:.01},history:[["2025-01-02",.2,.1]]}},unavailable:{}}};
+    if(endpoint==="factors/universe/asset")return {status:"computed",frequency:"monthly",currency:"USD",kind:"total_return",models:{capm:{
+      factor_names:["Mkt-RF"],beta:{"Mkt-RF":1.2},ridge:{beta:{"Mkt-RF":1.1}},hac_se:{"Mkt-RF":.1},hac_p:{"Mkt-RF":.01},vif:{"Mkt-RF":1},
+      first:"2020-01-01",last:"2025-01-01",observations:60,r_squared:.7,alpha:.001,implied_total_reference:.01,
+      rolling:[["2025-01-01",1.2]],attribution:{alpha:.001,mean_factor_contribution:{"Mkt-RF":.01},mean_residual:0,mean_realized_excess:.011},
+      factor_risk:{systematic_variance:.001,residual_variance:.0002},test:{mse:.001}}},unavailable:{}};
     return {rows:[]};
   },"2025-01-02");
   assert.match(get("universe-statistics").innerHTML,/Catalogue/);
@@ -126,6 +140,9 @@ test("Universe research renders the asset library and opens an explained statist
   assert.match(get("universe-statistics").innerHTML,/Réseau neuronal/);
   await get("risk-saved").onclick();
   assert.match(get("universe-statistics").innerHTML,/Volatilité annualisée prévue/);
+  await get("factor-run").onclick();
+  assert.match(get("universe-statistics").innerHTML,/Expositions factorielles/);
+  assert.match(get("universe-statistics").innerHTML,/Bêta glissant/);
   assert.match(get("universe-statistics").innerHTML,/20.00%/);
   await get("forecast-batch").onclick();
   assert.match(get("universe-statistics").innerHTML,/Calcul global enregistré/);

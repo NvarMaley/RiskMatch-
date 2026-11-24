@@ -9,6 +9,7 @@
   let cutoff, start,end,currency="USD",kind="total_return",error="";
   let forecastResult=null,forecastEstimate=null,forecastError="",forecastModel="",forecastRevision=0,forecastAdvanced=true;
   let riskResult=null,riskError="",riskModel="",riskRevision=0;
+  let factorResult=null,factorError="",factorModel="",factorRevision=0,factorSelected="";
   const classes={all:["All assets","Tous les actifs"],equity_etf:["Equity ETFs","ETF actions"],reit_etf:["Real estate ETFs","ETF immobiliers"],commodity_etp:["Commodities","Matières premières"],treasury_etf:["Treasury ETFs","ETF souverains"],stock:["Stocks","Actions"],treasury:["Government bonds","Obligations d’État"],crypto:["Crypto","Cryptomonnaies"],cash:["Cash","Liquidités"]};
   const descriptions={
     mean:["Arithmetic mean","Moyenne arithmétique","Average observed return per period.","Moyenne des rendements observés par période."],
@@ -135,6 +136,39 @@
     return `<article><h2>${tr("09 · Volatility and covariance","09 · Volatilité et covariance")}</h2><p>${tr("Experimental risk estimates, not approved portfolio inputs.","Estimations expérimentales du risque, non approuvées pour un portefeuille.")}</p><button id="risk-run" class="primary">${matrix?tr("Calculate covariance models","Calculer les modèles de covariance"):tr("Calculate volatility models","Calculer les modèles de volatilité")}</button>${matrix?"":` <button id="risk-saved">${tr("View saved risk run","Voir le calcul global du risque")}</button>`}<p role="status">${esc(riskError)}</p>${r?.status==="descriptive_only"?`<p>${tr("Descriptive interval volatility","Volatilité descriptive par intervalle")}: ${pct(r.interval_volatility)} · ${esc(r.frequency)} · ${esc(r.kind)} · ${tr("Observations","Observations")}: ${r.observations}. ${tr("No regular conditional model available.","Aucun modèle conditionnel régulier disponible.")}</p>`:""}${r?.models?`<p>${esc(r.frequency||"")} · ${esc(r.kind||"")} · ${esc(r.currency||"")} · ${esc(r.last||"")} · ${tr("Train / validation / test","Entraînement / validation / test")}: ${r.split.train} / ${r.split.validation} / ${r.split.test}</p>${options}${charts}${table}${Object.keys(r.unavailable||{}).length?`<p>${tr("Unavailable models","Modèles indisponibles")}: ${esc(Object.keys(r.unavailable).join(", "))}</p>`:""}`:""}</article>`;
   }
   function clearRisk(){riskRevision++;riskResult=null;riskError="";riskModel="";}
+  function clearFactors(){factorRevision++;factorResult=null;factorError="";factorModel="";factorSelected="";}
+  function factorPanel(){
+    if(mode!=="detail")return "";
+    const f=factorResult,m=f?.models?.[factorModel],ref=f?.reference;
+    const labels={capm:"CAPM",ff3_subset:"Fama–French 3 (FF5 subset)",ff5:"Fama–French 5",ff6:"Fama–French 5 + Momentum",macro_sensitivity:tr("Macro sensitivities","Sensibilités macro"),internal_styles:tr("Internal style factors","Facteurs de style internes")};
+    let contents="";
+    if(m){
+      const a=m.attribution;const keys=m.factor_names;
+      const idx=Math.max(0,keys.indexOf(factorSelected));
+      contents=`<p>${esc(f.frequency)} · ${esc(f.currency)} · ${esc(f.kind)} · ${esc(m.first)} – ${esc(m.last)} · N=${m.observations}</p><label>${tr("Model","Modèle")}<select id="factor-model">${Object.keys(f.models).map(k=>`<option value="${esc(k)}" ${k===factorModel?"selected":""}>${esc(labels[k]||k)}</option>`).join("")}</select></label>
+      <div class="mandate-summary"><div><span>R² (${tr("training","entraînement")})</span><b>${num(m.r_squared)}</b></div><div><span>Alpha</span><b>${pct(m.alpha)}</b></div><div><span>${tr("Implied total return reference","Rendement total implicite de référence")}</span><b>${pct(m.implied_total_reference)}</b></div></div>
+      <div class="research-charts">${bars(keys.map(k=>[k,m.beta[k]]),tr("Factor exposures","Expositions factorielles"),tr("OLS coefficients; macro units differ from traded-factor returns.","Coefficients MCO ; les unités macro diffèrent des rendements factoriels."),num)}${bars(Object.entries(a.mean_factor_contribution),tr("Mean factor attribution (test)","Attribution moyenne des facteurs (test)"),tr("Mean beta times realized factor, per period.","Moyenne du bêta multiplié par le facteur réalisé, par période."),pct)}</div>
+      <label>${tr("Rolling exposure","Exposition glissante")}<select id="factor-exposure">${keys.map((k,i)=>`<option value="${esc(k)}" ${i===idx?"selected":""}>${esc(k)}</option>`).join("")}</select></label>${lineChart(m.rolling.map(r=>[r[0],r[idx+1]]),tr("Rolling beta","Bêta glissant"),tr("Trailing observations only; not a future return prediction.","Observations passées uniquement ; pas une prévision de rendement."))}
+      <div class="universe-table-wrap"><table class="research-matrix"><thead><tr><th>Factor</th><th>Beta OLS</th><th>Beta Ridge</th><th>HAC SE</th><th>HAC p</th><th>VIF</th></tr></thead><tbody>${keys.map(k=>`<tr><th>${esc(k)}</th><td>${num(m.beta[k])}</td><td>${num(m.ridge.beta[k])}</td><td>${num(m.hac_se[k])}</td><td>${num(m.hac_p[k])}</td><td>${num(m.vif[k])}</td></tr>`).join("")}</tbody></table></div>
+      <p>${tr("Held-out attribution reconciliation","Rapprochement de l’attribution hors échantillon")}: ${tr("alpha","alpha")} ${pct(a.alpha)} · ${tr("factors","facteurs")} ${pct(Object.values(a.mean_factor_contribution).reduce((s,v)=>s+v,0))} · ${tr("residual","résidu")} ${pct(a.mean_residual)} · ${tr("realized excess return","rendement excédentaire réalisé")} ${pct(a.mean_realized_excess)}</p>
+      <p>${tr("Systematic variance","Variance systématique")}: ${num(m.factor_risk.systematic_variance)} · ${tr("Residual variance","Variance résiduelle")}: ${num(m.factor_risk.residual_variance)} · ${tr("Test RMSE","RMSE test")}: ${pct(Math.sqrt(m.test.mse))}</p>
+      ${f.kind==="price_return"?`<p>${tr("Price-only target: not a total-return CAPM.","Rendement du prix uniquement : différent d’un CAPM sur rendement total.")}</p>`:""}${Object.keys(f.unavailable||{}).length?`<p>${tr("Unavailable specifications","Spécifications indisponibles")}: ${esc(Object.keys(f.unavailable).join(", "))}</p>`:""}`;
+    }else if(ref){
+      contents=`<p>${tr("Analytical reference only","Référence analytique uniquement")} · ${esc(ref.as_of)}</p>${ref.modified_duration!=null?`<p>${tr("Modified duration","Duration modifiée")}: ${num(ref.modified_duration)} · ${tr("Indicative yield","Rendement indicatif")}: ${pct(ref.yield)} · ${esc(ref.yield_type)}</p>`:`<p>SOFR: ${pct(ref.carry_rate)}</p>`}<p>${tr("No equity regression or empirical key-rate beta.","Aucune régression actions ni bêta empirique par taux clé.")}</p>`;
+    }
+    return `<article><h2>${tr("10 · Factors and regressions","10 · Facteurs et régressions")}</h2><p>${tr("Retrospective research exposures; published factors and proxies have different units. Not approved for investment.","Expositions de recherche rétrospectives ; les facteurs publiés et les proxys ont des unités différentes. Non approuvé pour l’investissement.")}</p><button class="primary" id="factor-run">${tr("View saved factor analysis","Voir l’analyse factorielle enregistrée")}</button><p role="status">${esc(factorError)}</p>${contents}</article>`;
+  }
+  async function runFactors(){
+    if(!active||mode!=="detail")return;
+    clearFactors();const own=factorRevision;factorError=tr("Loading…","Chargement…");render();
+    try{
+      const data=await api("factors/universe/asset",{as_of:cutoff,id:active.item.id});
+      if(own!==factorRevision||mode!=="detail")return;
+      factorResult=data;factorModel=Object.keys(data.models||{})[0]||"";
+      factorSelected=data.models?.[factorModel]?.factor_names[0]||"";
+      factorError=data.status==="unavailable"?tr("Insufficient matched factor data.","Données factorielles alignées insuffisantes."):"";render();
+    }catch(e){if(own===factorRevision){factorError=e.message;render();}}
+  }
   async function runRisk(saved=false){
     clearRisk();const own=riskRevision;
     riskError=tr("Calculating…","Calcul en cours…");render();
@@ -198,12 +232,12 @@
     const controls=`<div class="mandate-grid universe-controls"><label>${tr("Start","Début")}<input id="research-start" type="date" value="${esc(start||"")}"></label><label>${tr("End","Fin")}<input id="research-end" type="date" value="${esc(end||"")}"></label><label>${tr("Currency","Devise")}<select id="research-currency"><option ${currency==="USD"?"selected":""}>USD</option><option ${currency==="CHF"?"selected":""}>CHF</option></select></label><label>${tr("Return kind","Type de rendement")}<select id="research-kind"><option value="total_return" ${kind==="total_return"?"selected":""}>${tr("Total return","Rendement total")}</option><option value="price_return" ${kind==="price_return"?"selected":""}>${tr("Price return","Rendement du prix")}</option></select></label></div>`;
     const detail=active?`<div class="catalog-detail-header"><button id="research-back">← ${tr("Back to catalogue","Retour au catalogue")}</button><small>${esc(active.item.ticker)}</small><h2>${esc(active.item.name)}</h2><p>${tr("Source","Source")} · ${esc(active.item.provider)}</p>${active.item.series.length?`<button id="research-add">${tray.some(a=>a.item.id===active.item.id)?tr("In comparison","Dans le comparateur"):tr("+ Add to comparison","+ Ajouter à la comparaison")}</button>`:""}</div>${active.item.series.length?`<div class="universe-controls"><label>${tr("Historical series / frequency","Historique / fréquence")}<select id="research-series">${options(active.item,active.index)}</select></label></div>${controls}<button class="primary" id="research-run">${tr("Update analysis","Actualiser la fiche")}</button>`:`<p>${tr("No usable statistical series is available for this asset at the selected date.","Aucune série statistique exploitable n’est disponible pour cet actif à la date sélectionnée.")}</p>`}`:"";
     const compare=`<h2>${tr("Asset comparison","Comparateur d’actifs")}</h2>${tray.length?tray.map((a,i)=>`<div class="catalog-tray-item"><b>${esc(a.item.name)} · ${esc(a.item.ticker)}</b><select aria-label="${tr("Series","Série")}" data-tray-series="${i}">${options(a.item,a.index)}</select><button data-research-remove="${i}">×</button></div>`).join("")+controls+`<button class="primary" id="research-run">${tr("Compare selected assets","Comparer les actifs")}</button>`:`<p>${tr("Open an asset profile and add it to the comparison.","Ouvre une fiche et ajoute l’actif au comparateur.")}</p>`}`;
-    host.innerHTML=`<section class="research-hub">${tabs}${mode==="library"?library:mode==="detail"?detail:compare}<p role="status">${esc(error)}</p></section><div id="research-results">${forecastPanel()}${riskPanel()}${mode==="detail"?estimateHtml():""}${mode==="library"?"":renderResult()}</div>`;
+    host.innerHTML=`<section class="research-hub">${tabs}${mode==="library"?library:mode==="detail"?detail:compare}<p role="status">${esc(error)}</p></section><div id="research-results">${forecastPanel()}${riskPanel()}${factorPanel()}${mode==="detail"?estimateHtml():""}${mode==="library"?"":renderResult()}</div>`;
     const on=(id,event,fn)=>{const el=$(id);if(el)el[event]=fn;};
     on("research-category","onchange",()=>{category=$("research-category").value;page=0;render();});
     on("research-search","oninput",()=>{query=$("research-search").value;page=0;render();$("research-search").focus();$("research-search").setSelectionRange(query.length,query.length);});
     on("research-prev","onclick",()=>{page--;render();});on("research-next","onclick",()=>{page++;render();});
-    const go=next=>{revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();mode=next;result=null;error="";if(next==="compare")setRange(tray);render();};
+    const go=next=>{revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();clearFactors();mode=next;result=null;error="";if(next==="compare")setRange(tray);render();};
     on("research-library","onclick",()=>go("library"));on("research-back","onclick",()=>go("library"));
     on("research-compare","onclick",()=>go("compare"));
     on("research-series","onchange",()=>{active.index=Number($("research-series").value);setRange([active]);render();run();});
@@ -214,8 +248,11 @@
     on("risk-run","onclick",()=>runRisk(false));
     on("risk-saved","onclick",()=>runRisk(true));
     on("risk-model","onchange",()=>{riskModel=$("risk-model").value;render();});
+    on("factor-run","onclick",runFactors);
+    on("factor-model","onchange",()=>{factorModel=$("factor-model").value;factorSelected=factorResult.models[factorModel].factor_names[0];render();});
+    on("factor-exposure","onchange",()=>{factorSelected=$("factor-exposure").value;render();});
     on("forecast-model","onchange",()=>{forecastModel=$("forecast-model").value;render();});
-    const clearForecast=()=>{forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();render();};
+    const clearForecast=()=>{forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();clearFactors();render();};
     on("research-start","onchange",()=>{start=$("research-start").value;clearForecast();});
     on("research-end","onchange",()=>{end=$("research-end").value;clearForecast();});
     on("research-currency","onchange",()=>{currency=$("research-currency").value;clearForecast();});
@@ -234,7 +271,7 @@
   async function open(id){
     const item=catalog?.items.find(a=>a.id===id);
     if(!item)return;
-    revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();active={item,index:0};mode="detail";result=null;error="";setRange([active]);render();
+    revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();clearFactors();active={item,index:0};mode="detail";result=null;error="";setRange([active]);render();
     $("universe-statistics").scrollIntoView?.({block:"start"});
     if(item.series.length)await run();
   }
@@ -244,7 +281,7 @@
     tray.push({...active});render();
   }
   async function run(){
-    forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();
+    forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();clearFactors();
     const choices=mode==="compare"?tray:active?[active]:[];
     const series=choices.map(a=>a.item.series[a.index]).filter(Boolean);
     start=$("research-start").value;end=$("research-end").value;currency=$("research-currency").value;kind=$("research-kind").value;
