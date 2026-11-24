@@ -271,8 +271,8 @@ Notebook: [chapter 05](notebooks/RiskMatch_V3.ipynb#chapitre-05) · Guide chapte
 - [x] Extract code into the shared module.
 - [x] Write automated tests and make them pass.
 - [x] Add the API contract and relevant screen.
-- [ ] Verify local rendering and update documentation.
-- [ ] Create a PR, obtain review and merge.
+- [x] Verify local rendering and update documentation.
+- [x] Publish through the owner-approved solo workflow (D003).
 
 ### 05 — A. Detailed Tasks
 
