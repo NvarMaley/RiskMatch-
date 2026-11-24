@@ -73,6 +73,35 @@ body[data-session="locked"] .page:not(#saves) { display:none !important; }
 body[data-session="unlocked"] #save-access-controls { display:none; }
 .intro-controls { position: absolute; top: max(1rem,env(safe-area-inset-top)); right: max(1rem,env(safe-area-inset-right)); z-index: 9; display:flex; gap:8px; align-items:center; }
 .intro-controls select, #save-slot { background:#0b2433dc;color:var(--pearl);border:1px solid #507587;border-radius:12px;padding:10px;font:inherit; }
+
+/* Mandate v2: retain the lagoon identity, with readable grouped financial inputs. */
+#mandate #form { max-width: 1100px; width: 100%; gap: 20px; }
+.mandate-intro { display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+.mandate-intro p { flex:1; min-width:240px; }
+.mandate-panel { min-width:0; margin:0; padding:22px; border:1px solid #507587; border-radius:18px; background:#0d2434d9; }
+.mandate-panel legend { padding:0 10px; color:#b9e9f1; font-weight:800; font-size:1.15rem; }
+.mandate-panel legend span:first-child { color:#f2a9bd; margin-right:6px; }
+.mandate-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:15px; align-items:end; }
+.mandate-grid label { min-width:0; }
+.mandate-panel input:not([type=checkbox]), .mandate-panel select { width:100%; min-width:0; background:#0a1d2be8; color:#edf9ff; border:1px solid #507587; border-radius:10px; padding:12px; font:inherit; }
+.mandate-check { display:flex; align-items:center; gap:10px; min-height:44px; }
+.mandate-check input { flex:none; width:19px; height:19px; accent-color:#ed9bb5; }
+.mandate-row { border:1px solid #50758780; border-radius:12px; padding:15px; margin:12px 0; background:#0c1c2a99; }
+.mandate-goal .goal-help { grid-column:1/-1; margin:0; }
+.mandate-panel h3 { margin:22px 0 10px; }
+.mandate-panel button { margin-top:12px; }
+.mandate-limit { padding:10px; border:1px solid #50758750; border-radius:10px; display:grid; gap:10px; }
+#mandate-report { max-width:1100px; margin:25px 0; }
+#mandate-report .mandate-status { font-size:1.2rem; font-weight:800; color:#a3e2db; }
+#mandate-report .mandate-conflict { color:#ffc3cc; }
+#mandate-report .mandate-summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr)); gap:12px; }
+#mandate-report .mandate-summary div { padding:14px; border:1px solid #50758780; border-radius:12px; background:#0a1d2b; }
+#mandate-report .mandate-summary b { display:block; font-size:1.3rem; margin-top:5px; }
+#mandate-report .mandate-goal { display:block; }
+.discovery-summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr)); gap:12px; margin:20px 0; }
+.discovery-summary > div { background:#0a1d2b; border:1px solid #50758780; border-radius:12px; padding:14px; }
+.discovery-summary p { font-size:1.25rem; font-weight:800; color:#b9e9f1; margin:6px 0; }
+#discovery-confidence { background:#0a1d2b;color:#edf9ff;padding:10px;border:1px solid #507587;border-radius:10px;max-width:220px; }
 .save-panel { max-width: 640px; margin: 35px auto; text-align:center; }
 .save-logo { width:105px;height:105px;object-fit:contain; }
 .save-panel h1 { margin:8px 0 18px; }

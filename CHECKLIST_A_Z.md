@@ -10,8 +10,8 @@ To display the next executable tasks: `.venv/bin/python scripts/task_dependencie
 
 - [x] Restore the initial scaffold and original documentation.
 - [x] Create the shared prototype, Web App and single notebook.
-- [ ] Initialize Git and create the private GitHub repository.
-- [ ] Define collaborators, PR review, main protection and CI.
+- [x] Initialize Git and create the dedicated GitHub repository (public per D002).
+- [x] Define solo development, CI and collaboration policy (D003: enforce PR review and main protection before adding collaborators).
 - [ ] Lock dependencies and document licenses.
 
 ## Usage and Traceability
@@ -32,7 +32,8 @@ This document preserves the requirements of the [original conversation](https://
 
 Each ID is a possible issue. To check it off, attach notebook reference (chapter/cell), function, test, run_id, UI evidence where applicable and PR. Unvalidated models remain experimental. Chapter order is pedagogical; the dependency gates determine release order.
 
-- [ ] **G00** — Reproducible installation, private GitHub and CI; identical environment on two machines.
+- [x] **G00** — Reproducible installation, dedicated GitHub repository (public per D002) and CI; identical dependency versions on two machines.
+  Closed in solo mode (D003): owner-confirmed green CI on c05aaee, local installation and notebook smoke, versioned contracts, exclusions and experiment registry. Configure collaborator write access, PR review and main protection before the first collaborator joins.
 - [ ] **G01** — Minimal mandate, specification of all 11 objectives (OBJ01–OBJ11), versioned discovery and protocol.
 - [ ] **G02** — Validated US ETF universe, cash, benchmarks, licenses and PIT/total-return pipeline.
 - [ ] **G03** — Statistics, covariance and baselines; minimum variance, maximum utility, maximum Sharpe and frontier with analytical tests.
@@ -49,20 +50,20 @@ Each ID is a possible issue. To check it off, attach notebook reference (chapter
 
   Evidence (2026-11-24, D001 approved): Python 3.12.6, isolated `.venv`, fresh install from `requirements.lock`, no broken requirements; local Python and JavaScript tests passed. Previous environment preserved as `.venv-legacy`. CI now targets Python 3.12; actual remote CI is INFRA.06. Notebook — Shared Setup / INFRA.01.
 
-- [ ] **INFRA.02** — Run INSTALL.command, START.command and STOP.command; check both local ports and logs.
-  Local installer and health checks executed; web `/api/health` returned success and Jupyter `/lab` returned HTTP 302 after local runtime/proxy fixes. STOP requires process inspection, denied by assisted environment; owner must verify stop in normal Terminal.
-- [ ] **INFRA.03** — Open RiskMatch_V3.ipynb and verify contents, Python kernel and executable cells.
-  Notebook structure and local Python 3.12 kernel execution verified; synthetic smoke script added. Pending completion of INFRA.02 prerequisite.
-- [ ] **INFRA.04** — Create a separate private GitHub repository, initialize Git and check status and exclusions before commit.
-  Local `main` and remote `origin/main` were confirmed at initial commit `143a2b8`; data exclusions checked. Repository privacy and current push require owner verification.
-- [ ] **INFRA.05** — Configure remote, collaborator invitations, branches, protected main and reviews.
-  Remote configured. Authorized collaborator identities and GitHub settings must be confirmed by owner.
-- [ ] **INFRA.06** — Check PR CI, test fresh installation and run tests.
-  Fresh local install and tests passed, redesigned CI includes notebook smoke and privacy path checks. Remote CI and PR not yet verified.
-- [ ] **INFRA.07** — Define ticket/branch/commit naming, owner, dependencies and validation evidence.
-  Conventions documented in CONTRIBUTING.md; pending INFRA.06.
-- [ ] **INFRA.08** — Create experiment registry and data/version conventions; prohibit secrets and private data in Git.
-  docs/EXPERIMENT_REGISTRY.md and exclusion checker implemented; pending INFRA.07.
+- [x] **INFRA.02** — Run INSTALL.command, START.command and STOP.command; check both local ports and logs.
+  Local installer and health checks executed; web `/api/health` returned success and Jupyter `/lab` returned HTTP 302 after local runtime/proxy fixes. After the owner ran STOP.command, both ports no longer responded.
+- [x] **INFRA.03** — Open RiskMatch_V3.ipynb and verify contents, Python kernel and executable cells.
+  Notebook structure and local Python 3.12 kernel execution verified; eight synthetic cells executed successfully.
+- [x] **INFRA.04** — Create a separate GitHub repository, initialize Git and check status and exclusions before commit (public per D002).
+  Local `main` and remote `origin/main` confirmed at `c05aaee`; data exclusions checked. Owner approved public visibility for now, with restricted data kept local.
+- [x] **INFRA.05** — Configure remote and solo workflow; require collaborator permissions, protected main and reviews before collaborative development.
+  D003 approved: owner works alone for now; no collaborator invitations or main protection required in solo mode. Public read access does not grant write access.
+- [x] **INFRA.06** — Check push CI in solo mode (PR CI before collaboration), test fresh installation and run tests.
+  Fresh local install and tests passed, redesigned CI includes notebook smoke and privacy path checks. Owner reported green GitHub Actions on commit `c05aaee`.
+- [x] **INFRA.07** — Define ticket/branch/commit naming, owner, dependencies and validation evidence.
+  Conventions documented in CONTRIBUTING.md; owner is sole developer until collaboration begins.
+- [x] **INFRA.08** — Create experiment registry and data/version conventions; prohibit secrets and private data in Git.
+  docs/EXPERIMENT_REGISTRY.md and exclusion checker implemented.
 
 ### Shared Contracts, Minimal Backtest and First RiskMatch
 
@@ -91,34 +92,36 @@ Each ID is a possible issue. To check it off, attach notebook reference (chapter
 
 Notebook: [chapter 01](notebooks/RiskMatch_V3.ipynb#chapitre-01) · Guide chapter 1.
 
-- [ ] Study and formalize: Define ClientProfile, hard constraints, preferences and feasibility.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Define ClientProfile, hard constraints, preferences and feasibility.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 01 — A. Detailed Tasks
 
 
-- [ ] **CH01.01** — Define currency and amount types (USD/CHF; nominal vs real).
-- [ ] **CH01.02** — Define capital, investable wealth, assets, debts, emergency reserve and net worth as separate fields.
-- [ ] **CH01.03** — Collect income, spending, recurring contributions, withdrawals and dated liabilities.
-- [ ] **CH01.04** — Distinguish investment horizon from time until next withdrawal.
-- [ ] **CH01.05** — Represent each goal as amount, currency, due date, priority and shortfall penalty.
-- [ ] **CH01.06** — Calculate funding gap and required annual return for a single cash flow; solve dated multi-flow case numerically.
-- [ ] **CH01.07** — Separate ability, willingness and required risk; never infer capacity from behavioral choices.
-- [ ] **CH01.08** — Evaluate knowledge and experience separately for equities, Treasuries, futures, leverage and short selling.
-- [ ] **CH01.09** — Define limits on losses, stress, volatility, liquidity, asset/issuer/sector weights, turnover and costs.
-- [ ] **CH01.10** — Define ESG exclusions, tax assumptions, FX hedge preference, leverage, gross/net and derivatives permissions.
-- [ ] **CH01.11** — Represent hard vs soft constraints explicitly; define units, bounds and missing-value policy.
-- [ ] **CH01.12** — Implement feasibility report and conflicting constraint examples; never silently relax constraints.
-- [ ] **CH01.13** — Version ClientProfile and ConstraintSet; save synthetic examples and avoid real client data in notebooks.
-- [ ] **CH01.14** — Review risk-budget and goal changes in a before/after UI; require explicit confirmation.
-- [ ] **CH01.15** — Test zero capital, negative capital, inconsistent horizon, withdrawals exceeding resources, unsupported currency and missing consent.
+- [x] **CH01.01** — Define currency and amount types (USD/CHF; nominal vs real).
+- [x] **CH01.02** — Define capital, investable wealth, assets, debts, emergency reserve and net worth as separate fields.
+- [x] **CH01.03** — Collect income, spending, recurring contributions, withdrawals and dated liabilities.
+- [x] **CH01.04** — Distinguish investment horizon from time until next withdrawal.
+- [x] **CH01.05** — Represent each goal as amount, currency, due date, priority and shortfall penalty.
+- [x] **CH01.06** — Calculate funding gap and required annual return for a single cash flow; solve dated multi-flow case numerically.
+- [x] **CH01.07** — Separate ability, willingness and required risk; never infer capacity from behavioral choices.
+- [x] **CH01.08** — Evaluate knowledge and experience separately for equities, Treasuries, futures, leverage and short selling.
+- [x] **CH01.09** — Define limits on losses, stress, volatility, liquidity, asset/issuer/sector weights, turnover and costs.
+- [x] **CH01.10** — Define ESG exclusions, tax assumptions, FX hedge preference, leverage, gross/net and derivatives permissions.
+- [x] **CH01.11** — Represent hard vs soft constraints explicitly; define units, bounds and missing-value policy.
+- [x] **CH01.12** — Implement feasibility report and conflicting constraint examples; never silently relax constraints.
+- [x] **CH01.13** — Version ClientProfile and ConstraintSet; save synthetic examples and avoid real client data in notebooks.
+- [x] **CH01.14** — Review risk-budget and goal changes in a before/after UI; require explicit confirmation.
+- [x] **CH01.15** — Test zero capital, negative capital, inconsistent horizon, withdrawals exceeding resources, unsupported currency and missing consent.
+
+Evidence (2026-11-24): [mandate specification](docs/CLIENT_MANDATE.md), notebook chapter 01 cell `2ce6b6ef`, `src/riskmatch/profiling/mandate.py`, `configs/mandate-example.json`, unit and loopback HTTP tests, bilingual form and confirmation tests in `tests/web/mandate.test.cjs`. Deterministic structural validation only; owner visual confirmation and GitHub publication remain pending. Objective-specific financial models, full market feasibility and suitability are later tickets. Assumptions are provisional pending owner review.
 
 
 
@@ -126,40 +129,47 @@ Notebook: [chapter 01](notebooks/RiskMatch_V3.ipynb#chapitre-01) · Guide chapte
 
 Notebook: [chapter 02](notebooks/RiskMatch_V3.ipynb#chapitre-02) · Guide chapter 20.
 
-- [ ] Study and formalize: Version cards, responses, coverage, score and sensitivity.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Version cards, responses, coverage, score and sensitivity.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 02 — A. Detailed Tasks
 
 
-- [ ] **CH02.01** — Define risk tolerance, loss sensitivity, time preference, ambiguity, confidence and decision consistency as distinct constructs.
-- [ ] **CH02.02** — Map expected utility, prospect theory, framing, loss aversion, anchoring and recency hypotheses to observable choices; do not claim diagnoses.
-- [ ] **CH02.03** — Build the initial 60-card bank: 16 lottery, 12 gain/loss, 12 trajectory, 8 uncertainty/horizon, 8 style, 4 coherence items.
-- [ ] **CH02.04** — Sample the 30-card session with 8/6/6/4/4/2 block quotas and deterministic seed.
-- [ ] **CH02.05** — Specify card IDs, versions, localized descriptions, choices, reference points, payoff/probabilities, scoring direction and pair IDs.
-- [ ] **CH02.06** — Write certainty-equivalent lottery pairs with known expected values and a clearly described safe alternative.
-- [ ] **CH02.07** — Create symmetric gain/loss framing pairs with economically equivalent payoffs.
-- [ ] **CH02.08** — Show drawdown trajectories with equal horizon, uncertainty, costs and no guaranteed recovery.
-- [ ] **CH02.09** — Separate ambiguity and time-preference items from the unidimensional score.
-- [ ] **CH02.10** — Randomize order and left/right placement while preserving balanced design; record presentation order.
-- [ ] **CH02.11** — Support like/dislike, unsure, skip, undo, accessible keyboard and touch gestures.
-- [ ] **CH02.12** — Compute prudent fraction p and score = round(1+29p); threshold provisional coverage of 70%.
-- [ ] **CH02.13** — Calculate missing-response sensitivity range and flag paired inconsistencies; display no score when coverage is insufficient.
-- [ ] **CH02.14** — Build simulated all-prudent/all-risk/mixed/missing/inconsistent response fixtures.
-- [ ] **CH02.15** — Implement separate CRRA utility and prospect-theory likelihood exploration; keep score 1–30 independent of lambda and gamma.
+- [x] **CH02.01** — Define risk tolerance, loss sensitivity, time preference, ambiguity, confidence and decision consistency as distinct constructs.
+- [x] **CH02.02** — Map expected utility, prospect theory, framing, loss aversion, anchoring and recency hypotheses to observable choices; do not claim diagnoses.
+- [x] **CH02.03** — Build the initial 60-card bank: 16 lottery, 12 gain/loss, 12 trajectory, 8 uncertainty/horizon, 8 style, 4 coherence items.
+- [x] **CH02.04** — Sample the 30-card session with 8/6/6/4/4/2 block quotas and deterministic seed.
+- [x] **CH02.05** — Specify card IDs, versions, localized descriptions, choices, reference points, payoff/probabilities, scoring direction and pair IDs.
+- [x] **CH02.06** — Write certainty-equivalent lottery pairs with known expected values and a clearly described safe alternative.
+- [x] **CH02.07** — Create symmetric gain/loss framing pairs with economically equivalent payoffs.
+- [x] **CH02.08** — Show drawdown trajectories with equal horizon, uncertainty, costs and no guaranteed recovery.
+- [x] **CH02.09** — Separate ambiguity and time-preference items from the unidimensional score.
+- [x] **CH02.10** — Randomize order and left/right placement while preserving balanced design; record presentation order.
+- [x] **CH02.11** — Support like/dislike, unsure, skip, undo, accessible keyboard and touch gestures.
+- [x] **CH02.12** — Compute prudent fraction p and score = round(1+29p); threshold provisional coverage of 70%.
+- [x] **CH02.13** — Calculate missing-response sensitivity range and flag paired inconsistencies; display no score when coverage is insufficient.
+- [x] **CH02.14** — Build simulated all-prudent/all-risk/mixed/missing/inconsistent response fixtures.
+- [x] **CH02.15** — Implement separate CRRA utility and prospect-theory likelihood exploration; keep score 1–30 independent of lambda and gamma.
 - [ ] **CH02.16** — Pre-register pilot protocol, consent, data minimization, withdrawal and retention; pilot 30–50 volunteers exploratorily.
+  Draft protocol and local fictional consent/withdrawal implemented; external preregistration, reviewed workflow and real volunteers pending.
 - [ ] **CH02.17** — Run cognitive interviews, readability/accessibility tests and timing/fatigue analysis (timing optional and never a direct excitation measure).
+  Keyboard, touch and bilingual UI implemented; actual human interviews and accessibility/fatigue study pending.
 - [ ] **CH02.18** — Analyze item difficulty, discrimination, test-retest reliability, omega and factor dimensionality; report uncertainty.
+  Synthetic analysis harness implemented; human evidence and defensible factor model pending.
 - [ ] **CH02.19** — Fit IRT/logistic model with person-level train/validation/test splits; check differential item functioning by language/order.
+  Synthetic logistic anchor-proxy, disjoint splits and language/order terms implemented; actual calibration and sparse-session linking pending.
 - [ ] **CH02.20** — Compare predictive validity on independent simulated choices; document limitations and seek expert review.
-- [ ] **CH02.21** — Add score report, coverage, separate dimensions, methodology, revision, and consent screens; avoid gamification that rewards taking risk.
+  Synthetic independent-choice test and baseline implemented; prospective human evidence and expert review pending.
+- [x] **CH02.21** — Add score report, coverage, separate dimensions, methodology, revision, and consent screens; avoid gamification that rewards taking risk.
+
+Evidence (2026-11-24): [behavioral protocol](docs/RISKMATCH_BEHAVIORAL.md), [draft pilot](docs/BEHAVIORAL_PILOT.md), notebook chapter 02 cell `5705c45e`, `src/riskmatch/behavioral/discovery.py`, `utility.py`, `pilot_analysis.py`, unit/HTTP/JavaScript tests. The score and likelihoods are experimental; never change financial risk capacity. Human validation, owner visual confirmation and GitHub publication remain pending.
 
 
 
@@ -948,11 +958,11 @@ Notebook: [chapter 27](notebooks/RiskMatch_V3.ipynb#chapitre-27) · Guide chapte
 - [ ] **CH27.06** — Export weights.csv, positions.csv, trades.csv, nav.csv, metrics.json, exposures.csv, scenarios.csv, assumptions.json and audit log.
 - [ ] **CH27.07** — Define API routes for profiles, sessions/cards/responses, risk reports, portfolio runs/candidates/swipes and paper selection.
 - [ ] **CH27.08** — Use schema validation, clear errors, idempotency and authorization by resource for multi-user future architecture.
-- [ ] **CH27.09** — Keep local-only services bound to loopback; verify actual start/stop procedures and port availability.
-  Both services explicitly bind loopback and returned HTTP responses; STOP verification pending INFRA.02.
+- [x] **CH27.09** — Keep local-only services bound to loopback; verify actual start/stop procedures and port availability.
+  Both services explicitly bind loopback and returned HTTP responses; both ports stopped responding after the owner ran STOP.command.
 - [ ] **CH27.10** — Add privacy consent, role separation, data minimization, local storage backups and tested restoration.
-- [ ] **CH27.11** — Verify secrets, licenses and client data stay out of Git/notebooks/logs; configure CI and collaborator permissions.
-  Path-level exclusions and synthetic-only CI implemented. Collaborator permission and independent license review pending.
+- [x] **CH27.11** — Verify local-only data and secret exclusions, synthetic-only CI and solo access policy; require collaborator permissions before collaboration.
+  Git path checks passed, no persisted notebook code outputs, no matches for sampled private-key/token patterns in tracked text. Not a comprehensive secret or license audit; verify dataset and asset distribution rights separately before redistribution. D003 defers collaborator controls until collaboration.
 - [ ] **CH27.12** — Test UI accessibility, touch/keyboard, error/loading/empty states and responsive layouts.
 - [ ] **CH27.13** — Execute unit, optimizer, regression, integration, workflow and reproducibility tests; log evidence per backlog task.
 - [ ] **CH27.14** — Perform independent financial model, psychometric, privacy/security and applicable legal review before any real-service release.

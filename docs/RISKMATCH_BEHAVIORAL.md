@@ -14,11 +14,11 @@ Measure stated and revealed willingness to accept financial risk in simulated si
 | Management preferences | 4 | 8 | stability, income, frequency, style |
 | Consistency repeated pairs | 2 | 4 | within-session reliability |
 
-Proposed prototype counts, not a scientific conclusion. Pilot 30 cards, then adjust based on reliability, fatigue and precision. Independent mandatory financial questionnaire: capital, debt, reserves, horizon, income, withdrawals, experience, tolerable losses and restrictions.
+Implemented in `src/riskmatch/behavioral/discovery.py` as `discovery-v2.0.0`; counts are design choices, not a scientific conclusion. Each session samples exactly 30 from 60 using a stored 32-bit seed and currency. Include both members of three framing pairs and the two original lottery anchors for the two repeated cards. Sample two ambiguity and two time items. Balance swapping in each block; B displays left and A right, randomized canonical options. Separate paired items where possible. Persist seed, version, response locale and order (reproducible from seed); the engine recomputes scoring server-side. Existing fixed-deck saves retain their old version and interpretation. Pilot 30 cards, then adjust based on reliability, fatigue and precision. Independent mandatory financial questionnaire: capital, debt, reserves, horizon, income, withdrawals, experience, tolerable losses and restrictions.
 
 ## Card Mechanics
 
-Like = would accept; dislike = would not; unsure = do not know; skip = nonresponse. Show the safe alternative explicitly in lotteries. Present probabilities/amounts consistently, controlled random order and comparable units; no animations rewarding large gains. No jackpot, confetti, streak, real money, risk reward or artificial urgency. Response time does not measure excitement; optional and consented, only for quality analysis, never initial score.
+In v2, stored `like` selects displayed A (right) and `dislike` selects displayed B (left); neither is inherently prudent because canonical alternatives are swapped. Unsure = do not know; skip = nonresponse. Show the safe alternative explicitly in lotteries. Present probabilities/amounts consistently, controlled random order and comparable units; no animations rewarding large gains. No jackpot, confetti, streak, real money, risk reward or artificial urgency. Response time does not measure excitement; optional and consented only in a future study, never initial score.
 
 ## Example Cards (Unvalidated Prototypes)
 
@@ -57,3 +57,28 @@ Concepts to study: expected utility, prospect theory (Kahneman & Tversky), Holt�
 
 ## Data Contract
 Card: id, version, locale, dimension, alternatives, probability, payoff, score_direction, scoring_weight, pair_id. Response: pseudonymous_session_id, card_id/version, choice, presented_order, optional_consent_latency. Profile: score, score_version, coverage, sensitivity_range, dimensions, inconsistencies, suitability_status. Deterministic, auditable calculation independent of portfolio swipes.
+
+## Chapter 02 implementation and scientific boundaries
+
+| Construct / hypothesis | Observable task | What cannot be inferred |
+|---|---|---|
+| Risk tolerance / expected utility | Known-probability gains or mixed lotteries vs certainty equivalent; varying expected payoff | A single pure risk parameter; choices also depend on payoff size and beliefs |
+| Loss sensitivity / prospect theory | Reference-wealth gain/loss presentations with economically equivalent pair outcomes, plus mixed lotteries | Clinical loss aversion or a unique individual loss-aversion parameter |
+| Framing | Canonical alternatives compared across economically identical wording pairs | Causal framing effect from one person or one pair |
+| Trajectory / recency hypothesis | Equal horizon and costs, explicit intermediate drawdown and two terminal outcomes | Recency bias; future randomized path/order comparisons needed |
+| Anchoring hypothesis | Explicit reference wealth and fixed safe alternatives; future randomized anchor manipulation | No anchoring measurement in current score |
+| Ambiguity | Known vs unknown probability, same payoff | General risk tolerance; excluded from 1–30 score |
+| Time preference | Certain current vs delayed amount | Risk tolerance; excluded from score |
+| Style | Management preference choices | No common ordinal style dimension; descriptive B share only |
+| Confidence | Optional self-report 1–5 after session | No inference from response time or missing answers |
+| Consistency | Compare canonical option across repeated pairs, accounting for swaps | Not a diagnosis or reliability coefficient from two pairs |
+
+Twenty items (8 lottery, 6 framing, 6 trajectory) contribute equal exploratory weight. `p = prudent resolved choices / resolved scored items`, `score = floor(1 + 29p + 0.5)`, minimum coverage 14/20. Both unsure and skip are unscored, counted separately. Sensitivity bounds assign all missing scored answers to risky or prudent alternatives: `round(1+29 k/20)` and `round(1+29(k+20−n)/20)`. This is an extreme-case range, not a confidence interval. Framing pair and repeat discrepancies report counts and denominators, not diagnoses. Canonical B means the lower-risk option only on scored items; ambiguity B means known probability, time B means immediate payment, style B is merely the reference option. Do not infer capacity or suitability. The API has `/api/discovery/session` and `/api/discovery/score`; no database persistence. UI consent, keyboard/touch, undo, optional confidence, withdrawal/reset and bilingual report are implemented. No timing is collected.
+
+### Separate utility exploration (CH02.15)
+
+For normalized terminal wealth w>0, CRRA utility is `(w^(1−γ)−1)/(1−γ)` or log(w) at γ=1. Prospect-style value is `x^α` for gains and `−λ_loss |x|^α` for losses relative to displayed reference wealth; use objective probabilities only, not fitted probability weighting. For known-probability monetary choices, compare expected utility/value and a logistic Bernoulli likelihood `P(A)=sigmoid(τ[U(A)−U(B)])`. Fixed temperature τ=10 and small parameter grids; report best grid and near-best likelihood region only. At least seven resolved items. No person-level parameter calibration, no link to optimizer λ, no change to financial capacity. Implemented in `utility.py`, exercised on synthetic extreme responses.
+
+### Pilot and analysis readiness (CH02.16–20)
+
+See [draft pilot protocol](BEHAVIORAL_PILOT.md). `pilot_analysis.py` implements an entirely artificial complete anchor panel, item choice proportions, corrected item-total correlation, test/retest bootstrap interval, exploratory one-factor omega approximation and correlation eigenvalues. Logistic readiness uses disjoint person-level 60/20/20 splits, anchors not target items, language and presentation-order indicators, language×anchor interaction and independent simulated-choice log-loss versus intercept-only baseline. This is logistic exploration with an anchor proxy, not a calibrated latent IRT model; sparse randomized-session missingness needs a pilot-specific design. No real volunteers, cognitive interviews, pilot reliability or predictive validity results exist. CH02.16–20 remain open for actual study evidence and independent review.

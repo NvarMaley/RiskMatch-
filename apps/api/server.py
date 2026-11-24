@@ -7,6 +7,8 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 from riskmatch.prototype import ClientProfile, cards, score, candidates
+from riskmatch.profiling.mandate import validate_mandate, SCHEMA_VERSION
+from riskmatch.behavioral.discovery import session as discovery_session, score as discovery_score
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -37,7 +39,20 @@ class Handler(SimpleHTTPRequestHandler):
             data = json.loads(self.rfile.read(length))
             if self.path == "/api/score":
                 return self.respond(score(data))
+            if self.path == "/api/discovery/session":
+                return self.respond(discovery_session(data["seed"], data["currency"]))
+            if self.path == "/api/discovery/score":
+                return self.respond(discovery_score(data["seed"], data["currency"], data["answers"],
+                                                     data.get("confidence"), data.get("locales")))
+            if self.path == "/api/mandate/preview":
+                return self.respond(validate_mandate(data))
             if self.path == "/api/candidates":
+                if isinstance(data, dict) and data.get("schema_version") == SCHEMA_VERSION:
+                    report = validate_mandate(data)
+                    if not report["demo_eligible"]:
+                        return self.respond({"error": "demoUnavailable"}, 400)
+                    return self.respond(candidates(ClientProfile(data["capital"], report["horizon_years"],
+                                                                 report["effective_stress_limit"])))
                 return self.respond(candidates(ClientProfile(**data)))
             return self.respond({"error": "Not found"}, 404)
         except (ValueError, TypeError, KeyError) as exc:

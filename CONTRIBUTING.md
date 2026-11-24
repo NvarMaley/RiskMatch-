@@ -1,5 +1,7 @@
 # Contributing
 
+Decision D003: the owner develops alone for now. Direct pushes to main are allowed in solo mode with green CI; before adding any collaborator with write access, configure main protection, mandatory PR review and CI. Public read access is not contributor write access.
+
 1. Choose an available ticket using `python scripts/task_dependencies.py --ready`. Open an issue with ID, goal, assumptions, acceptance criteria, dependencies and owner.
 2. Create branch `feature/infra-01-environment` (pattern `feature/<ticket>-<slug>`) from main. Use commit messages such as `INFRA.01: lock Python environment`. No direct commits to main once protection is configured.
 3. Add tests, formula documentation, units, sources, limitations and seed where applicable.

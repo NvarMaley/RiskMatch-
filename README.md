@@ -9,7 +9,7 @@ A collaborative quantitative US multi-asset research and development platform. R
 ## User Experience
 
 1. Mandate: goals, investable wealth, horizon, cash flows, constraints, base currency and financial loss capacity.
-2. RiskMatch Discovery: swipeable simulated financial choices (like/dislike, unsure and skip).
+2. RiskMatch Discovery: balanced 30-card sessions sampled from a 60-card bilingual bank (choose A/B, unsure, skip and undo), with a separately consented local session.
 3. Profile: exploratory risk-aversion score 1–30 (30 = strong aversion), uncertainty, consistency and separate preferences. The score is neither a diagnosis nor automatic calibration of λ.
 4. Quantitative engine: candidate generation, optimization, simulations and out-of-sample testing.
 5. RiskMatch Explore: swipe among mandate-compatible portfolios with comparable risk, costs, losses and goals.
@@ -22,6 +22,7 @@ The original V2 animated opening and visual/audio identity are retained. The int
 - [Detailed A–Z checklist](CHECKLIST_A_Z.md): chapter tickets, 75 catalog entries, metrics, tests and validation gates.
 - [Quantitative guide](docs/QUANT_GUIDE_A_Z.md): universe, data, 11 objectives, 22 construction methods, 19 strategies, 13 factors and 10 dynamic models.
 - [Behavioral protocol](docs/RISKMATCH_BEHAVIORAL.md): cards, scoring, research and validation.
+- [Draft behavioral pilot](docs/BEHAVIORAL_PILOT.md): study design and synthetic analysis readiness; no human validation yet.
 - [Portfolio matching](docs/PORTFOLIO_MATCHING.md): UX, filtering, ranking and confirmation.
 - [Architecture](docs/ARCHITECTURE.md): components, contracts and flow.
 - [Roadmap](docs/ROADMAP.md): execution order, milestones and acceptance criteria.
@@ -29,6 +30,7 @@ The original V2 animated opening and visual/audio identity are retained. The int
 - [Data and security](docs/DATA_SECURITY.md): licenses, privacy and controls.
 - [Contributing](CONTRIBUTING.md): branches, reviews and conventions.
 - [Experiment registry](docs/EXPERIMENT_REGISTRY.md): run IDs, data versions and validation evidence.
+- [Client mandate](docs/CLIENT_MANDATE.md): Chapter 01 input schema, deterministic funding calculations and constraints.
 
 ## Start on Mac
 
@@ -55,11 +57,11 @@ PYTHONPATH=src .venv/bin/python -m unittest discover -s tests/unit
 
 One notebook with 27 numbered chapters and a navigable table of contents. Six chapters contain initial executable experiments; the remaining chapters are research plans. Validate methods in the notebook, extract into `src/riskmatch/`, test, expose via `apps/api/` and integrate into `apps/web/`. Both use the same Python engine.
 
-The prototype uses a local Python standard-library HTTP server and HTML/CSS/JS. No Node web dependencies are required. React/FastAPI remain planned. The MVP includes 30 unvalidated cards, exploratory score with coverage and sensitivity, six predefined allocations filtered by hypothetical stress, synthetic metrics, shortlist and paper selection. Horizon is collected but does not yet change allocations. Complete mandate, real data, optimizers and costs remain planned.
+The prototype uses a local Python standard-library HTTP server and HTML/CSS/JS. No Node web dependencies are required. React/FastAPI remain planned. The complete structural mandate and experimental 60-card bank (30 per session) are implemented, with exploratory score, coverage, sensitivity and separate dimensions. Six predefined USD allocations remain a stress-only demonstration, with synthetic metrics, shortlist and paper selection. Horizon and financial goals are collected but do not yet change allocation construction. Market feasibility, human behavioral validation, real data, optimizers and costs remain planned.
 
 ## Publish on GitHub
 
-The dedicated RiskMatch V3 repository is [RiskMatch-](https://github.com/NvarMaley/RiskMatch-). The initial commit is already published. Use the existing remote, not a new repository; confirm private visibility and authorized collaborators before adding restricted research material. For subsequent changes, inspect status and exclusions, then follow the branch and PR workflow in CONTRIBUTING.md. During initial infrastructure bootstrap, the owner may publish the reviewed bootstrap changes directly before branch protection is installed:
+The dedicated RiskMatch V3 repository is [RiskMatch-](https://github.com/NvarMaley/RiskMatch-). The initial commit is already published; the owner approved public visibility for now (D002). Never add restricted research material. For subsequent changes, inspect status and exclusions, then follow the branch and PR workflow in CONTRIBUTING.md. During initial infrastructure bootstrap, the owner may publish the reviewed bootstrap changes directly before branch protection is installed:
 
 ```bash
 git add .
