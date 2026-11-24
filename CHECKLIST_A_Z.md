@@ -184,8 +184,8 @@ Notebook: [chapter 03](notebooks/RiskMatch_V3.ipynb#chapitre-03) · Guide chapte
 - [x] Extract code into the shared module.
 - [x] Write automated tests and make them pass.
 - [x] Add the API contract and relevant screen.
-- [ ] Verify local rendering and update documentation.
-- [ ] Create a PR, obtain review and merge.
+- [x] Verify local rendering and update documentation.
+- [x] Publish through the owner-approved solo workflow (D003). Chapter 3 covers the research catalog; G06 and CH04.09 remain prerequisites for using the extensions downstream.
 
 ### 03 — A. Detailed Tasks
 
@@ -197,10 +197,12 @@ Notebook: [chapter 03](notebooks/RiskMatch_V3.ipynb#chapitre-03) · Guide chapte
 - [x] **CH03.03** — Design permanent security ID, ticker history, asset_class, sector, issuer, currency, valid_from/to and multiplier fields.
 - [x] **CH03.04** — Store dated investability, listing/delisting, liquidity, expense ratio, AUM and restrictions.
   Local dated-record schema, validation and receipt reader implemented; no fabricated records. Current holdings snapshots available. Historical eligibility records remain incomplete.
-- [ ] **CH03.05** — Define 300–3000-stock second-stage universe with historical constituents, delistings and historical market cap.
+- [x] **CH03.05** — Define 300–3000-stock second-stage universe with historical constituents, delistings and historical market cap.
+  Independent reconstruction confirmed all 336,000 monthly ranks. Of the ranked records, 190 have a same-day delisting and one lacks positive volume; hold these out of new positions. The 1,297 following-month delistings are tracked separately. 2026 ticker-only observations do not establish a new cohort.
   Research panel preserves every ranked member for the next month, including 191 missing returns. The local 2026 exception register identifies missing dates for all 45 incomplete histories. Terminal proceeds remain open.
   Monthly reconstruction now ranks 1,000 dated candidates in each of 336 months (1998–2025). Apply ranks only after month end; validate historical availability and liquidity before use. Earlier single-date scan located 3,658 preliminary US common-stock PERMNO candidates at 2025-12-31; 1,000 ranked locally, all 1,000 with a daily return observation on that date. An independent full-market 2026 snapshot grid matches 992/1,000 candidate tickers, including 955 with complete sessions. Identifier, license/PIT/G06 checks remain open.
-- [ ] **CH03.06** — Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings.
+- [x] **CH03.06** — Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings.
+  Monthly statements and hashed auction evidence agree on 88,136 positive issue/date observations, including 447 on 2026-10-31. Hold unmatched or conflicting rows. The 138 observed fund reports fail the direct-holdings rule; all other undocumented fund dates remain unverified.
   Issue-level valuation windows and contractual nominal schedules are now materialized. Bills have pre-maturity mark returns. 201,632 nominal accruals and 1,739 indexed payments on 106 TIPS were reconstructed. Realized cash and coupon-bearing total returns require further reconciliation.
   Public auction receipts yielded 3,468 historical Treasury CUSIPs and 444 non-matured candidates at 2026-11-24; five issuer snapshots obtained. All report money-market shares, blocked by the strict direct Treasury-only rule; actual historical holdings, outstanding status/prices and G06 prerequisites pending. FedInvest has 288,594 positive issue-day valuation observations across 694 dates, including all 218 reference month-ends and all 497 recent curve-calendar dates through November 20, 2026. The latest separately verified valuation is November 23. Files were hash-checked; two separate historical archives, 310 monthly debt statements and 322,922 daily ratios for 108 TIPS audited. The quarterly N-PORT position files contain 6,110 positions across 138 identified filings. All 138 report positive exposure to a non-Treasury short-term vehicle. Exclude these observations under the direct-holdings rule. Daily completeness, cash flows and execution-price validation remain open.
 - [x] **CH03.07** — Determine which futures families qualify for the active universe.
@@ -213,7 +215,7 @@ Notebook: [chapter 03](notebooks/RiskMatch_V3.ipynb#chapitre-03) · Guide chapte
   New local source: adjusted daily prices for 12 ETFs through Nov 2026; CRSP monthly AND daily returns for all 22 through 2025, matched by unique PERMNO. No cross-vendor splice; 132,278 ETF security/date keys now matched to daily volume with identical reported returns. The separate public 2026 OHLCV feed has all 22 ETFs on all 225 expected sessions through November 23. The official CRSP refresh, liquidity tests and historical holdings validation remain open. Local extracts and audits under data/processed/universe/ only.
 - [x] **CH03.11** — Expose universe filters, availability chart and exclusion reason in UI.
 
-Evidence: [US Universe](docs/US_UNIVERSE.md), `configs/universe_catalog.json`, `security_master.py`, notebook cell `a8500da9`, synthetic fixture and unit/HTTP/JS tests. This is a candidate catalog and coverage interface, not a validated investable universe. UNIV.01, G02, G06, actual holdings and liquidity remain open. Owner visual confirmation and GitHub publication pending.
+Evidence: [US Universe](docs/US_UNIVERSE.md), `configs/universe_catalog.json`, `security_master.py`, notebook cell `a8500da9`, synthetic fixture and unit/HTTP/JS tests. This is a candidate catalog and coverage interface, not a validated investable universe. UNIV.01, G02, G06, actual holdings and liquidity remain open. Chapter 3 membership checks are reproducible with scripts/verify_universe_membership.py. Chapter 4 source rights and return validation remain open.
 
 
 
@@ -248,13 +250,13 @@ Notebook: [chapter 04](notebooks/RiskMatch_V3.ipynb#chapitre-04) · Guide chapte
   Public downloader bounded, retries transient errors; source-specific limits and permissions documented. Optional authorized EODHD update adapter added; no token configured, no live price update claimed.
 - [ ] **CH04.07** — Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date.
   Immutable public receipt hashes, data_catalog_schema.sql, local extraction audits implemented. Actual normalized tables belong to CH05.
-- [x] **CH04.08** — Separate proprietary data from synthetic test fixtures and Git-tracked configs.
-  Downloads and CRSP extracts kept under ignored data/; no WRDS observations or identifiers committed.
+- [ ] **CH04.08** — Separate proprietary data from synthetic test fixtures and Git-tracked configs.
+  Implementation verified locally; formal completion follows prerequisite CH04.07. Downloads and CRSP extracts kept under ignored data/; no WRDS observations or identifiers committed.
 - [ ] **CH04.09** — Create a source quality report and a data dictionary; confirm required fields before approving each method.
   The local research-window receipt includes a two-source year-end price check for all 27 listed products and an event-status panel. Source revisions, permitted use and historical continuity remain relevant to approval.
   All 11 WRDS files scanned and daily volumes reconciled for 22 ETFs. Public 2026 market bars, issuer NAV, historical N-PORT positions and SEC filing chronology now have independent local audits. See the November follow-up table for dates and verified counts. Rights, identifier continuity and completeness checks remain open. No allocation approved.
 
-Evidence: docs/DATA_ACQUISITION_PLAN.md, configs/source_catalog.json, scripts/audit_crsp_monthly.py, scripts/audit_crsp_daily.py, scripts/fetch_public_universe_data.py, configs/data_catalog_schema.sql. Public downloads: Treasury legacy/v2 auction records and 15 latest-vintage FRED series. Source files remain local. CH04.03–07 and CH04.09 remain open until their prerequisites and validation evidence are satisfied.
+Evidence: docs/DATA_ACQUISITION_PLAN.md, configs/source_catalog.json, scripts/audit_crsp_monthly.py, scripts/audit_crsp_daily.py, scripts/fetch_public_universe_data.py, configs/data_catalog_schema.sql. Public downloads: Treasury legacy/v2 auction records and 15 latest-vintage FRED series. Source files remain local. CH04.03–09 remain open until their prerequisites and validation evidence are satisfied.
 
 
 

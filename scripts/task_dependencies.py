@@ -88,14 +88,16 @@ def graph():
     put("G06","G05","CH16.11","CH17.10","CH18.11","OPT08.10","OPT09.10","OPT12.10","STR01.10","STR12.10","STR16.10")
 
     # Extended data and ledger, including actual futures and bond accounting.
-    ch(3,[5,6,7,8],"G06","CH04.09")
-    ch(5,[7],"CH03.05","CH05.04")
-    ch(21,range(1,13),"CH03.06","CH05.11")
-    ch(22,range(1,12),"CH03.07","CH05.11")
+    # Catalog evidence can close before activation. Every consumer of the extension
+    # retains the original model and data-quality gates.
+    ch(3,[5,6,7,8],"CH03.04")
+    ch(5,[7],"CH03.05","CH05.04","G06","CH04.09")
+    ch(21,range(1,13),"CH03.06","CH05.11","G06","CH04.09")
+    ch(22,range(1,12),"CH03.07","CH05.11","G06","CH04.09")
     ch(6,[10],"CH21.11","CH22.10")
     ch(6,[11],"BT00.03","CH06.10")
     ch(23,[2,3,4,5,6,7,8,9,10,11,12,13,14],"G06","CH05.07","CH21.11","CH22.10","CH06.11")
-    put("EXT.01","CH03.08","CH05.07","CH21.11","CH22.10","CH04.09","UNIV.01")
+    put("EXT.01","G06","CH03.08","CH05.07","CH21.11","CH22.10","CH04.09","UNIV.01")
     put("G07","CH23.14","CH21.12","CH22.11","EXT.01")
 
     # Advanced forecast, factor and strategy research.

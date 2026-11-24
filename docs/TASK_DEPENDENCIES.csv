@@ -120,546 +120,546 @@ topological_order,ticket,direct_prerequisites,description
 119,CH02.07,CH02.06,Create symmetric gain/loss framing pairs with economically equivalent payoffs.
 120,CH27.08,CH27.07,"Use schema validation, clear errors, idempotency and authorization by resource for multi-user future architecture."
 121,CH03.09,CH03.04,Choose benchmark per strategy and cash/risk-free series; distinguish tradable benchmark and non-tradable proxy.
-122,CH04.03,CH04.02,"Verify licensing for local storage, transformation and collaboration before obtaining data; record license and permitted use."
-123,CH01.06,CH01.05,Calculate funding gap and required annual return for a single cash flow; solve dated multi-flow case numerically.
-124,CH12.01,CH01.05; SYS.01,"Define all 11 objectives as typed goals, not interchangeable portfolio names (catalog below)."
-125,CH02.08,CH02.07,"Show drawdown trajectories with equal horizon, uncertainty, costs and no guaranteed recovery."
-126,CH03.10,CH03.09,"Produce coverage matrix by instrument, date, frequency, missingness, liquidity and source; avoid invented pre-launch data."
-127,CH04.04,CH04.03,"Compare CRSP/WRDS and licensed alternatives; assess public SEC EDGAR, Treasury, FRED/ALFRED and factor datasets."
-128,CH01.07,CH01.06,"Separate ability, willingness and required risk; never infer capacity from behavioral choices."
-129,CH12.02,CH12.01,"Separate objective function, eligibility constraint, benchmark, risk measure and preference weight."
-130,OBJ01.01,CH12.01,"Write the mathematical specification: P(W_T<W_0) and E[(W_0-W_T)+] in nominal and real terms. Specify units, convention, horizon and assumptions."
-131,OBJ02.01,CH12.01,"Write the mathematical specification: net income per period, coverage ratio and income volatility. Specify units, convention, horizon and assumptions."
-132,OBJ03.01,CH12.01,"Write the mathematical specification: minimize risk subject to return and liquidity constraints. Specify units, convention, horizon and assumptions."
-133,OBJ04.01,CH12.01,"Write the mathematical specification: mean-variance utility and risk budget. Specify units, convention, horizon and assumptions."
-134,OBJ05.01,CH12.01,"Write the mathematical specification: E[W_T] and real CAGR subject to constraints. Specify units, convention, horizon and assumptions."
-135,OBJ06.01,CH12.01,"Write the mathematical specification: maximize growth subject to volatility/ES/leverage budget. Specify units, convention, horizon and assumptions."
-136,OBJ07.01,CH12.01,"Write the mathematical specification: real return (1+r)/(1+π)-1 and CPI beta. Specify units, convention, horizon and assumptions."
-137,OBJ08.01,CH12.01,"Write the mathematical specification: net excess return over cash and downside. Specify units, convention, horizon and assumptions."
-138,OBJ09.01,CH12.01,"Write the mathematical specification: asset-liability PV gap and DV01/key-rate mismatch. Specify units, convention, horizon and assumptions."
-139,OBJ10.01,CH12.01,"Write the mathematical specification: P(W_T≥G), E[(G-W_T)+], shortfall per goal. Specify units, convention, horizon and assumptions."
-140,OBJ11.01,CH12.01,"Write the mathematical specification: loss below floor, hedge cost and gap stress. Specify units, convention, horizon and assumptions."
-141,CH02.09,CH02.08,Separate ambiguity and time-preference items from the unidimensional score.
-142,CH03.11,CH03.10,"Expose universe filters, availability chart and exclusion reason in UI."
-143,CH04.05,CH04.04,Define provider adapters with explicit as_of and dataset version; mock unavailable provider access.
-144,CH01.08,CH01.07,"Evaluate knowledge and experience separately for equities, Treasuries, futures, leverage and short selling."
-145,CH12.04,CH12.02,"Calculate required return with dated contributions, withdrawals and liabilities; report infeasibility."
-146,CH02.03,CH02.09,"Build the initial 60-card bank: 16 lottery, 12 gain/loss, 12 trajectory, 8 uncertainty/horizon, 8 style, 4 coherence items."
-147,CH04.06,CH04.05,"Document API limits, retry/backoff, caching and missing-data behavior without committing credentials."
-148,CH01.09,CH01.08,"Define limits on losses, stress, volatility, liquidity, asset/issuer/sector weights, turnover and costs."
-149,CH12.07,CH12.04,"Support multiple goals with priorities, nonnegative normalized weights and documented penalty scaling."
-150,CH02.04,CH02.03,Sample the 30-card session with 8/6/6/4/4/2 block quotas and deterministic seed.
-151,CH04.07,CH04.06,"Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date."
-152,CH01.10,CH01.09,"Define ESG exclusions, tax assumptions, FX hedge preference, leverage, gross/net and derivatives permissions."
-153,CH02.10,CH02.04,Randomize order and left/right placement while preserving balanced design; record presentation order.
-154,CH04.08,CH04.07,Separate proprietary data from synthetic test fixtures and Git-tracked configs.
-155,CH01.11,CH01.10,"Represent hard vs soft constraints explicitly; define units, bounds and missing-value policy."
-156,CH02.11,CH02.10,"Support like/dislike, unsure, skip, undo, accessible keyboard and touch gestures."
-157,CH04.09,CH04.08,Create a source quality report and a data dictionary; confirm required fields before approving each method.
-158,CH01.12,CH01.11,Implement feasibility report and conflicting constraint examples; never silently relax constraints.
-159,CH02.12,CH02.11,Compute prudent fraction p and score = round(1+29p); threshold provisional coverage of 70%.
-160,CH05.01,CH03.04; CH04.09,"Define canonical trading calendar, UTC timestamps and local exchange close."
-161,CH01.13,CH01.12,Version ClientProfile and ConstraintSet; save synthetic examples and avoid real client data in notebooks.
-162,CH02.13,CH02.12,Calculate missing-response sensitivity range and flag paired inconsistencies; display no score when coverage is insufficient.
-163,CH05.02,CH05.01,"Implement unique instrument/date keys, types, corporate actions, contract expiration and series version checks."
-164,CH01.14,CH01.13,Review risk-budget and goal changes in a before/after UI; require explicit confirmation.
-165,CH02.14,CH02.13,Build simulated all-prudent/all-risk/mixed/missing/inconsistent response fixtures.
-166,CH05.03,CH05.02,"Ingest raw data without modification, then produce a deterministic cleaned layer."
-167,CH01.15,CH01.14,"Test zero capital, negative capital, inconsistent horizon, withdrawals exceeding resources, unsupported currency and missing consent."
-168,CH02.21,CH02.14,"Add score report, coverage, separate dimensions, methodology, revision, and consent screens; avoid gamification that rewards taking risk."
-169,CH02.15,CH01.07; CH02.14,Implement separate CRRA utility and prospect-theory likelihood exploration; keep score 1–30 independent of lambda and gamma.
-170,CH05.04,CH05.03,"Store observation_date, availability_time, release/vintage and as_of; as-of join only availability_time <= decision time."
-171,G01,CH01.15; CH02.21; CH12.07; G00; OBJ01.01; OBJ02.01; OBJ03.01; OBJ04.01; OBJ05.01; OBJ06.01; OBJ07.01; OBJ08.01; OBJ09.01; OBJ10.01; OBJ11.01,"Minimal mandate, specification of all 11 objectives (OBJ01–OBJ11), versioned discovery and protocol."
-172,CH02.16,CH02.15,"Pre-register pilot protocol, consent, data minimization, withdrawal and retention; pilot 30–50 volunteers exploratorily."
-173,CH05.05,CH05.04,"Detect duplicates, gaps, outliers, stale quotes, invalid prices and missing FX; differentiate closed market from missing data."
-174,UNIV.01,CH03.03; CH05.04; SYS.02,"Apply Treasury-only rule before allocation: classify issuer and type, verify PIT ETF holdings, reject corporate debt, MBS, agencies, municipals, foreign sovereigns, mixed ETFs and missing metadata; test acceptance/rejection."
-175,CH02.17,CH02.16,"Run cognitive interviews, readability/accessibility tests and timing/fatigue analysis (timing optional and never a direct excitation measure)."
-176,CH27.10,CH02.16; G00,"Add privacy consent, role separation, data minimization, local storage backups and tested restoration."
-177,CH05.06,CH05.05,"Handle split factors, dividends, capital changes, mergers, delistings and ticker changes."
-178,CH02.18,CH02.17,"Analyze item difficulty, discrimination, test-retest reliability, omega and factor dimensionality; report uncertainty."
-179,CH05.08,CH05.06,Align cross-market timestamps without leaking later closes; prohibit uncontrolled forward fill.
-180,CH02.19,CH02.18,Fit IRT/logistic model with person-level train/validation/test splits; check differential item functioning by language/order.
-181,CH05.09,CH05.08,"Create feature store with explicit lag, lookback, units and data hash."
-182,CH02.20,CH02.19,Compare predictive validity on independent simulated choices; document limitations and seek expert review.
-183,CH05.10,CH05.09,"Test corrected/revised data, missing assets, late arrivals and deliberately injected future data."
-184,CH05.11,CH05.10,"Record completeness, rejection reason, lineage, freshness and reproducible snapshot in MarketSnapshot."
-185,CH05.12,CH05.11,Display data coverage and freshness in UI; block dependent runs on invalid snapshots.
-186,CH06.01,CH05.11,Calculate simple return P_t/P_(t-1)-1 and log return log(1+r) where valid.
-187,CH06.02,CH06.01,Calculate total return with adjusted split/dividend handling without double counting.
-188,CH06.03,CH06.02,Compare raw-close and total-return series on hand-calculated dividend/split fixtures.
-189,CH06.04,CH06.03,Compound simple returns over horizons; verify product(1+r)-1 equals exp(sum(log(1+r)))-1 when valid.
-190,CH06.05,CH06.04,Calculate arithmetic and geometric average; distinguish forecast mean from realized CAGR.
-191,CH06.06,CH06.05,Compute daily/weekly/monthly aggregation with explicit trading dates and K=252/52/12 conventions.
-192,CH06.07,CH06.06,Compute base-currency return (1+r_local)(1+r_FX)-1; test reciprocal quotation.
-193,CH06.08,CH06.07,Compute nominal to real return (1+r)/(1+inflation)-1; align inflation availability.
-194,CH06.09,CH06.08,Normalize cash accrual using appropriate day count; model excess return vs matching rf series.
-195,CH06.12,CH06.09,"Report units, frequency, missingness, and base currency in output charts."
-196,G02,CH03.11; CH05.12; CH06.12; G01; UNIV.01,"Validated US ETF universe, cash, benchmarks, licenses and PIT/total-return pipeline."
-197,CH07.01,G02,"Compute count, missingness, min/max, quantiles and distribution diagnostics by asset."
-198,CH13.01,G02,"Define cash benchmark, equal weight 1/N, 60/40 and market-cap benchmarks."
-199,CH23.01,G02,"Define initial capital, benchmark, execution timing, decision timestamp, cash-flow convention and rebalance schedule."
-200,OBJ01.02,G02; OBJ01.01,"Prepare dated inputs: initial capital, horizon, inflation, simulated losses. Define schema, provenance, coverage and availability checks."
-201,OBJ02.02,G02; OBJ02.01,"Prepare dated inputs: coupons, distributions, taxes, dated withdrawals. Define schema, provenance, coverage and availability checks."
-202,OBJ03.02,G02; OBJ03.01,"Prepare dated inputs: volatility, ES and stress caps. Define schema, provenance, coverage and availability checks."
-203,OBJ04.02,G02; OBJ04.01,"Prepare dated inputs: expected returns, covariance, risk-return preferences. Define schema, provenance, coverage and availability checks."
-204,OBJ05.02,G02; OBJ05.01,"Prepare dated inputs: horizon, contributions, inflation. Define schema, provenance, coverage and availability checks."
-205,OBJ06.02,G02; OBJ06.01,"Prepare dated inputs: capital and explicitly validated high loss capacity. Define schema, provenance, coverage and availability checks."
-206,OBJ07.02,G02; OBJ07.01,"Prepare dated inputs: CPI vintages, TIPS, real yields. Define schema, provenance, coverage and availability checks."
-207,OBJ08.02,G02; OBJ08.01,"Prepare dated inputs: cash/rf, loss threshold and fees. Define schema, provenance, coverage and availability checks."
-208,OBJ10.02,G02; OBJ10.01,"Prepare dated inputs: multiple dated goals, flows, priorities. Define schema, provenance, coverage and availability checks."
-209,OPT01.02,G02; OPT01.01,"Prepare dated inputs: eligible universe and bounds. Define schema, provenance, coverage and availability checks."
-210,OPT02.02,G02; OPT02.01,"Prepare dated inputs: dated market caps and membership. Define schema, provenance, coverage and availability checks."
-211,OPT03.02,G02; OPT03.01,"Prepare dated inputs: PSD Σ and limits. Define schema, provenance, coverage and availability checks."
-212,OPT04.02,G02; OPT04.01,"Prepare dated inputs: μ, Σ, rf. Define schema, provenance, coverage and availability checks."
-213,OPT05.02,G02; OPT05.01,"Prepare dated inputs: μ, Σ, separately calibrated λ. Define schema, provenance, coverage and availability checks."
-214,OPT06.02,G02; OPT06.01,"Prepare dated inputs: μ, Σ, target grid. Define schema, provenance, coverage and availability checks."
-215,OPT07.02,G02; OPT07.01,"Prepare dated inputs: market weights, δ, Σ, τ, P,q,Ω. Define schema, provenance, coverage and availability checks."
-216,OPT08.02,G02; OPT08.01,"Prepare dated inputs: Σ, budgets b. Define schema, provenance, coverage and availability checks."
-217,OPT09.02,G02; OPT09.01,"Prepare dated inputs: Σ, correlation, linkage. Define schema, provenance, coverage and availability checks."
-218,OPT10.02,G02; OPT10.01,"Prepare dated inputs: clusters, Σ, budgets. Define schema, provenance, coverage and availability checks."
-219,OPT11.02,G02; OPT11.01,"Prepare dated inputs: Σ, individual σ. Define schema, provenance, coverage and availability checks."
-220,OPT12.02,G02; OPT12.01,"Prepare dated inputs: scenarios, probabilities, α. Define schema, provenance, coverage and availability checks."
-221,OPT13.02,G02; OPT13.01,"Prepare dated inputs: scenarios, MAR. Define schema, provenance, coverage and availability checks."
-222,OPT14.02,G02; OPT14.01,"Prepare dated inputs: scenarios, threshold T. Define schema, provenance, coverage and availability checks."
-223,OPT15.02,G02; OPT15.01,"Prepare dated inputs: chronological paths. Define schema, provenance, coverage and availability checks."
-224,OPT16.02,G02; OPT16.01,"Prepare dated inputs: μ/Σ uncertainty sets. Define schema, provenance, coverage and availability checks."
-225,OPT17.02,G02; OPT17.01,"Prepare dated inputs: series, block bootstrap, seed. Define schema, provenance, coverage and availability checks."
-226,OPT18.02,G02; OPT18.01,"Prepare dated inputs: empirical distribution, radius. Define schema, provenance, coverage and availability checks."
-227,OPT19.02,G02; OPT19.01,"Prepare dated inputs: return distribution, wealth limits. Define schema, provenance, coverage and availability checks."
-228,OPT20.02,G02; OPT20.01,"Prepare dated inputs: positive weights, risk/return limits. Define schema, provenance, coverage and availability checks."
-229,OPT21.02,G02; OPT21.01,"Prepare dated inputs: Σ and benchmark b. Define schema, provenance, coverage and availability checks."
-230,OPT22.02,G02; OPT22.01,"Prepare dated inputs: active α, Σ, benchmark b. Define schema, provenance, coverage and availability checks."
-231,STR01.02,G02; STR01.01,"Prepare dated inputs: historical membership and index weights. Define schema, provenance, coverage and availability checks."
-232,STR12.02,G02; STR12.01,"Prepare dated inputs: lagged returns. Define schema, provenance, coverage and availability checks."
-233,STR13.02,G02; STR13.01,"Prepare dated inputs: historical price/spread. Define schema, provenance, coverage and availability checks."
-234,STR14.02,G02; STR14.01,"Prepare dated inputs: strategic allocation, signals. Define schema, provenance, coverage and availability checks."
-235,STR16.02,G02; STR16.01,"Prepare dated inputs: forecast σ, costs, exposure. Define schema, provenance, coverage and availability checks."
-236,CH07.02,CH07.01,"Compute arithmetic/geometric means, median, variance, sample standard deviation, annualized volatility and downside deviation."
-237,CH13.05,CH13.01,Use ETF benchmark or historically valid constituents for market-cap weighting.
-238,OBJ03.03,CH12.02; OBJ03.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-239,OBJ04.03,CH12.02; OBJ04.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-240,OBJ06.03,CH12.02; OBJ06.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-241,OBJ07.03,CH06.08; OBJ07.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-242,OBJ08.03,CH06.09; OBJ08.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-243,CH07.03,CH07.02,"Compute skewness, kurtosis, histogram, empirical CDF and QQ plots; compare heavy tails with normal reference."
-244,CH13.06,CH13.05,Define long-only and unlevered first baseline; enforce sum weights=1.
-245,OPT02.03,CH13.05; OPT02.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-246,OBJ03.04,OBJ03.03,Create the specific test: stress exceeding the cap. Document expected result and tolerance.
-247,OBJ04.04,OBJ04.03,Create the specific test: two assets with opposing risk characteristics. Document expected result and tolerance.
-248,OBJ06.04,OBJ06.03,Create the specific test: financial capacity conflicting with preferences. Document expected result and tolerance.
-249,OBJ07.04,OBJ07.03,Create the specific test: unexpected inflation. Document expected result and tolerance.
-250,OBJ08.04,OBJ08.03,Create the specific test: strong cash return and negative market. Document expected result and tolerance.
-251,CH07.04,CH07.03,"Compute auto-correlation, PACF, Ljung-Box and stationarity diagnostics; state assumptions and limitations."
-252,CH13.02,CH13.06,Calculate weights and monthly/quarterly rebalancing with drift between rebalance dates.
-253,OPT02.04,OPT02.03,"Create the specific test: zero cap, delisting, no survivorship bias. Document expected result and tolerance."
-254,OBJ03.05,OBJ03.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-255,OBJ04.05,OBJ04.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-256,OBJ06.05,OBJ06.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-257,OBJ07.05,OBJ07.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-258,OBJ08.05,OBJ08.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-259,CH07.05,CH07.04,Compute covariance and Pearson/Spearman correlations; handle missing-data alignment and constant series explicitly.
-260,OPT01.03,CH13.02; OPT01.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-261,OPT02.05,OPT02.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-262,CH07.06,CH07.05,"Compute rolling means, volatility, beta and correlations with trailing windows; test no future data."
-263,OPT01.04,OPT01.03,Create the specific test: N=1 and incompatible concentration cap. Document expected result and tolerance.
-264,CH07.07,CH07.06,Compute cross-sectional ranks and standardized features with winsorization fit only on training periods.
-265,CH08.01,CH05.09; CH07.06,"Define forecast target (total/excess return), horizon and timestamped lagged features."
-266,OPT01.05,OPT01.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-267,CH07.08,CH07.07,"Test analytical two-asset covariance and portfolio variance; verify symmetry, PSD, units and sample denominator."
-268,CH08.04,CH08.01,Split chronological train/validation/test; purge overlapping labels and embargo where necessary.
-269,CH07.09,CH07.08,"Implement summaries and compare assets, frequency and selected dates in UI."
-270,CH09.01,CH07.08,Estimate sample covariance and annualize consistently with return mean.
-271,CH11.01,CH07.08,Define loss L=-r and horizon/confidence conventions; document sign and positive currency loss.
-272,CH08.02,CH08.04,Set naive historical-mean and cash/zero-alpha baselines; estimate rolling means and EWMA.
-273,CH09.02,CH09.01,Fit EWMA variance and covariance; test decay parameter and initialization.
-274,CH11.02,CH11.01,"Implement historical, Gaussian parametric and simulated VaR at 95%/99%."
-275,CH09.08,CH09.02,Apply numerical regularization only with traceable diagnostics and explicit tolerances.
-276,CH11.03,CH11.02,Implement ES with correct upper-tail weighting for discrete observations and ties.
-277,CH14.01,CH02.15; CH08.02; CH09.08; CH12.02,"Define w, μ, Σ, rf, lambda, funded vs derivative exposure and constraints units."
-278,CH11.05,CH11.03,"Compute downside deviation, target shortfall, maximum drawdown, drawdown duration, recovery time and underwater chart."
-279,CH14.02,CH14.01,Implement minimum variance quadratic program and unconstrained analytic reference for invertible covariance.
-280,CH11.09,CH11.05,"Test zero risk, constant return, extreme loss, missing series, small sample and tail quantile ties."
-281,CH14.03,CH14.02,Implement maximum utility μ'w-lambda*w'Σw/2 with explicit lambda calibration and sensitivity.
-282,OPT03.03,CH14.02; OPT03.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-283,CH11.10,CH11.09,"Expose loss distribution, risk limits, confidence/horizon and warnings; never display VaR as guaranteed maximum."
-284,CH14.04,CH14.03,Compute efficient frontier by target return constrained quadratic programs; mark infeasible targets.
-285,OPT05.03,CH14.03; OPT05.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-286,OPT03.04,OPT03.03,Create the specific test: analytical two-asset case and singular covariance. Document expected result and tolerance.
-287,CH14.05,CH14.04,Implement max Sharpe search/reformulation; handle zero-risk and nonpositive excess-return cases.
-288,OPT06.03,CH14.04; OPT06.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-289,OPT05.04,OPT05.03,Create the specific test: small/large λ and active constraints. Document expected result and tolerance.
-290,OPT03.05,OPT03.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-291,CH14.06,CH14.05,"Implement constraints on weights, groups, issuer, leverage, gross/net, turnover, risk factors, liquidity and target return."
-292,OPT04.03,CH14.05; OPT04.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-293,OPT06.04,OPT06.03,Create the specific test: monotone frontier and infeasible target. Document expected result and tolerance.
-294,OPT05.05,OPT05.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-295,CH14.07,CH14.06,"Run pre-solve feasibility and capture solver status, tolerance, objective, residuals, warm starts and active constraints."
-296,OPT04.04,OPT04.03,Create the specific test: negative excess return and zero variance. Document expected result and tolerance.
-297,OPT06.05,OPT06.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-298,CH14.08,CH14.07,"Validate analytic two-asset case, covariance singularity, negative expected excess return and infeasible mandate."
-299,OPT04.05,OPT04.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-300,CH14.10,CH14.08,"Plot frontier, weights and marginal risk; export model configuration and solver diagnostics."
-301,G03,CH07.09; CH09.08; CH11.10; CH13.02; CH14.10,"Statistics, covariance and baselines; minimum variance, maximum utility, maximum Sharpe and frontier with analytical tests."
-302,BT00.01,CH23.01; G03,"Define minimal ETF/cash ledger: trades, positions, fees, dividends/total return without double counting, NAV and flows."
-303,BT00.02,BT00.01,"Implement delayed execution, commissions/spread, positions and NAV for cash, 1/N and 60/40 only."
-304,BT00.03,BT00.02,"Reconcile an analytical two-asset, two-period case without fees, then with fees and contributions."
-305,BT00.04,BT00.03,"Freeze chronological splits, calendar and common benchmark; test invariance to future data."
-306,CH13.03,BT00.03,"Implement initial trade costs, subsequent turnover and end-of-period valuation; use executable timestamps."
-307,BT00.05,BT00.04,"Calculate initial net metrics, compare with benchmarks and export OOS report."
-308,CH13.04,CH13.03,"Compare fixed weights and buy-and-hold separately; compare same dates, currency and rf."
-309,BT00.06,BT00.05,"Simulate ETF stress and simple deterministic paths, calculate shortfall/success probability and validate baseline engine."
-310,CH13.07,CH13.04,"Reconcile hand-calculated two-period NAV with weights, flows, fees and returns."
-311,CH13.08,CH13.07,"Create baseline benchmark report with gross/net CAGR, vol, drawdown, Sharpe and stress."
-312,CH13.09,CH13.08,Expose baseline cards and benchmark comparison in the app before advanced models.
-313,G04,BT00.06; CH13.09,"Reconciled baseline ETF backtest, ledger, costs, leakage-free walk-forward, initial metrics and simple stress/Monte Carlo."
-314,MVP.01,G01; G04,"Produce baseline candidates with GoalSpec, constraints, net results and provenance; exclude incompatibilities."
-315,CH14.09,CH14.08; G04,"Compare no-short vs permitted short, concentration caps and turnover penalty on uniform OOS windows."
-316,CH09.03,CH09.08; G04,"Fit GARCH(1,1), EGARCH and GJR-GARCH; check convergence, persistence, residual autocorrelation and asymmetry."
-317,CH11.04,CH11.03; G04,Implement expected shortfall risk contributions and scenario-based marginal risk where differentiable.
-318,CH16.01,CH09.08; G04,Calculate portfolio risk and marginal/total risk contributions; verify sum RC=σp.
-319,CH17.01,CH11.03; G04,"Specify thresholds, loss signs, confidence level, scenario probabilities and path horizon."
-320,CH15.01,CH09.08; G04,Derive equilibrium prior π=δΣw_market with consistent total vs excess returns.
-321,CH19.01,G04; SYS.02,"Build a strategy registry separating signal, estimate, optimizer, execution policy and benchmark."
-322,OBJ03.06,G04; OBJ03.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-323,OBJ04.06,G04; OBJ04.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-324,OBJ06.06,G04; OBJ06.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-325,OBJ07.06,G04; OBJ07.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-326,OBJ08.06,G04; OBJ08.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-327,OPT01.06,G04; OPT01.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-328,OPT02.06,G04; OPT02.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-329,OPT03.06,G04; OPT03.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-330,OPT04.06,G04; OPT04.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-331,OPT05.06,G04; OPT05.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-332,OPT06.06,G04; OPT06.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-333,MET01.02,BT00.03; G04; MET01.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-334,MET02.02,BT00.03; G04; MET02.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-335,MET05.02,CH07.02; G04; MET05.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-336,MET06.02,BT00.03; G04; MET06.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-337,MET07.02,CH11.05; G04; MET07.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-338,MET08.02,CH11.05; G04; MET08.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-339,MET10.02,CH11.05; G04; MET10.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-340,MET11.02,CH11.02; G04; MET11.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-341,MET12.02,CH11.03; G04; MET12.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-342,MET16.02,CH14.08; G04; MET16.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-343,MET20.02,CH03.10; G04; MET20.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-344,MVP.02,MVP.01,"Present portfolio cards with consistent metrics, independent exploratory score and filter explanations."
-345,CH09.04,CH09.03,Compare historical volatility with conditional forecasts and simple rolling baselines.
-346,CH11.06,CH11.04,Fit EVT peaks-over-threshold with defensible threshold sensitivity; estimate tail uncertainty.
-347,CH16.02,CH16.01,Specify target risk budgets and denominator conventions; distinguish negative contributions for short positions.
-348,MET17.02,CH16.01; G04; MET17.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-349,CH17.02,CH17.01,Implement CVaR via auxiliary z and nonnegative shortfall variables; validate tail loss case by hand.
-350,CH15.02,CH15.01,Estimate delta from declared market/risk-free assumptions; record sensitivity and avoid implicit psychometric mapping.
-351,CH19.07,CH19.01,"Specify each strategy's input data, rebalance frequency, data publication delays, signal exit rules and transaction-cost assumptions."
-352,CH20.07,CH19.01; G04,Implement cross-sectional and time-series momentum with declared lag/lookback; test reversal and crowding.
-353,OBJ03.07,OBJ03.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-354,OBJ04.07,OBJ04.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-355,OBJ06.07,OBJ06.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-356,OBJ07.07,OBJ07.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-357,OBJ08.07,OBJ08.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-358,OPT01.07,OPT01.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-359,OPT02.07,OPT02.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-360,OPT03.07,OPT03.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-361,OPT04.07,OPT04.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-362,OPT05.07,OPT05.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-363,OPT06.07,OPT06.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-364,MET01.03,MET01.02,Test: sequence +10% then -10% = -1%; avoid misleading numbers with insufficient data.
-365,MET02.03,MET02.02,Test: two-year horizon with doubled NAV; avoid misleading numbers with insufficient data.
-366,MET05.03,MET05.02,Test: constant series and explicit K; avoid misleading numbers with insufficient data.
-367,MET06.03,MET06.02,Test: constant excess return and zero sd; avoid misleading numbers with insufficient data.
-368,MET07.03,MET07.02,Test: no losses below MAR; avoid misleading numbers with insufficient data.
-369,MET08.03,MET08.02,Test: zero MDD; avoid misleading numbers with insufficient data.
-370,MET10.03,MET10.02,Test: new peak and continuous loss; avoid misleading numbers with insufficient data.
-371,MET11.03,MET11.02,Test: quantile ordering; avoid misleading numbers with insufficient data.
-372,MET12.03,MET12.02,Test: discrete tail and small sample; avoid misleading numbers with insufficient data.
-373,MET16.03,MET16.02,Test: 1/N and single-asset portfolio; avoid misleading numbers with insufficient data.
-374,MET20.03,MET20.02,Test: zero ADV or stressed ADV; avoid misleading numbers with insufficient data.
-375,MVP.03,MVP.02,"Test like/dislike/skip/undo, shortlist, benchmark comparison and paper confirmation."
-376,CH09.05,CH09.04,Fit Ledoit-Wolf and OAS shrinkage; compare out-of-sample realized risk and condition number.
-377,CH11.07,CH11.06,Compare normal/Student-t and empirical/copula dependence models; evaluate tail dependence.
-378,CH16.03,CH16.02,Solve risk parity with long-only baseline and budget feasibility checks.
-379,MET17.03,MET17.02,Test: sum = σp; avoid misleading numbers with insufficient data.
-380,CH17.03,CH17.02,Implement Sortino using downside deviation relative to MAR; handle zero denominator without inventing infinity ranking.
-381,OPT12.03,CH17.02; OPT12.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-382,CH15.03,CH15.02,Build absolute/relative views P and q; define view horizon and uncertainty Ω.
-383,CH19.02,CH19.07,"Define passive ETF replication; use historical index membership for individual-stock sampling only after EXT.01, with tracking constraints."
-384,CH20.08,CH20.07,"Implement mean-reversion z-score, entry/exit and loss limits; test nonstationarity."
-385,STR12.03,CH20.07; STR12.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-386,OBJ03.08,OBJ03.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-387,OBJ04.08,OBJ04.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-388,OBJ06.08,OBJ06.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-389,OBJ07.08,OBJ07.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-390,OBJ08.08,OBJ08.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-391,OPT01.08,OPT01.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-392,OPT02.08,OPT02.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-393,OPT03.08,OPT03.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-394,OPT04.08,OPT04.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-395,OPT05.08,OPT05.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-396,OPT06.08,OPT06.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-397,MET01.04,MET01.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-398,MET02.04,MET02.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-399,MET05.04,MET05.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-400,MET06.04,MET06.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-401,MET07.04,MET07.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-402,MET08.04,MET08.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-403,MET10.04,MET10.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-404,MET11.04,MET11.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-405,MET12.04,MET12.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-406,MET16.04,MET16.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-407,MET20.04,MET20.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-408,MVP.04,MVP.03,Validate the local Discovery → mandate → candidates → Explore → paper choice journey; preserve no-match option.
-409,CH09.07,CH09.05,Fit DCC-GARCH conditional correlation where appropriate; test correlation/covariance PSD.
-410,CH18.01,CH09.05; G04,Define mean/covariance uncertainty sets and robust utility objective; calibrate using training data.
-411,CH11.08,CH11.07,Backtest VaR exception rates and independence; compare ES stress diagnostics with finite sample caveats.
-412,CH16.04,CH16.03,Compute correlation distance sqrt((1-rho)/2); validate distance and PSD.
-413,OPT08.03,CH16.03; OPT08.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-414,MET17.04,MET17.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-415,CH17.04,CH17.03,Implement Omega ratio at threshold; define handling when expected downside is zero.
-416,OPT13.03,CH17.03; OPT13.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-417,OPT12.04,OPT12.03,Create the specific test: discrete tail and analytical LP case. Document expected result and tolerance.
-418,CH15.04,CH15.03,"Validate dimensions, prior covariance PSD, tau, confidence and correlated views."
-419,STR01.03,CH19.02; STR01.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-420,CH20.09,CH20.08,Implement tactical allocation as bounded deviation from strategic weights.
-421,STR13.03,CH20.08; STR13.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-422,STR12.04,STR12.03,"Create the specific test: reversal, no look-ahead. Document expected result and tolerance."
-423,OBJ03.09,OBJ03.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-424,OBJ04.09,OBJ04.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-425,OBJ06.09,OBJ06.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-426,OBJ07.09,OBJ07.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-427,OBJ08.09,OBJ08.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-428,OPT01.09,OPT01.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-429,OPT02.09,OPT02.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-430,OPT03.09,OPT03.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-431,OPT04.09,OPT04.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-432,OPT05.09,OPT05.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-433,OPT06.09,OPT06.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-434,MET01.05,MET01.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-435,MET02.05,MET02.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-436,MET05.05,MET05.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-437,MET06.05,MET06.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-438,MET07.05,MET07.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-439,MET08.05,MET08.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-440,MET10.05,MET10.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-441,MET11.05,MET11.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-442,MET12.05,MET12.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-443,MET16.05,MET16.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-444,MET20.05,MET20.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-445,G05,MVP.04,"End-to-end RiskMatch prototype with baselines only; filter before swipe, comparison, paper confirmation."
-446,CH09.09,CH09.07,"Evaluate QLIKE, variance forecast errors, realized risk and portfolio stability in chronological validation."
-447,CH18.02,CH18.01,Implement robust optimization on bounded scenarios and document worst-case assumptions.
-448,CH16.05,CH16.04,Build hierarchical clustering/dendrogram with explicit linkage and leaf ordering.
-449,OPT08.04,OPT08.03,"Create the specific test: equal variance, perfect correlation and sum of RC. Document expected result and tolerance."
-450,MET17.05,MET17.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-451,CH17.05,CH17.04,Implement min drawdown or CDaR with explicit path dependence and solver limitations.
-452,OPT14.03,CH17.04; OPT14.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-453,MET09.02,CH17.04; G04; MET09.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-454,OPT13.04,OPT13.03,Create the specific test: no downside and negative threshold. Document expected result and tolerance.
-455,OPT12.05,OPT12.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-456,CH15.05,CH15.04,Compute posterior via stable linear solves; handle singular matrices and conflicting views explicitly.
-457,STR01.04,STR01.03,Create the specific test: index reconstitution and fees. Document expected result and tolerance.
-458,CH20.10,CH20.09,Implement volatility targeting with capped exposure and liquidity/cost controls.
-459,STR14.03,CH20.09; STR14.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-460,STR13.04,STR13.03,Create the specific test: nonstationary spread. Document expected result and tolerance.
-461,STR12.05,STR12.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-462,OBJ03.10,OBJ03.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-463,OBJ04.10,OBJ04.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-464,OBJ06.10,OBJ06.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-465,OBJ07.10,OBJ07.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-466,OBJ08.10,OBJ08.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-467,OPT01.10,OPT01.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-468,OPT02.10,OPT02.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-469,OPT03.10,OPT03.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-470,OPT04.10,OPT04.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-471,OPT05.10,OPT05.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-472,OPT06.10,OPT06.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-473,CH09.10,CH09.09,"Build rolling volatility/correlation charts, covariance heatmap and confidence warnings."
-474,CH18.03,CH18.02,"Implement block bootstrap resampling, optimize each draw and aggregate feasible weights."
-475,OPT16.03,CH18.02; OPT16.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-476,CH16.06,CH16.05,Implement HRP recursive bisection inverse-variance allocation and cluster weights.
-477,OPT08.05,OPT08.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-478,CH17.06,CH17.05,Implement tracking-error minimum against weights/returns from a valid benchmark.
-479,OPT15.03,CH17.05; OPT15.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-480,OPT14.04,OPT14.03,Create the specific test: zero downside and equality at threshold. Document expected result and tolerance.
-481,MET09.03,MET09.02,Test: threshold and zero denominator; avoid misleading numbers with insufficient data.
-482,OPT13.05,OPT13.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-483,OPT12.06,G04; OPT12.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-484,CH15.06,CH15.05,"Verify no-view prior, weak/strong confidence, opposing views and identical-view redundancy."
-485,STR01.05,STR01.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-486,STR16.03,CH20.10; STR16.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-487,STR14.04,STR14.03,Create the specific test: zero signal recovers strategic allocation. Document expected result and tolerance.
-488,STR13.05,STR13.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-489,STR12.06,G04; STR12.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-490,CH18.04,CH18.03,Implement distributionally robust formulation with declared ambiguity radius; evaluate computational cost.
-491,OPT17.03,CH18.03; OPT17.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-492,OPT16.04,OPT16.03,Create the specific test: singleton set recovers reference. Document expected result and tolerance.
-493,CH16.07,CH16.06,Implement HERC cluster risk budgets and allocation; compare linkage/cluster count sensitivity.
-494,OPT09.03,CH16.06; OPT09.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-495,OPT08.06,G04; OPT08.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-496,CH17.07,CH17.06,Implement max information ratio with active return and risk; validate benchmark identity/zero TE.
-497,OPT21.03,CH17.06; OPT21.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-498,MET14.02,CH17.06; G04; MET14.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-499,OPT15.04,OPT15.03,"Create the specific test: same terminal return, different drawdowns. Document expected result and tolerance."
-500,OPT14.05,OPT14.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-501,MET09.04,MET09.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-502,OPT13.06,G04; OPT13.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-503,OPT12.07,OPT12.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-504,STR01.06,G04; STR01.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-505,STR16.04,STR16.03,Create the specific test: zero σ and volatility shock. Document expected result and tolerance.
-506,STR14.05,STR14.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-507,STR13.06,G04; STR13.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-508,STR12.07,STR12.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-509,CH18.05,CH18.04,Implement log-growth Kelly and fractional Kelly; ensure admissible positive terminal wealth in all modeled scenarios.
-510,OPT18.03,CH18.04; OPT18.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-511,OPT17.04,OPT17.03,Create the specific test: reproducible seed and feasible aggregate weights. Document expected result and tolerance.
-512,OPT16.05,OPT16.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-513,CH16.08,CH16.07,Implement maximum diversification ratio w'σ/σp and handle zero volatility.
-514,OPT10.03,CH16.07; OPT10.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-515,OPT09.04,OPT09.03,Create the specific test: duplicate assets and linkage change. Document expected result and tolerance.
-516,OPT08.07,OPT08.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-517,CH17.08,CH17.07,Compare historical/scenario sample size and stress sensitivity; avoid overfitting the worst observed path.
-518,OPT22.03,CH17.07; OPT22.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-519,MET15.02,CH17.07; G04; MET15.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-520,OPT21.04,OPT21.03,Create the specific test: w=b gives TE=0 and incompatible benchmark. Document expected result and tolerance.
-521,MET14.03,MET14.02,Test: identical benchmark; avoid misleading numbers with insufficient data.
-522,OPT15.05,OPT15.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-523,OPT14.06,G04; OPT14.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-524,MET09.05,MET09.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-525,OPT13.07,OPT13.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-526,OPT12.08,OPT12.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-527,STR01.07,STR01.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-528,STR16.05,STR16.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-529,STR14.06,G04; STR14.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-530,STR13.07,STR13.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-531,STR12.08,STR12.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-532,CH18.06,CH18.05,Implement entropy objective (-sum w log w) for positive funded weights; compare equal-weight limiting case.
-533,OPT19.03,CH18.05; OPT19.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-534,OPT18.04,OPT18.03,Create the specific test: zero radius and radius sensitivity. Document expected result and tolerance.
-535,OPT17.05,OPT17.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-536,OPT16.06,G04; OPT16.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-537,CH16.09,CH16.08,"Test equal variance/uncorrelated, perfectly correlated, duplicate assets and unstable clusters."
-538,OPT11.03,CH16.08; OPT11.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-539,OPT10.04,OPT10.03,Create the specific test: single cluster and cluster-count stability. Document expected result and tolerance.
-540,OPT09.05,OPT09.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-541,OPT08.08,OPT08.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-542,CH17.09,CH17.08,"Add downside frontier, benchmark-active exposure, scenario and drawdown charts."
-543,OPT22.04,OPT22.03,Create the specific test: w=b gives zero denominator. Document expected result and tolerance.
-544,MET15.03,MET15.02,Test: zero TE; avoid misleading numbers with insufficient data.
-545,OPT21.05,OPT21.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-546,MET14.04,MET14.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-547,OPT15.06,G04; OPT15.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-548,OPT14.07,OPT14.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-549,OPT13.08,OPT13.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-550,OPT12.09,OPT12.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-551,STR01.08,STR01.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-552,STR16.06,G04; STR16.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-553,STR14.07,STR14.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-554,STR13.08,STR13.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-555,STR12.09,STR12.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-556,CH18.07,CH18.06,Apply regularization and transaction cost/turnover penalties to comparable objectives.
-557,OPT20.03,CH18.06; OPT20.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
-558,OPT19.04,OPT19.03,Create the specific test: return near -100% and ruin. Document expected result and tolerance.
-559,OPT18.05,OPT18.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-560,OPT17.06,G04; OPT17.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-561,OPT16.07,OPT16.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-562,CH16.10,CH16.09,"Compare allocations, realized risk contribution, turnover and crisis robustness OOS."
-563,OPT11.04,OPT11.03,Create the specific test: identical correlation and zero volatility. Document expected result and tolerance.
-564,OPT10.05,OPT10.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-565,OPT09.06,G04; OPT09.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-566,OPT08.09,OPT08.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-567,CH17.10,CH17.09,Use identical constraints and net OOS backtest for each downside method.
-568,OPT22.05,OPT22.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-569,MET15.04,MET15.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-570,OPT21.06,G04; OPT21.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-571,MET14.05,MET14.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-572,OPT15.07,OPT15.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-573,OPT14.08,OPT14.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-574,OPT13.09,OPT13.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-575,OPT12.10,OPT12.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-576,STR01.09,STR01.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-577,STR16.07,STR16.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-578,STR14.08,STR14.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-579,STR13.09,STR13.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-580,STR12.10,STR12.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-581,CH18.08,CH18.07,"Record solver status, runtime, seed, convergence, residual and sensitivity for every method."
-582,OPT20.04,OPT20.03,Create the specific test: unconstrained solution recovers 1/N and 0log0. Document expected result and tolerance.
-583,OPT19.05,OPT19.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-584,OPT18.06,G04; OPT18.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-585,OPT17.07,OPT17.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-586,OPT16.08,OPT16.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-587,CH16.11,CH16.10,"Show risk contributions, dendrogram, cluster weights and diversification diagnostics."
-588,OPT11.05,OPT11.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-589,OPT10.06,G04; OPT10.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-590,OPT09.07,OPT09.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-591,OPT08.10,OPT08.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-592,OPT22.06,G04; OPT22.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-593,MET15.05,MET15.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-594,OPT21.07,OPT21.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-595,OPT15.08,OPT15.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-596,OPT14.09,OPT14.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-597,OPT13.10,OPT13.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-598,STR01.10,STR01.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-599,STR16.08,STR16.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-600,STR14.09,STR14.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-601,STR13.10,STR13.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-602,CH18.09,CH18.08,"Test uncertainty radius zero, correlated assets, return near -100%, zero weights and infeasible solutions."
-603,OPT20.05,OPT20.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
-604,OPT19.06,G04; OPT19.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-605,OPT18.07,OPT18.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-606,OPT17.08,OPT17.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-607,OPT16.09,OPT16.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-608,OPT11.06,G04; OPT11.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-609,OPT10.07,OPT10.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-610,OPT09.08,OPT09.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-611,OPT22.07,OPT22.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-612,OPT21.08,OPT21.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-613,OPT15.09,OPT15.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-614,OPT14.10,OPT14.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-615,STR16.09,STR16.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-616,STR14.10,STR14.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-617,CH18.10,CH18.09,"Compare robustness, concentration, OOS stress and net performance against simple baselines."
-618,OPT20.06,G04; OPT20.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
-619,OPT19.07,OPT19.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-620,OPT18.08,OPT18.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-621,OPT17.09,OPT17.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-622,OPT16.10,OPT16.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-623,OPT11.07,OPT11.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-624,OPT10.08,OPT10.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-625,OPT09.09,OPT09.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-626,OPT22.08,OPT22.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-627,OPT21.09,OPT21.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-628,OPT15.10,OPT15.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-629,STR16.10,STR16.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-630,CH18.11,CH18.10,"Expose model parameters, uncertainty tradeoffs and warnings in app configurator."
-631,MET21.02,CH18.10; G04; MET21.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
-632,OPT20.07,OPT20.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
-633,OPT19.08,OPT19.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-634,OPT18.09,OPT18.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-635,OPT17.10,OPT17.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-636,OPT11.08,OPT11.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-637,OPT10.09,OPT10.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-638,OPT09.10,OPT09.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-639,OPT22.09,OPT22.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-640,OPT21.10,OPT21.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-641,MET21.03,MET21.02,Test: window and cost variation; avoid misleading numbers with insufficient data.
-642,OPT20.08,OPT20.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
-643,OPT19.09,OPT19.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-644,OPT18.10,OPT18.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-645,OPT11.09,OPT11.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-646,OPT10.10,OPT10.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-647,G06,CH16.11; CH17.10; CH18.11; G05; OPT08.10; OPT09.10; OPT12.10; STR01.10; STR12.10; STR16.10,Other ETF-compatible optimizers and strategies tested against baseline engine; no instrument or factor without verified data.
-648,OPT22.10,OPT22.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-649,MET21.04,MET21.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
-650,OPT20.09,OPT20.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
-651,OPT19.10,OPT19.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-652,OPT11.10,OPT11.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-653,CH03.05,CH04.09; G06,"Define 300–3000-stock second-stage universe with historical constituents, delistings and historical market cap."
-654,MET21.05,MET21.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
-655,OPT20.10,OPT20.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
-656,CH03.06,CH03.05,"Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings."
-657,CH05.07,CH03.05; CH05.04,Build historical membership and fundamental publication lag tests; never use today's constituents retrospectively.
-658,CH03.07,CH03.06,"Design per-expiry futures catalog for equity indexes, rates, commodities and FX; verify contract specification and expiry."
-659,CH21.01,CH03.06; CH05.11,"Build Treasury security master: CUSIP, issuer, type, coupon, calendar, settlement, day count, maturity and TIPS index ratio."
-660,CH03.08,CH03.07,"Create hedge instrument map for USD/CHF, equity and rates; mark options as extension only when explicitly authorized."
-661,CH22.01,CH03.07; CH05.11,"Build contract specifications (ticker, expiry, multiplier, settlement, tick, margin, last trading date)."
+122,CH03.05,CH03.04,"Define 300–3000-stock second-stage universe with historical constituents, delistings and historical market cap."
+123,CH04.03,CH04.02,"Verify licensing for local storage, transformation and collaboration before obtaining data; record license and permitted use."
+124,CH01.06,CH01.05,Calculate funding gap and required annual return for a single cash flow; solve dated multi-flow case numerically.
+125,CH12.01,CH01.05; SYS.01,"Define all 11 objectives as typed goals, not interchangeable portfolio names (catalog below)."
+126,CH02.08,CH02.07,"Show drawdown trajectories with equal horizon, uncertainty, costs and no guaranteed recovery."
+127,CH03.10,CH03.09,"Produce coverage matrix by instrument, date, frequency, missingness, liquidity and source; avoid invented pre-launch data."
+128,CH03.06,CH03.05,"Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings."
+129,CH04.04,CH04.03,"Compare CRSP/WRDS and licensed alternatives; assess public SEC EDGAR, Treasury, FRED/ALFRED and factor datasets."
+130,CH01.07,CH01.06,"Separate ability, willingness and required risk; never infer capacity from behavioral choices."
+131,CH12.02,CH12.01,"Separate objective function, eligibility constraint, benchmark, risk measure and preference weight."
+132,OBJ01.01,CH12.01,"Write the mathematical specification: P(W_T<W_0) and E[(W_0-W_T)+] in nominal and real terms. Specify units, convention, horizon and assumptions."
+133,OBJ02.01,CH12.01,"Write the mathematical specification: net income per period, coverage ratio and income volatility. Specify units, convention, horizon and assumptions."
+134,OBJ03.01,CH12.01,"Write the mathematical specification: minimize risk subject to return and liquidity constraints. Specify units, convention, horizon and assumptions."
+135,OBJ04.01,CH12.01,"Write the mathematical specification: mean-variance utility and risk budget. Specify units, convention, horizon and assumptions."
+136,OBJ05.01,CH12.01,"Write the mathematical specification: E[W_T] and real CAGR subject to constraints. Specify units, convention, horizon and assumptions."
+137,OBJ06.01,CH12.01,"Write the mathematical specification: maximize growth subject to volatility/ES/leverage budget. Specify units, convention, horizon and assumptions."
+138,OBJ07.01,CH12.01,"Write the mathematical specification: real return (1+r)/(1+π)-1 and CPI beta. Specify units, convention, horizon and assumptions."
+139,OBJ08.01,CH12.01,"Write the mathematical specification: net excess return over cash and downside. Specify units, convention, horizon and assumptions."
+140,OBJ09.01,CH12.01,"Write the mathematical specification: asset-liability PV gap and DV01/key-rate mismatch. Specify units, convention, horizon and assumptions."
+141,OBJ10.01,CH12.01,"Write the mathematical specification: P(W_T≥G), E[(G-W_T)+], shortfall per goal. Specify units, convention, horizon and assumptions."
+142,OBJ11.01,CH12.01,"Write the mathematical specification: loss below floor, hedge cost and gap stress. Specify units, convention, horizon and assumptions."
+143,CH02.09,CH02.08,Separate ambiguity and time-preference items from the unidimensional score.
+144,CH03.11,CH03.10,"Expose universe filters, availability chart and exclusion reason in UI."
+145,CH03.07,CH03.06,Determine which futures families qualify for the active universe.
+146,CH04.05,CH04.04,Define provider adapters with explicit as_of and dataset version; mock unavailable provider access.
+147,CH01.08,CH01.07,"Evaluate knowledge and experience separately for equities, Treasuries, futures, leverage and short selling."
+148,CH12.04,CH12.02,"Calculate required return with dated contributions, withdrawals and liabilities; report infeasibility."
+149,CH02.03,CH02.09,"Build the initial 60-card bank: 16 lottery, 12 gain/loss, 12 trajectory, 8 uncertainty/horizon, 8 style, 4 coherence items."
+150,CH03.08,CH03.07,"Record availability of futures hedges for USD/CHF, equities and rates."
+151,CH04.06,CH04.05,"Document API limits, retry/backoff, caching and missing-data behavior without committing credentials."
+152,CH01.09,CH01.08,"Define limits on losses, stress, volatility, liquidity, asset/issuer/sector weights, turnover and costs."
+153,CH12.07,CH12.04,"Support multiple goals with priorities, nonnegative normalized weights and documented penalty scaling."
+154,CH02.04,CH02.03,Sample the 30-card session with 8/6/6/4/4/2 block quotas and deterministic seed.
+155,CH04.07,CH04.06,"Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date."
+156,CH01.10,CH01.09,"Define ESG exclusions, tax assumptions, FX hedge preference, leverage, gross/net and derivatives permissions."
+157,CH02.10,CH02.04,Randomize order and left/right placement while preserving balanced design; record presentation order.
+158,CH04.08,CH04.07,Separate proprietary data from synthetic test fixtures and Git-tracked configs.
+159,CH01.11,CH01.10,"Represent hard vs soft constraints explicitly; define units, bounds and missing-value policy."
+160,CH02.11,CH02.10,"Support like/dislike, unsure, skip, undo, accessible keyboard and touch gestures."
+161,CH04.09,CH04.08,Create a source quality report and a data dictionary; confirm required fields before approving each method.
+162,CH01.12,CH01.11,Implement feasibility report and conflicting constraint examples; never silently relax constraints.
+163,CH02.12,CH02.11,Compute prudent fraction p and score = round(1+29p); threshold provisional coverage of 70%.
+164,CH05.01,CH03.04; CH04.09,"Define canonical trading calendar, UTC timestamps and local exchange close."
+165,CH01.13,CH01.12,Version ClientProfile and ConstraintSet; save synthetic examples and avoid real client data in notebooks.
+166,CH02.13,CH02.12,Calculate missing-response sensitivity range and flag paired inconsistencies; display no score when coverage is insufficient.
+167,CH05.02,CH05.01,"Implement unique instrument/date keys, types, corporate actions, contract expiration and series version checks."
+168,CH01.14,CH01.13,Review risk-budget and goal changes in a before/after UI; require explicit confirmation.
+169,CH02.14,CH02.13,Build simulated all-prudent/all-risk/mixed/missing/inconsistent response fixtures.
+170,CH05.03,CH05.02,"Ingest raw data without modification, then produce a deterministic cleaned layer."
+171,CH01.15,CH01.14,"Test zero capital, negative capital, inconsistent horizon, withdrawals exceeding resources, unsupported currency and missing consent."
+172,CH02.21,CH02.14,"Add score report, coverage, separate dimensions, methodology, revision, and consent screens; avoid gamification that rewards taking risk."
+173,CH02.15,CH01.07; CH02.14,Implement separate CRRA utility and prospect-theory likelihood exploration; keep score 1–30 independent of lambda and gamma.
+174,CH05.04,CH05.03,"Store observation_date, availability_time, release/vintage and as_of; as-of join only availability_time <= decision time."
+175,G01,CH01.15; CH02.21; CH12.07; G00; OBJ01.01; OBJ02.01; OBJ03.01; OBJ04.01; OBJ05.01; OBJ06.01; OBJ07.01; OBJ08.01; OBJ09.01; OBJ10.01; OBJ11.01,"Minimal mandate, specification of all 11 objectives (OBJ01–OBJ11), versioned discovery and protocol."
+176,CH02.16,CH02.15,"Pre-register pilot protocol, consent, data minimization, withdrawal and retention; pilot 30–50 volunteers exploratorily."
+177,CH05.05,CH05.04,"Detect duplicates, gaps, outliers, stale quotes, invalid prices and missing FX; differentiate closed market from missing data."
+178,UNIV.01,CH03.03; CH05.04; SYS.02,"Apply Treasury-only rule before allocation: classify issuer and type, verify PIT ETF holdings, reject corporate debt, MBS, agencies, municipals, foreign sovereigns, mixed ETFs and missing metadata; test acceptance/rejection."
+179,CH02.17,CH02.16,"Run cognitive interviews, readability/accessibility tests and timing/fatigue analysis (timing optional and never a direct excitation measure)."
+180,CH27.10,CH02.16; G00,"Add privacy consent, role separation, data minimization, local storage backups and tested restoration."
+181,CH05.06,CH05.05,"Handle split factors, dividends, capital changes, mergers, delistings and ticker changes."
+182,CH02.18,CH02.17,"Analyze item difficulty, discrimination, test-retest reliability, omega and factor dimensionality; report uncertainty."
+183,CH05.08,CH05.06,Align cross-market timestamps without leaking later closes; prohibit uncontrolled forward fill.
+184,CH02.19,CH02.18,Fit IRT/logistic model with person-level train/validation/test splits; check differential item functioning by language/order.
+185,CH05.09,CH05.08,"Create feature store with explicit lag, lookback, units and data hash."
+186,CH02.20,CH02.19,Compare predictive validity on independent simulated choices; document limitations and seek expert review.
+187,CH05.10,CH05.09,"Test corrected/revised data, missing assets, late arrivals and deliberately injected future data."
+188,CH05.11,CH05.10,"Record completeness, rejection reason, lineage, freshness and reproducible snapshot in MarketSnapshot."
+189,CH05.12,CH05.11,Display data coverage and freshness in UI; block dependent runs on invalid snapshots.
+190,CH06.01,CH05.11,Calculate simple return P_t/P_(t-1)-1 and log return log(1+r) where valid.
+191,CH06.02,CH06.01,Calculate total return with adjusted split/dividend handling without double counting.
+192,CH06.03,CH06.02,Compare raw-close and total-return series on hand-calculated dividend/split fixtures.
+193,CH06.04,CH06.03,Compound simple returns over horizons; verify product(1+r)-1 equals exp(sum(log(1+r)))-1 when valid.
+194,CH06.05,CH06.04,Calculate arithmetic and geometric average; distinguish forecast mean from realized CAGR.
+195,CH06.06,CH06.05,Compute daily/weekly/monthly aggregation with explicit trading dates and K=252/52/12 conventions.
+196,CH06.07,CH06.06,Compute base-currency return (1+r_local)(1+r_FX)-1; test reciprocal quotation.
+197,CH06.08,CH06.07,Compute nominal to real return (1+r)/(1+inflation)-1; align inflation availability.
+198,CH06.09,CH06.08,Normalize cash accrual using appropriate day count; model excess return vs matching rf series.
+199,CH06.12,CH06.09,"Report units, frequency, missingness, and base currency in output charts."
+200,G02,CH03.11; CH05.12; CH06.12; G01; UNIV.01,"Validated US ETF universe, cash, benchmarks, licenses and PIT/total-return pipeline."
+201,CH07.01,G02,"Compute count, missingness, min/max, quantiles and distribution diagnostics by asset."
+202,CH13.01,G02,"Define cash benchmark, equal weight 1/N, 60/40 and market-cap benchmarks."
+203,CH23.01,G02,"Define initial capital, benchmark, execution timing, decision timestamp, cash-flow convention and rebalance schedule."
+204,OBJ01.02,G02; OBJ01.01,"Prepare dated inputs: initial capital, horizon, inflation, simulated losses. Define schema, provenance, coverage and availability checks."
+205,OBJ02.02,G02; OBJ02.01,"Prepare dated inputs: coupons, distributions, taxes, dated withdrawals. Define schema, provenance, coverage and availability checks."
+206,OBJ03.02,G02; OBJ03.01,"Prepare dated inputs: volatility, ES and stress caps. Define schema, provenance, coverage and availability checks."
+207,OBJ04.02,G02; OBJ04.01,"Prepare dated inputs: expected returns, covariance, risk-return preferences. Define schema, provenance, coverage and availability checks."
+208,OBJ05.02,G02; OBJ05.01,"Prepare dated inputs: horizon, contributions, inflation. Define schema, provenance, coverage and availability checks."
+209,OBJ06.02,G02; OBJ06.01,"Prepare dated inputs: capital and explicitly validated high loss capacity. Define schema, provenance, coverage and availability checks."
+210,OBJ07.02,G02; OBJ07.01,"Prepare dated inputs: CPI vintages, TIPS, real yields. Define schema, provenance, coverage and availability checks."
+211,OBJ08.02,G02; OBJ08.01,"Prepare dated inputs: cash/rf, loss threshold and fees. Define schema, provenance, coverage and availability checks."
+212,OBJ10.02,G02; OBJ10.01,"Prepare dated inputs: multiple dated goals, flows, priorities. Define schema, provenance, coverage and availability checks."
+213,OPT01.02,G02; OPT01.01,"Prepare dated inputs: eligible universe and bounds. Define schema, provenance, coverage and availability checks."
+214,OPT02.02,G02; OPT02.01,"Prepare dated inputs: dated market caps and membership. Define schema, provenance, coverage and availability checks."
+215,OPT03.02,G02; OPT03.01,"Prepare dated inputs: PSD Σ and limits. Define schema, provenance, coverage and availability checks."
+216,OPT04.02,G02; OPT04.01,"Prepare dated inputs: μ, Σ, rf. Define schema, provenance, coverage and availability checks."
+217,OPT05.02,G02; OPT05.01,"Prepare dated inputs: μ, Σ, separately calibrated λ. Define schema, provenance, coverage and availability checks."
+218,OPT06.02,G02; OPT06.01,"Prepare dated inputs: μ, Σ, target grid. Define schema, provenance, coverage and availability checks."
+219,OPT07.02,G02; OPT07.01,"Prepare dated inputs: market weights, δ, Σ, τ, P,q,Ω. Define schema, provenance, coverage and availability checks."
+220,OPT08.02,G02; OPT08.01,"Prepare dated inputs: Σ, budgets b. Define schema, provenance, coverage and availability checks."
+221,OPT09.02,G02; OPT09.01,"Prepare dated inputs: Σ, correlation, linkage. Define schema, provenance, coverage and availability checks."
+222,OPT10.02,G02; OPT10.01,"Prepare dated inputs: clusters, Σ, budgets. Define schema, provenance, coverage and availability checks."
+223,OPT11.02,G02; OPT11.01,"Prepare dated inputs: Σ, individual σ. Define schema, provenance, coverage and availability checks."
+224,OPT12.02,G02; OPT12.01,"Prepare dated inputs: scenarios, probabilities, α. Define schema, provenance, coverage and availability checks."
+225,OPT13.02,G02; OPT13.01,"Prepare dated inputs: scenarios, MAR. Define schema, provenance, coverage and availability checks."
+226,OPT14.02,G02; OPT14.01,"Prepare dated inputs: scenarios, threshold T. Define schema, provenance, coverage and availability checks."
+227,OPT15.02,G02; OPT15.01,"Prepare dated inputs: chronological paths. Define schema, provenance, coverage and availability checks."
+228,OPT16.02,G02; OPT16.01,"Prepare dated inputs: μ/Σ uncertainty sets. Define schema, provenance, coverage and availability checks."
+229,OPT17.02,G02; OPT17.01,"Prepare dated inputs: series, block bootstrap, seed. Define schema, provenance, coverage and availability checks."
+230,OPT18.02,G02; OPT18.01,"Prepare dated inputs: empirical distribution, radius. Define schema, provenance, coverage and availability checks."
+231,OPT19.02,G02; OPT19.01,"Prepare dated inputs: return distribution, wealth limits. Define schema, provenance, coverage and availability checks."
+232,OPT20.02,G02; OPT20.01,"Prepare dated inputs: positive weights, risk/return limits. Define schema, provenance, coverage and availability checks."
+233,OPT21.02,G02; OPT21.01,"Prepare dated inputs: Σ and benchmark b. Define schema, provenance, coverage and availability checks."
+234,OPT22.02,G02; OPT22.01,"Prepare dated inputs: active α, Σ, benchmark b. Define schema, provenance, coverage and availability checks."
+235,STR01.02,G02; STR01.01,"Prepare dated inputs: historical membership and index weights. Define schema, provenance, coverage and availability checks."
+236,STR12.02,G02; STR12.01,"Prepare dated inputs: lagged returns. Define schema, provenance, coverage and availability checks."
+237,STR13.02,G02; STR13.01,"Prepare dated inputs: historical price/spread. Define schema, provenance, coverage and availability checks."
+238,STR14.02,G02; STR14.01,"Prepare dated inputs: strategic allocation, signals. Define schema, provenance, coverage and availability checks."
+239,STR16.02,G02; STR16.01,"Prepare dated inputs: forecast σ, costs, exposure. Define schema, provenance, coverage and availability checks."
+240,CH07.02,CH07.01,"Compute arithmetic/geometric means, median, variance, sample standard deviation, annualized volatility and downside deviation."
+241,CH13.05,CH13.01,Use ETF benchmark or historically valid constituents for market-cap weighting.
+242,OBJ03.03,CH12.02; OBJ03.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+243,OBJ04.03,CH12.02; OBJ04.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+244,OBJ06.03,CH12.02; OBJ06.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+245,OBJ07.03,CH06.08; OBJ07.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+246,OBJ08.03,CH06.09; OBJ08.02,"Implement the objective contract in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+247,CH07.03,CH07.02,"Compute skewness, kurtosis, histogram, empirical CDF and QQ plots; compare heavy tails with normal reference."
+248,CH13.06,CH13.05,Define long-only and unlevered first baseline; enforce sum weights=1.
+249,OPT02.03,CH13.05; OPT02.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+250,OBJ03.04,OBJ03.03,Create the specific test: stress exceeding the cap. Document expected result and tolerance.
+251,OBJ04.04,OBJ04.03,Create the specific test: two assets with opposing risk characteristics. Document expected result and tolerance.
+252,OBJ06.04,OBJ06.03,Create the specific test: financial capacity conflicting with preferences. Document expected result and tolerance.
+253,OBJ07.04,OBJ07.03,Create the specific test: unexpected inflation. Document expected result and tolerance.
+254,OBJ08.04,OBJ08.03,Create the specific test: strong cash return and negative market. Document expected result and tolerance.
+255,CH07.04,CH07.03,"Compute auto-correlation, PACF, Ljung-Box and stationarity diagnostics; state assumptions and limitations."
+256,CH13.02,CH13.06,Calculate weights and monthly/quarterly rebalancing with drift between rebalance dates.
+257,OPT02.04,OPT02.03,"Create the specific test: zero cap, delisting, no survivorship bias. Document expected result and tolerance."
+258,OBJ03.05,OBJ03.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+259,OBJ04.05,OBJ04.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+260,OBJ06.05,OBJ06.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+261,OBJ07.05,OBJ07.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+262,OBJ08.05,OBJ08.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+263,CH07.05,CH07.04,Compute covariance and Pearson/Spearman correlations; handle missing-data alignment and constant series explicitly.
+264,OPT01.03,CH13.02; OPT01.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+265,OPT02.05,OPT02.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+266,CH07.06,CH07.05,"Compute rolling means, volatility, beta and correlations with trailing windows; test no future data."
+267,OPT01.04,OPT01.03,Create the specific test: N=1 and incompatible concentration cap. Document expected result and tolerance.
+268,CH07.07,CH07.06,Compute cross-sectional ranks and standardized features with winsorization fit only on training periods.
+269,CH08.01,CH05.09; CH07.06,"Define forecast target (total/excess return), horizon and timestamped lagged features."
+270,OPT01.05,OPT01.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+271,CH07.08,CH07.07,"Test analytical two-asset covariance and portfolio variance; verify symmetry, PSD, units and sample denominator."
+272,CH08.04,CH08.01,Split chronological train/validation/test; purge overlapping labels and embargo where necessary.
+273,CH07.09,CH07.08,"Implement summaries and compare assets, frequency and selected dates in UI."
+274,CH09.01,CH07.08,Estimate sample covariance and annualize consistently with return mean.
+275,CH11.01,CH07.08,Define loss L=-r and horizon/confidence conventions; document sign and positive currency loss.
+276,CH08.02,CH08.04,Set naive historical-mean and cash/zero-alpha baselines; estimate rolling means and EWMA.
+277,CH09.02,CH09.01,Fit EWMA variance and covariance; test decay parameter and initialization.
+278,CH11.02,CH11.01,"Implement historical, Gaussian parametric and simulated VaR at 95%/99%."
+279,CH09.08,CH09.02,Apply numerical regularization only with traceable diagnostics and explicit tolerances.
+280,CH11.03,CH11.02,Implement ES with correct upper-tail weighting for discrete observations and ties.
+281,CH14.01,CH02.15; CH08.02; CH09.08; CH12.02,"Define w, μ, Σ, rf, lambda, funded vs derivative exposure and constraints units."
+282,CH11.05,CH11.03,"Compute downside deviation, target shortfall, maximum drawdown, drawdown duration, recovery time and underwater chart."
+283,CH14.02,CH14.01,Implement minimum variance quadratic program and unconstrained analytic reference for invertible covariance.
+284,CH11.09,CH11.05,"Test zero risk, constant return, extreme loss, missing series, small sample and tail quantile ties."
+285,CH14.03,CH14.02,Implement maximum utility μ'w-lambda*w'Σw/2 with explicit lambda calibration and sensitivity.
+286,OPT03.03,CH14.02; OPT03.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+287,CH11.10,CH11.09,"Expose loss distribution, risk limits, confidence/horizon and warnings; never display VaR as guaranteed maximum."
+288,CH14.04,CH14.03,Compute efficient frontier by target return constrained quadratic programs; mark infeasible targets.
+289,OPT05.03,CH14.03; OPT05.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+290,OPT03.04,OPT03.03,Create the specific test: analytical two-asset case and singular covariance. Document expected result and tolerance.
+291,CH14.05,CH14.04,Implement max Sharpe search/reformulation; handle zero-risk and nonpositive excess-return cases.
+292,OPT06.03,CH14.04; OPT06.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+293,OPT05.04,OPT05.03,Create the specific test: small/large λ and active constraints. Document expected result and tolerance.
+294,OPT03.05,OPT03.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+295,CH14.06,CH14.05,"Implement constraints on weights, groups, issuer, leverage, gross/net, turnover, risk factors, liquidity and target return."
+296,OPT04.03,CH14.05; OPT04.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+297,OPT06.04,OPT06.03,Create the specific test: monotone frontier and infeasible target. Document expected result and tolerance.
+298,OPT05.05,OPT05.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+299,CH14.07,CH14.06,"Run pre-solve feasibility and capture solver status, tolerance, objective, residuals, warm starts and active constraints."
+300,OPT04.04,OPT04.03,Create the specific test: negative excess return and zero variance. Document expected result and tolerance.
+301,OPT06.05,OPT06.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+302,CH14.08,CH14.07,"Validate analytic two-asset case, covariance singularity, negative expected excess return and infeasible mandate."
+303,OPT04.05,OPT04.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+304,CH14.10,CH14.08,"Plot frontier, weights and marginal risk; export model configuration and solver diagnostics."
+305,G03,CH07.09; CH09.08; CH11.10; CH13.02; CH14.10,"Statistics, covariance and baselines; minimum variance, maximum utility, maximum Sharpe and frontier with analytical tests."
+306,BT00.01,CH23.01; G03,"Define minimal ETF/cash ledger: trades, positions, fees, dividends/total return without double counting, NAV and flows."
+307,BT00.02,BT00.01,"Implement delayed execution, commissions/spread, positions and NAV for cash, 1/N and 60/40 only."
+308,BT00.03,BT00.02,"Reconcile an analytical two-asset, two-period case without fees, then with fees and contributions."
+309,BT00.04,BT00.03,"Freeze chronological splits, calendar and common benchmark; test invariance to future data."
+310,CH13.03,BT00.03,"Implement initial trade costs, subsequent turnover and end-of-period valuation; use executable timestamps."
+311,BT00.05,BT00.04,"Calculate initial net metrics, compare with benchmarks and export OOS report."
+312,CH13.04,CH13.03,"Compare fixed weights and buy-and-hold separately; compare same dates, currency and rf."
+313,BT00.06,BT00.05,"Simulate ETF stress and simple deterministic paths, calculate shortfall/success probability and validate baseline engine."
+314,CH13.07,CH13.04,"Reconcile hand-calculated two-period NAV with weights, flows, fees and returns."
+315,CH13.08,CH13.07,"Create baseline benchmark report with gross/net CAGR, vol, drawdown, Sharpe and stress."
+316,CH13.09,CH13.08,Expose baseline cards and benchmark comparison in the app before advanced models.
+317,G04,BT00.06; CH13.09,"Reconciled baseline ETF backtest, ledger, costs, leakage-free walk-forward, initial metrics and simple stress/Monte Carlo."
+318,MVP.01,G01; G04,"Produce baseline candidates with GoalSpec, constraints, net results and provenance; exclude incompatibilities."
+319,CH14.09,CH14.08; G04,"Compare no-short vs permitted short, concentration caps and turnover penalty on uniform OOS windows."
+320,CH09.03,CH09.08; G04,"Fit GARCH(1,1), EGARCH and GJR-GARCH; check convergence, persistence, residual autocorrelation and asymmetry."
+321,CH11.04,CH11.03; G04,Implement expected shortfall risk contributions and scenario-based marginal risk where differentiable.
+322,CH16.01,CH09.08; G04,Calculate portfolio risk and marginal/total risk contributions; verify sum RC=σp.
+323,CH17.01,CH11.03; G04,"Specify thresholds, loss signs, confidence level, scenario probabilities and path horizon."
+324,CH15.01,CH09.08; G04,Derive equilibrium prior π=δΣw_market with consistent total vs excess returns.
+325,CH19.01,G04; SYS.02,"Build a strategy registry separating signal, estimate, optimizer, execution policy and benchmark."
+326,OBJ03.06,G04; OBJ03.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+327,OBJ04.06,G04; OBJ04.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+328,OBJ06.06,G04; OBJ06.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+329,OBJ07.06,G04; OBJ07.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+330,OBJ08.06,G04; OBJ08.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+331,OPT01.06,G04; OPT01.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+332,OPT02.06,G04; OPT02.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+333,OPT03.06,G04; OPT03.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+334,OPT04.06,G04; OPT04.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+335,OPT05.06,G04; OPT05.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+336,OPT06.06,G04; OPT06.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+337,MET01.02,BT00.03; G04; MET01.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+338,MET02.02,BT00.03; G04; MET02.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+339,MET05.02,CH07.02; G04; MET05.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+340,MET06.02,BT00.03; G04; MET06.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+341,MET07.02,CH11.05; G04; MET07.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+342,MET08.02,CH11.05; G04; MET08.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+343,MET10.02,CH11.05; G04; MET10.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+344,MET11.02,CH11.02; G04; MET11.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+345,MET12.02,CH11.03; G04; MET12.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+346,MET16.02,CH14.08; G04; MET16.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+347,MET20.02,CH03.10; G04; MET20.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+348,MVP.02,MVP.01,"Present portfolio cards with consistent metrics, independent exploratory score and filter explanations."
+349,CH09.04,CH09.03,Compare historical volatility with conditional forecasts and simple rolling baselines.
+350,CH11.06,CH11.04,Fit EVT peaks-over-threshold with defensible threshold sensitivity; estimate tail uncertainty.
+351,CH16.02,CH16.01,Specify target risk budgets and denominator conventions; distinguish negative contributions for short positions.
+352,MET17.02,CH16.01; G04; MET17.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+353,CH17.02,CH17.01,Implement CVaR via auxiliary z and nonnegative shortfall variables; validate tail loss case by hand.
+354,CH15.02,CH15.01,Estimate delta from declared market/risk-free assumptions; record sensitivity and avoid implicit psychometric mapping.
+355,CH19.07,CH19.01,"Specify each strategy's input data, rebalance frequency, data publication delays, signal exit rules and transaction-cost assumptions."
+356,CH20.07,CH19.01; G04,Implement cross-sectional and time-series momentum with declared lag/lookback; test reversal and crowding.
+357,OBJ03.07,OBJ03.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+358,OBJ04.07,OBJ04.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+359,OBJ06.07,OBJ06.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+360,OBJ07.07,OBJ07.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+361,OBJ08.07,OBJ08.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+362,OPT01.07,OPT01.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+363,OPT02.07,OPT02.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+364,OPT03.07,OPT03.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+365,OPT04.07,OPT04.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+366,OPT05.07,OPT05.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+367,OPT06.07,OPT06.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+368,MET01.03,MET01.02,Test: sequence +10% then -10% = -1%; avoid misleading numbers with insufficient data.
+369,MET02.03,MET02.02,Test: two-year horizon with doubled NAV; avoid misleading numbers with insufficient data.
+370,MET05.03,MET05.02,Test: constant series and explicit K; avoid misleading numbers with insufficient data.
+371,MET06.03,MET06.02,Test: constant excess return and zero sd; avoid misleading numbers with insufficient data.
+372,MET07.03,MET07.02,Test: no losses below MAR; avoid misleading numbers with insufficient data.
+373,MET08.03,MET08.02,Test: zero MDD; avoid misleading numbers with insufficient data.
+374,MET10.03,MET10.02,Test: new peak and continuous loss; avoid misleading numbers with insufficient data.
+375,MET11.03,MET11.02,Test: quantile ordering; avoid misleading numbers with insufficient data.
+376,MET12.03,MET12.02,Test: discrete tail and small sample; avoid misleading numbers with insufficient data.
+377,MET16.03,MET16.02,Test: 1/N and single-asset portfolio; avoid misleading numbers with insufficient data.
+378,MET20.03,MET20.02,Test: zero ADV or stressed ADV; avoid misleading numbers with insufficient data.
+379,MVP.03,MVP.02,"Test like/dislike/skip/undo, shortlist, benchmark comparison and paper confirmation."
+380,CH09.05,CH09.04,Fit Ledoit-Wolf and OAS shrinkage; compare out-of-sample realized risk and condition number.
+381,CH11.07,CH11.06,Compare normal/Student-t and empirical/copula dependence models; evaluate tail dependence.
+382,CH16.03,CH16.02,Solve risk parity with long-only baseline and budget feasibility checks.
+383,MET17.03,MET17.02,Test: sum = σp; avoid misleading numbers with insufficient data.
+384,CH17.03,CH17.02,Implement Sortino using downside deviation relative to MAR; handle zero denominator without inventing infinity ranking.
+385,OPT12.03,CH17.02; OPT12.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+386,CH15.03,CH15.02,Build absolute/relative views P and q; define view horizon and uncertainty Ω.
+387,CH19.02,CH19.07,"Define passive ETF replication; use historical index membership for individual-stock sampling only after EXT.01, with tracking constraints."
+388,CH20.08,CH20.07,"Implement mean-reversion z-score, entry/exit and loss limits; test nonstationarity."
+389,STR12.03,CH20.07; STR12.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+390,OBJ03.08,OBJ03.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+391,OBJ04.08,OBJ04.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+392,OBJ06.08,OBJ06.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+393,OBJ07.08,OBJ07.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+394,OBJ08.08,OBJ08.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+395,OPT01.08,OPT01.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+396,OPT02.08,OPT02.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+397,OPT03.08,OPT03.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+398,OPT04.08,OPT04.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+399,OPT05.08,OPT05.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+400,OPT06.08,OPT06.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+401,MET01.04,MET01.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+402,MET02.04,MET02.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+403,MET05.04,MET05.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+404,MET06.04,MET06.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+405,MET07.04,MET07.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+406,MET08.04,MET08.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+407,MET10.04,MET10.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+408,MET11.04,MET11.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+409,MET12.04,MET12.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+410,MET16.04,MET16.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+411,MET20.04,MET20.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+412,MVP.04,MVP.03,Validate the local Discovery → mandate → candidates → Explore → paper choice journey; preserve no-match option.
+413,CH09.07,CH09.05,Fit DCC-GARCH conditional correlation where appropriate; test correlation/covariance PSD.
+414,CH18.01,CH09.05; G04,Define mean/covariance uncertainty sets and robust utility objective; calibrate using training data.
+415,CH11.08,CH11.07,Backtest VaR exception rates and independence; compare ES stress diagnostics with finite sample caveats.
+416,CH16.04,CH16.03,Compute correlation distance sqrt((1-rho)/2); validate distance and PSD.
+417,OPT08.03,CH16.03; OPT08.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+418,MET17.04,MET17.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+419,CH17.04,CH17.03,Implement Omega ratio at threshold; define handling when expected downside is zero.
+420,OPT13.03,CH17.03; OPT13.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+421,OPT12.04,OPT12.03,Create the specific test: discrete tail and analytical LP case. Document expected result and tolerance.
+422,CH15.04,CH15.03,"Validate dimensions, prior covariance PSD, tau, confidence and correlated views."
+423,STR01.03,CH19.02; STR01.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+424,CH20.09,CH20.08,Implement tactical allocation as bounded deviation from strategic weights.
+425,STR13.03,CH20.08; STR13.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+426,STR12.04,STR12.03,"Create the specific test: reversal, no look-ahead. Document expected result and tolerance."
+427,OBJ03.09,OBJ03.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+428,OBJ04.09,OBJ04.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+429,OBJ06.09,OBJ06.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+430,OBJ07.09,OBJ07.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+431,OBJ08.09,OBJ08.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+432,OPT01.09,OPT01.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+433,OPT02.09,OPT02.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+434,OPT03.09,OPT03.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+435,OPT04.09,OPT04.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+436,OPT05.09,OPT05.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+437,OPT06.09,OPT06.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+438,MET01.05,MET01.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+439,MET02.05,MET02.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+440,MET05.05,MET05.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+441,MET06.05,MET06.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+442,MET07.05,MET07.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+443,MET08.05,MET08.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+444,MET10.05,MET10.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+445,MET11.05,MET11.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+446,MET12.05,MET12.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+447,MET16.05,MET16.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+448,MET20.05,MET20.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+449,G05,MVP.04,"End-to-end RiskMatch prototype with baselines only; filter before swipe, comparison, paper confirmation."
+450,CH09.09,CH09.07,"Evaluate QLIKE, variance forecast errors, realized risk and portfolio stability in chronological validation."
+451,CH18.02,CH18.01,Implement robust optimization on bounded scenarios and document worst-case assumptions.
+452,CH16.05,CH16.04,Build hierarchical clustering/dendrogram with explicit linkage and leaf ordering.
+453,OPT08.04,OPT08.03,"Create the specific test: equal variance, perfect correlation and sum of RC. Document expected result and tolerance."
+454,MET17.05,MET17.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+455,CH17.05,CH17.04,Implement min drawdown or CDaR with explicit path dependence and solver limitations.
+456,OPT14.03,CH17.04; OPT14.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+457,MET09.02,CH17.04; G04; MET09.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+458,OPT13.04,OPT13.03,Create the specific test: no downside and negative threshold. Document expected result and tolerance.
+459,OPT12.05,OPT12.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+460,CH15.05,CH15.04,Compute posterior via stable linear solves; handle singular matrices and conflicting views explicitly.
+461,STR01.04,STR01.03,Create the specific test: index reconstitution and fees. Document expected result and tolerance.
+462,CH20.10,CH20.09,Implement volatility targeting with capped exposure and liquidity/cost controls.
+463,STR14.03,CH20.09; STR14.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+464,STR13.04,STR13.03,Create the specific test: nonstationary spread. Document expected result and tolerance.
+465,STR12.05,STR12.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+466,OBJ03.10,OBJ03.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+467,OBJ04.10,OBJ04.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+468,OBJ06.10,OBJ06.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+469,OBJ07.10,OBJ07.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+470,OBJ08.10,OBJ08.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+471,OPT01.10,OPT01.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+472,OPT02.10,OPT02.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+473,OPT03.10,OPT03.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+474,OPT04.10,OPT04.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+475,OPT05.10,OPT05.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+476,OPT06.10,OPT06.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+477,CH09.10,CH09.09,"Build rolling volatility/correlation charts, covariance heatmap and confidence warnings."
+478,CH18.03,CH18.02,"Implement block bootstrap resampling, optimize each draw and aggregate feasible weights."
+479,OPT16.03,CH18.02; OPT16.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+480,CH16.06,CH16.05,Implement HRP recursive bisection inverse-variance allocation and cluster weights.
+481,OPT08.05,OPT08.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+482,CH17.06,CH17.05,Implement tracking-error minimum against weights/returns from a valid benchmark.
+483,OPT15.03,CH17.05; OPT15.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+484,OPT14.04,OPT14.03,Create the specific test: zero downside and equality at threshold. Document expected result and tolerance.
+485,MET09.03,MET09.02,Test: threshold and zero denominator; avoid misleading numbers with insufficient data.
+486,OPT13.05,OPT13.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+487,OPT12.06,G04; OPT12.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+488,CH15.06,CH15.05,"Verify no-view prior, weak/strong confidence, opposing views and identical-view redundancy."
+489,STR01.05,STR01.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+490,STR16.03,CH20.10; STR16.02,"Implement the signal and positioning engine in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+491,STR14.04,STR14.03,Create the specific test: zero signal recovers strategic allocation. Document expected result and tolerance.
+492,STR13.05,STR13.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+493,STR12.06,G04; STR12.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+494,CH18.04,CH18.03,Implement distributionally robust formulation with declared ambiguity radius; evaluate computational cost.
+495,OPT17.03,CH18.03; OPT17.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+496,OPT16.04,OPT16.03,Create the specific test: singleton set recovers reference. Document expected result and tolerance.
+497,CH16.07,CH16.06,Implement HERC cluster risk budgets and allocation; compare linkage/cluster count sensitivity.
+498,OPT09.03,CH16.06; OPT09.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+499,OPT08.06,G04; OPT08.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+500,CH17.07,CH17.06,Implement max information ratio with active return and risk; validate benchmark identity/zero TE.
+501,OPT21.03,CH17.06; OPT21.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+502,MET14.02,CH17.06; G04; MET14.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+503,OPT15.04,OPT15.03,"Create the specific test: same terminal return, different drawdowns. Document expected result and tolerance."
+504,OPT14.05,OPT14.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+505,MET09.04,MET09.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+506,OPT13.06,G04; OPT13.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+507,OPT12.07,OPT12.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+508,STR01.06,G04; STR01.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+509,STR16.04,STR16.03,Create the specific test: zero σ and volatility shock. Document expected result and tolerance.
+510,STR14.05,STR14.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+511,STR13.06,G04; STR13.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+512,STR12.07,STR12.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+513,CH18.05,CH18.04,Implement log-growth Kelly and fractional Kelly; ensure admissible positive terminal wealth in all modeled scenarios.
+514,OPT18.03,CH18.04; OPT18.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+515,OPT17.04,OPT17.03,Create the specific test: reproducible seed and feasible aggregate weights. Document expected result and tolerance.
+516,OPT16.05,OPT16.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+517,CH16.08,CH16.07,Implement maximum diversification ratio w'σ/σp and handle zero volatility.
+518,OPT10.03,CH16.07; OPT10.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+519,OPT09.04,OPT09.03,Create the specific test: duplicate assets and linkage change. Document expected result and tolerance.
+520,OPT08.07,OPT08.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+521,CH17.08,CH17.07,Compare historical/scenario sample size and stress sensitivity; avoid overfitting the worst observed path.
+522,OPT22.03,CH17.07; OPT22.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+523,MET15.02,CH17.07; G04; MET15.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+524,OPT21.04,OPT21.03,Create the specific test: w=b gives TE=0 and incompatible benchmark. Document expected result and tolerance.
+525,MET14.03,MET14.02,Test: identical benchmark; avoid misleading numbers with insufficient data.
+526,OPT15.05,OPT15.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+527,OPT14.06,G04; OPT14.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+528,MET09.05,MET09.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+529,OPT13.07,OPT13.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+530,OPT12.08,OPT12.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+531,STR01.07,STR01.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+532,STR16.05,STR16.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+533,STR14.06,G04; STR14.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+534,STR13.07,STR13.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+535,STR12.08,STR12.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+536,CH18.06,CH18.05,Implement entropy objective (-sum w log w) for positive funded weights; compare equal-weight limiting case.
+537,OPT19.03,CH18.05; OPT19.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+538,OPT18.04,OPT18.03,Create the specific test: zero radius and radius sensitivity. Document expected result and tolerance.
+539,OPT17.05,OPT17.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+540,OPT16.06,G04; OPT16.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+541,CH16.09,CH16.08,"Test equal variance/uncorrelated, perfectly correlated, duplicate assets and unstable clusters."
+542,OPT11.03,CH16.08; OPT11.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+543,OPT10.04,OPT10.03,Create the specific test: single cluster and cluster-count stability. Document expected result and tolerance.
+544,OPT09.05,OPT09.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+545,OPT08.08,OPT08.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+546,CH17.09,CH17.08,"Add downside frontier, benchmark-active exposure, scenario and drawdown charts."
+547,OPT22.04,OPT22.03,Create the specific test: w=b gives zero denominator. Document expected result and tolerance.
+548,MET15.03,MET15.02,Test: zero TE; avoid misleading numbers with insufficient data.
+549,OPT21.05,OPT21.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+550,MET14.04,MET14.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+551,OPT15.06,G04; OPT15.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+552,OPT14.07,OPT14.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+553,OPT13.08,OPT13.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+554,OPT12.09,OPT12.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+555,STR01.08,STR01.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+556,STR16.06,G04; STR16.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+557,STR14.07,STR14.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+558,STR13.08,STR13.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+559,STR12.09,STR12.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+560,CH18.07,CH18.06,Apply regularization and transaction cost/turnover penalties to comparable objectives.
+561,OPT20.03,CH18.06; OPT20.02,"Implement the model in the notebook using a synthetic fixture, then verify calculations and outputs by hand."
+562,OPT19.04,OPT19.03,Create the specific test: return near -100% and ruin. Document expected result and tolerance.
+563,OPT18.05,OPT18.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+564,OPT17.06,G04; OPT17.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+565,OPT16.07,OPT16.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+566,CH16.10,CH16.09,"Compare allocations, realized risk contribution, turnover and crisis robustness OOS."
+567,OPT11.04,OPT11.03,Create the specific test: identical correlation and zero volatility. Document expected result and tolerance.
+568,OPT10.05,OPT10.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+569,OPT09.06,G04; OPT09.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+570,OPT08.09,OPT08.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+571,CH17.10,CH17.09,Use identical constraints and net OOS backtest for each downside method.
+572,OPT22.05,OPT22.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+573,MET15.04,MET15.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+574,OPT21.06,G04; OPT21.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+575,MET14.05,MET14.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+576,OPT15.07,OPT15.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+577,OPT14.08,OPT14.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+578,OPT13.09,OPT13.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+579,OPT12.10,OPT12.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+580,STR01.09,STR01.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+581,STR16.07,STR16.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+582,STR14.08,STR14.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+583,STR13.09,STR13.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+584,STR12.10,STR12.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+585,CH18.08,CH18.07,"Record solver status, runtime, seed, convergence, residual and sensitivity for every method."
+586,OPT20.04,OPT20.03,Create the specific test: unconstrained solution recovers 1/N and 0log0. Document expected result and tolerance.
+587,OPT19.05,OPT19.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+588,OPT18.06,G04; OPT18.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+589,OPT17.07,OPT17.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+590,OPT16.08,OPT16.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+591,CH16.11,CH16.10,"Show risk contributions, dendrogram, cluster weights and diversification diagnostics."
+592,OPT11.05,OPT11.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+593,OPT10.06,G04; OPT10.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+594,OPT09.07,OPT09.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+595,OPT08.10,OPT08.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+596,OPT22.06,G04; OPT22.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+597,MET15.05,MET15.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+598,OPT21.07,OPT21.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+599,OPT15.08,OPT15.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+600,OPT14.09,OPT14.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+601,OPT13.10,OPT13.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+602,STR01.10,STR01.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+603,STR16.08,STR16.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+604,STR14.09,STR14.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+605,STR13.10,STR13.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+606,CH18.09,CH18.08,"Test uncertainty radius zero, correlated assets, return near -100%, zero weights and infeasible solutions."
+607,OPT20.05,OPT20.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
+608,OPT19.06,G04; OPT19.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+609,OPT18.07,OPT18.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+610,OPT17.08,OPT17.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+611,OPT16.09,OPT16.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+612,OPT11.06,G04; OPT11.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+613,OPT10.07,OPT10.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+614,OPT09.08,OPT09.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+615,OPT22.07,OPT22.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+616,OPT21.08,OPT21.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+617,OPT15.09,OPT15.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+618,OPT14.10,OPT14.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+619,STR16.09,STR16.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+620,STR14.10,STR14.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+621,CH18.10,CH18.09,"Compare robustness, concentration, OOS stress and net performance against simple baselines."
+622,OPT20.06,G04; OPT20.05,"Compare with a simple reference using identical dates, universe, constraints and costs; chronological out-of-sample protocol."
+623,OPT19.07,OPT19.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+624,OPT18.08,OPT18.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+625,OPT17.09,OPT17.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+626,OPT16.10,OPT16.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+627,OPT11.07,OPT11.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+628,OPT10.08,OPT10.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+629,OPT09.09,OPT09.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+630,OPT22.08,OPT22.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+631,OPT21.09,OPT21.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+632,OPT15.10,OPT15.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+633,STR16.10,STR16.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+634,CH18.11,CH18.10,"Expose model parameters, uncertainty tradeoffs and warnings in app configurator."
+635,MET21.02,CH18.10; G04; MET21.01,Implement using reconciled NAV/returns/positions/benchmark series; distinguish gross/net and nominal/real.
+636,OPT20.07,OPT20.06,Measure sensitivity to assumptions/parameters and uncertainty; record experiments and limitations.
+637,OPT19.08,OPT19.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+638,OPT18.09,OPT18.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+639,OPT17.10,OPT17.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+640,OPT11.08,OPT11.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+641,OPT10.09,OPT10.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+642,OPT09.10,OPT09.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+643,OPT22.09,OPT22.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+644,OPT21.10,OPT21.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+645,MET21.03,MET21.02,Test: window and cost variation; avoid misleading numbers with insufficient data.
+646,OPT20.08,OPT20.07,"Extract a typed function into the shared engine; add unit and regression tests, version/config/diagnostics."
+647,OPT19.09,OPT19.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+648,OPT18.10,OPT18.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+649,OPT11.09,OPT11.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+650,OPT10.10,OPT10.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+651,G06,CH16.11; CH17.10; CH18.11; G05; OPT08.10; OPT09.10; OPT12.10; STR01.10; STR12.10; STR16.10,Other ETF-compatible optimizers and strategies tested against baseline engine; no instrument or factor without verified data.
+652,OPT22.10,OPT22.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+653,MET21.04,MET21.03,"Compare with an independent reference on the same sample; document windows, tolerance and version."
+654,OPT20.09,OPT20.08,"Expose results and assumptions through API/UI, check mandate rules and publish a reproducible report."
+655,OPT19.10,OPT19.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+656,OPT11.10,OPT11.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
+657,CH05.07,CH03.05; CH04.09; CH05.04; G06,Build historical membership and fundamental publication lag tests; never use today's constituents retrospectively.
+658,CH21.01,CH03.06; CH04.09; CH05.11; G06,"Build Treasury security master: CUSIP, issuer, type, coupon, calendar, settlement, day count, maturity and TIPS index ratio."
+659,CH22.01,CH03.07; CH04.09; CH05.11; G06,"Build contract specifications (ticker, expiry, multiplier, settlement, tick, margin, last trading date)."
+660,MET21.05,MET21.04,"Add metric to export and UI with period, benchmark, limitations and provenance."
+661,OPT20.10,OPT20.09,Attach results and tests to a PR; obtain independent review and check off only after acceptance.
 662,CH21.02,CH21.01,"Generate coupon, accrued interest and maturity redemption schedules; handle zero-coupon T-Bills and indexed TIPS principal/coupons."
 663,CH22.02,CH22.01,"Load historical per-expiry quotes, volume/open interest and margin schedules; preserve negative prices."
 664,CH21.03,CH21.02,"Calculate clean/dirty price, accrued interest, yield-to-maturity and total return including coupons."
@@ -690,7 +690,7 @@ topological_order,ticket,direct_prerequisites,description
 689,OBJ11.02,CH22.10; G02; OBJ11.01,"Prepare dated inputs: conditional floor, hedging, costs, gap. Define schema, provenance, coverage and availability checks."
 690,CH21.12,CH21.11,"Display nominal/real curves, maturity ladder, coupons, rate sensitivity and breakeven."
 691,CH06.10,CH21.11; CH22.10,Separate dirty bond price/coupons and futures cash P&L; skip log returns for nonpositive futures prices.
-692,EXT.01,CH03.08; CH04.09; CH05.07; CH21.11; CH22.10; UNIV.01,"Revalidate coverage, liquidity, license, vintage and availability of extended security master (securities, Treasuries, futures, fundamentals); document strategies blocked by missing data."
+692,EXT.01,CH03.08; CH04.09; CH05.07; CH21.11; CH22.10; G06; UNIV.01,"Revalidate coverage, liquidity, license, vintage and availability of extended security master (securities, Treasuries, futures, fundamentals); document strategies blocked by missing data."
 693,OBJ09.05,OBJ09.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
 694,CH06.11,BT00.03; CH06.10,Reconcile NAV with dated contributions/retractions; calculate TWR and MWR/IRR.
 695,CH23.02,CH05.07; CH06.11; CH21.11; CH22.10; G06,Build event ledger: snapshot → signal → target → orders → fills → costs → cash/P&L/NAV.

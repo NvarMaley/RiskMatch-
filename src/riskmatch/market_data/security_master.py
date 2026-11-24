@@ -8,7 +8,7 @@ import csv
 import json
 
 from .universe import Holding, treasury_etf_eligible, treasury_eligible
-from .local_sources import local_market_paths, monthly_audit, daily_audit, audit_available_for_as_of, treasury_identity_summary, issuer_holdings_summary
+from .local_sources import membership_summary, local_market_paths, monthly_audit, daily_audit, audit_available_for_as_of, treasury_identity_summary, issuer_holdings_summary
 
 ROOT = Path(__file__).resolve().parents[3]
 CATALOG_PATH = ROOT / "configs/universe_catalog.json"
@@ -392,6 +392,7 @@ def universe_report(as_of, *, price_path=None, rate_path=None, records_dir=None,
             "daily_audit": ({"observed_etfs":daily["observed_etfs"],"snapshot_date":daily["snapshot_date"],
                              "stock_snapshot_count_with_return":daily["stock_snapshot_count_with_return"],"status":"local_unvalidated"} if daily else None),
             "treasury_identity":treasury_summary,
+            "membership_review":membership_summary(as_of) if default_sources else None,
             "futures_roots":ARCHIVED_FUTURES_ROOTS,
             "active_futures_roots":FUTURES_ROOTS,
             "eligible_count": sum(r["eligible"] for r in rows),

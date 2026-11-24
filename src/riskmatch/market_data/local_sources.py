@@ -82,6 +82,21 @@ def _derived_summary(path, schema, as_of):
     except (OSError,ValueError,TypeError,KeyError):return None
 
 
+def membership_summary(as_of, root=ROOT):
+    path = Path(root) / "data/processed/universe/universe_membership_review.json"
+    try:
+        report = audit_available_for_as_of(json.loads(path.read_text()), as_of)
+        if report:
+            return {"stock_months": report["stocks"]["months"],
+                    "stock_exits": report["stocks"]["exits"],
+                    "sovereign_count": report["treasuries"]["latest_confirmed"],
+                    "statement_date": report["treasuries"]["last"],
+                    "excluded_reports": report["funds"]["excluded_reports"]}
+    except (OSError, ValueError, TypeError, KeyError):
+        pass
+    return None
+
+
 def treasury_identity_summary(as_of,root=ROOT):
     obj=_derived_summary(Path(root)/"data/processed/universe/treasury_identity.json","treasury-auction-identity-v1",as_of)
     if not obj:return None
