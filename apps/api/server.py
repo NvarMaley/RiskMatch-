@@ -1,6 +1,7 @@
 """Loopback-only MVP HTTP service; no persistence or trading endpoints."""
 import json
 import sys
+from datetime import date
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
@@ -9,6 +10,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from riskmatch.prototype import ClientProfile, cards, score, candidates
 from riskmatch.profiling.mandate import validate_mandate, SCHEMA_VERSION
 from riskmatch.behavioral.discovery import session as discovery_session, score as discovery_score
+from riskmatch.market_data.security_master import universe_report
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -46,6 +48,11 @@ class Handler(SimpleHTTPRequestHandler):
                                                      data.get("confidence"), data.get("locales")))
             if self.path == "/api/mandate/preview":
                 return self.respond(validate_mandate(data))
+            if self.path == "/api/universe":
+                as_of = date.fromisoformat(data["as_of"])
+                if as_of > date.today() or as_of < date(1900, 1, 1):
+                    raise ValueError("invalid_universe_date")
+                return self.respond(universe_report(as_of))
             if self.path == "/api/candidates":
                 if isinstance(data, dict) and data.get("schema_version") == SCHEMA_VERSION:
                     report = validate_mandate(data)

@@ -177,30 +177,40 @@ Evidence (2026-11-24): [behavioral protocol](docs/RISKMATCH_BEHAVIORAL.md), [dra
 
 Notebook: [chapter 03](notebooks/RiskMatch_V3.ipynb#chapitre-03) · Guide chapter 2.
 
-- [ ] Study and formalize: Build the ETF security master: ticker, currency, class and dates.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Build the ETF security master: ticker, currency, class and dates.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 03 — A. Detailed Tasks
 
 
-- [ ] **CH03.01** — Define the US investment universe and eligible asset classes; identify ETF launch dates, domicile, currency and benchmark.
-- [ ] **CH03.02** — Select 15–30 liquid US equity ETFs (capitalization, sector, style, REIT), nominal Treasury/TIPS-only ETFs and cash.
-- [ ] **CH03.03** — Design permanent security ID, ticker history, asset_class, sector, issuer, currency, valid_from/to and multiplier fields.
-- [ ] **CH03.04** — Store dated investability, listing/delisting, liquidity, expense ratio, AUM and restrictions.
+- [x] **CH03.01** — Define the US investment universe and eligible asset classes; identify ETF launch dates, domicile, currency and benchmark.
+  Public issuer metadata recorded with source URLs; inception distinct from unknown listing dates. No current metadata used as historical eligibility.
+- [x] **CH03.02** — Select 15–30 liquid US equity ETFs (capitalization, sector, style, REIT), nominal Treasury/TIPS-only ETFs and cash.
+  Initial candidate selection: 17 equity/real-estate ETFs, 5 Treasury ETF candidates and USD cash. Dated liquidity screen defined; actual liquidity and market data remain unverified and no candidate is approved for allocation.
+- [x] **CH03.03** — Design permanent security ID, ticker history, asset_class, sector, issuer, currency, valid_from/to and multiplier fields.
+- [x] **CH03.04** — Store dated investability, listing/delisting, liquidity, expense ratio, AUM and restrictions.
+  Local dated-record schema, validation and receipt reader implemented; no fabricated records. Actual local investability/holdings files missing.
 - [ ] **CH03.05** — Define 300–3000-stock second-stage universe with historical constituents, delistings and historical market cap.
+  PIT PERMNO ranking and synthetic tests ready; actual WRDS schema/licenses/coverage and G06 prerequisites pending.
 - [ ] **CH03.06** — Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings.
+  Direct Treasury schema and dated holdings checks prepared; actual issuer/holdings history pending.
 - [ ] **CH03.07** — Design per-expiry futures catalog for equity indexes, rates, commodities and FX; verify contract specification and expiry.
+  Candidate roots and expiry/spec contract prepared; real contract-level specifications and G06 prerequisites pending.
 - [ ] **CH03.08** — Create hedge instrument map for USD/CHF, equity and rates; mark options as extension only when explicitly authorized.
-- [ ] **CH03.09** — Choose benchmark per strategy and cash/risk-free series; distinguish tradable benchmark and non-tradable proxy.
-- [ ] **CH03.10** — Produce coverage matrix by instrument, date, frequency, missingness, liquidity and source; avoid invented pre-launch data.
-- [ ] **CH03.11** — Expose universe filters, availability chart and exclusion reason in UI.
+  Hedge map drafted; no options enabled. Actual instruments remain gated by CH03.07.
+- [x] **CH03.09** — Choose benchmark per strategy and cash/risk-free series; distinguish tradable benchmark and non-tradable proxy.
+- [x] **CH03.10** — Produce coverage matrix by instrument, date, frequency, missingness, liquidity and source; avoid invented pre-launch data.
+  Synthetic coverage tests; live raw ETF file unreadable/cloud placeholder; prior local summary reports 12 candidates, explicitly unreconciled; DTB3 readable. No price series fabricated.
+- [x] **CH03.11** — Expose universe filters, availability chart and exclusion reason in UI.
+
+Evidence: [US Universe](docs/US_UNIVERSE.md), `configs/universe_catalog.json`, `security_master.py`, notebook cell `a8500da9`, synthetic fixture and unit/HTTP/JS tests. This is a candidate catalog and coverage interface, not a validated investable universe. UNIV.01, G02, G06, actual holdings and liquidity remain open. Owner visual confirmation and GitHub publication pending.
 
 
 

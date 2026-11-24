@@ -1,0 +1,39 @@
+# US Investment Universe — Chapter 03
+
+Catalog version `universe-v1.0.0`, metadata reviewed 2026-11-24. These are research candidates, not an investable portfolio, recommendations or validated current/historical eligibility. The shared public manifest is `configs/universe_catalog.json`; each ETF has an internal immutable ID, current ticker, sponsor, asset class, sector/style, fund inception, US domicile, USD currency, reference index and issuer source. Inception is not necessarily exchange listing. Listing dates not independently identified remain null, not fabricated. Current benchmark descriptions must not be retroactively assumed to be historical benchmark versions.
+
+## CH03.01–02 — Candidate catalog
+
+| Category | Candidates |
+|---|---|
+| Broad / capitalization | SPY, MDY, IWM |
+| Style | IWD, IWF |
+| Sectors | XLB, XLC, XLE, XLF, XLI, XLK, XLP, XLU, XLV, XLY |
+| Listed real estate | VNQ, XLRE |
+| US Treasury ETFs | BIL, SHY, IEF, TLT, TIP |
+| Cash ledger | USD |
+
+17 equity/real-estate ETFs and 5 Treasury candidates; cash is separate. Initial preference for established representative funds; overlapping exposures are intentional for research, not an instruction to hold every fund. Actual liquidity must be checked with dated observations. Provisional screen: trailing average daily dollar volume at least USD 1 million, AUM at least USD 100 million, known expense ratio, no binding restrictions. These are screening assumptions for subsequent owner review, not a guarantee of liquidity. The initial fund metadata comes from public issuer factsheets and product pages (State Street, iShares, Vanguard). Source URLs are attached per row. Examples: [SPY](https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy), [VNQ](https://fund-docs.vanguard.com/F0986.pdf), [BIL](https://www.ssga.com/us/en/individual/etfs/state-street-spdr-bloomberg-1-3-month-t-bill-etf-bil). No fund prices or licensed vendor files are committed.
+
+## CH03.03–04 — Permanent identities and eligibility
+
+`security_master.py` defines immutable `Instrument`, date-valid `TickerAlias`, `InvestabilityRecord` and `HoldingSnapshot`. Ticker history uses half-open validity intervals and an explicit observed/available date. Resolve ticker reuse at the decision timestamp; ambiguous matches fail. No historical alias is inferred from a current ticker. Dated investability includes listing/delisting, ADV in USD, annual expense ratio in decimal units, AUM in USD, restrictions, source and explicit validity. Missing, stale or future records fail closed. The Treasury-only filter requires a complete independently verified historical holdings snapshot at the decision date, directly issued Treasury bonds/bills/notes/TIPS; ancillary USD cash only. Reject corporate, municipal, agency, mortgage-backed, foreign sovereign and mixed debt. Public fund objective is not holdings proof. The `data_validated` flag cannot be set through the browser and remains false until the CH04–06/UNIV.01 gates.
+
+Local optional files (ignored by Git): `data/raw/universe/investability.json` and `data/raw/universe/holdings.json`, arrays of matching dataclass fields. Dates ISO `YYYY-MM-DD`, null permitted only on nullable fields, `valid_until` must be explicit. Holdings array elements use `instrument_type`, `issuer`, `currency`; `complete_verified` requires actual source evidence. A current snapshot cannot establish past eligibility. No auto-download, no imputation, never change the imported WRDS files.
+
+## CH03.05–08 — Gated extensions (preparatory code, not validated)
+
+- Stocks: use permanent CRSP PERMNO, observed and available market cap, listing/delisting and US common-stock classification. Rank point-in-time eligible records by descending USD market cap, tie-break stable ID; target configurable 300–3000, default 1000, report incomplete rather than silently supplementing. Historic constituents and delisted securities require validated WRDS data; no present-day index membership or ticker backfill. The 25 MB local security-universe Parquet is not read by this phase; license and schema verification, PIT transformation and data reader belong to CH04/05/G06.
+- Direct Treasuries: CUSIP, issuer/type, issue and maturity dates, coupon, source; only direct US Treasury bills, notes, bonds and TIPS. Later CH21 handles accrued interest, coupon and inflation indexation. Public source: [TreasuryDirect](https://www.treasurydirect.gov/marketable-securities/).
+- Futures: candidate roots ES/NQ/RTY (equity), ZT/ZF/ZN/ZB (rates), CL/GC (commodities), 6S (FX). Each contract requires unique per-expiry ID, published spec, multiplier, tick, currency, last-trade, expiry, settlement and verified source; actual margin, roll and contract history need CH22. Root names do not authorize trades or imply numeric contract specifications. Obtain contract-specific records from [CME Group](https://www.cmegroup.com/markets.html); no synthetic expiry or multiplier is published as real.
+- Hedge map: CHF exposure → 6S candidate; equity → ES/NQ/RTY; rates → ZT/ZF/ZN/ZB. FX quotation inversion, duration, basis, sizing, leverage, collateral and permissions must be verified in later chapters. No options are enabled. Prepared schemas are tested on fictitious data; CH03.05–08 remain open because G06, CH04.09 and actual historical contracts/holdings are missing.
+
+## CH03.09 — Benchmarks and cash
+
+`BENCHMARKS` and `STRATEGY_BENCHMARK` provide explicit initial mappings for all 19 strategies. An index total-return reference is not an executable instrument; a named fund proxy has its own fees, tracking error and inception. The 60/40 SPY/IEF composition is a proposed rebalanced synthetic benchmark, not an existing return series. Strategy-specific benchmarks depend on mandate and must be fixed before testing. USD cash is an accounting ledger; `FRED:DTB3` is a three-month bill discount-yield rate, not a cash total return (see [FRED series](https://fred.stlouisfed.org/series/DTB3)). BIL is a separately investable fund candidate, not cash. Cash return conversion belongs to CH06 and CH21.
+
+## CH03.10–11 — Coverage and UI
+
+The local API reads only the designated adjusted ETF CSV and optional dated records, reports aggregate counts, first/last observation, source-grid missingness and prelaunch rejection. No raw price values leave the machine or enter the notebook. Coverage after known inception/listing = valid distinct observed sessions / distinct union of valid source sessions; not an exchange-calendar measure. Reject duplicate observations, future observations at cutoff, and prelaunch data; do not claim coverage across missing exchange sessions until CH05. Missing liquidity is displayed as unavailable, not zero. DTB3 coverage is reported separately without converting yield to returns.
+
+On 2026-11-24 the ETF CSV at `data/data/raw/etf_prices_adjusted.csv` appeared `dataless` (cloud placeholder), and the read returned no header; `DTB3.csv` was readable. The prior local receipt summary `data/data/processed/series_catalogue.csv` was readable and reports coverage for 12 of the 22 candidate ETFs, explicitly classified as `reported_unvalidated`. The live report returned `local_summary_only`, zero independently observed ETF price series and zero validated allocation candidates. Prior summary rows are displayed only after the documented receipt date (2026-11-22) and when the entire reported interval precedes the requested cutoff; no historical counts are inferred. Materialize the ETF file locally in Finder, then refresh Universe. No source files were modified. The public fixture `configs/universe-coverage-example.csv` is entirely fictitious (including deliberately invalid prelisting quotes); CI runs only this fixture. The bilingual Universe page supports search, class, observed/reported/missing availability, date, coverage bars and explicit exclusion diagnostics, without altering the confirmed client mandate or Explore demo.
