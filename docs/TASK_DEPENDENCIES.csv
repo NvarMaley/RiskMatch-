@@ -202,7 +202,7 @@ topological_order,ticket,direct_prerequisites,description
 201,CH06.11,CH06.10,Reconcile NAV with dated contributions/retractions; calculate TWR and MWR/IRR.
 202,CH06.12,CH06.11,"Report units, frequency, missingness, and base currency in output charts."
 203,G02,CH03.11; CH04.09; CH05.12; CH06.12; G01; UNIV.01,"Validated US ETF universe, cash, benchmarks, licenses and PIT/total-return pipeline."
-204,CH07.01,G02,"Compute count, missingness, min/max, quantiles and distribution diagnostics by asset."
+204,CH07.01,CH06.12,"Compute count, missingness, min/max, quantiles and distribution diagnostics by asset."
 205,CH13.01,G02,"Define cash benchmark, equal weight 1/N, 60/40 and market-cap benchmarks."
 206,CH23.01,G02,"Define initial capital, benchmark, execution timing, decision timestamp, cash-flow convention and rebalance schedule."
 207,OBJ01.02,G02; OBJ01.01,"Prepare dated inputs: initial capital, horizon, inflation, simulated losses. Define schema, provenance, coverage and availability checks."
@@ -306,7 +306,7 @@ topological_order,ticket,direct_prerequisites,description
 305,CH14.08,CH14.07,"Validate analytic two-asset case, covariance singularity, negative expected excess return and infeasible mandate."
 306,OPT04.05,OPT04.04,"Test missing data, zero denominator/incompatible input and explicit failure without misleading results."
 307,CH14.10,CH14.08,"Plot frontier, weights and marginal risk; export model configuration and solver diagnostics."
-308,G03,CH07.09; CH09.08; CH11.10; CH13.02; CH14.10,"Statistics, covariance and baselines; minimum variance, maximum utility, maximum Sharpe and frontier with analytical tests."
+308,G03,CH07.09; CH09.08; CH11.10; CH13.02; CH14.10; G02,"Statistics, covariance and baselines; minimum variance, maximum utility, maximum Sharpe and frontier with analytical tests."
 309,BT00.01,CH23.01; G03,"Define minimal ETF/cash ledger: trades, positions, fees, dividends/total return without double counting, NAV and flows."
 310,BT00.02,BT00.01,"Implement delayed execution, commissions/spread, positions and NAV for cash, 1/N and 60/40 only."
 311,BT00.03,BT00.02,"Reconcile an analytical two-asset, two-period case without fees, then with fees and contributions."

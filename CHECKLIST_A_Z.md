@@ -344,28 +344,31 @@ Evidence: [Return methodology](docs/RETURNS.md), 30 local content-addressed retu
 
 Notebook: [chapter 07](notebooks/RiskMatch_V3.ipynb#chapitre-07) · Guide chapter 4.
 
-- [ ] Study and formalize: Means, volatility, covariance, correlation and charts.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
-- [ ] Verify local rendering and update documentation.
-- [ ] Create a PR, obtain review and merge.
+- [x] Study and formalize: Means, volatility, covariance, correlation and charts.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
+- [x] Verify local rendering and update documentation.
+- [x] Publish through the owner-approved solo workflow (D003).
 
 ### 07 — A. Detailed Tasks
 
 
-- [ ] **CH07.01** — Compute count, missingness, min/max, quantiles and distribution diagnostics by asset.
-- [ ] **CH07.02** — Compute arithmetic/geometric means, median, variance, sample standard deviation, annualized volatility and downside deviation.
-- [ ] **CH07.03** — Compute skewness, kurtosis, histogram, empirical CDF and QQ plots; compare heavy tails with normal reference.
-- [ ] **CH07.04** — Compute auto-correlation, PACF, Ljung-Box and stationarity diagnostics; state assumptions and limitations.
-- [ ] **CH07.05** — Compute covariance and Pearson/Spearman correlations; handle missing-data alignment and constant series explicitly.
-- [ ] **CH07.06** — Compute rolling means, volatility, beta and correlations with trailing windows; test no future data.
-- [ ] **CH07.07** — Compute cross-sectional ranks and standardized features with winsorization fit only on training periods.
-- [ ] **CH07.08** — Test analytical two-asset covariance and portfolio variance; verify symmetry, PSD, units and sample denominator.
-- [ ] **CH07.09** — Implement summaries and compare assets, frequency and selected dates in UI.
+- [x] **CH07.01** — Compute count, missingness, min/max, quantiles and distribution diagnostics by asset.
+- [x] **CH07.02** — Compute arithmetic/geometric means, median, variance, sample standard deviation, annualized volatility and downside deviation.
+- [x] **CH07.03** — Compute skewness, kurtosis, histogram, empirical CDF and QQ plots; compare heavy tails with normal reference.
+- [x] **CH07.04** — Compute auto-correlation, PACF, Ljung-Box and stationarity diagnostics; state assumptions and limitations.
+  ADF(1) statistic without an unsupported conventional p-value; longest contiguous runs.
+- [x] **CH07.05** — Compute covariance and Pearson/Spearman correlations; handle missing-data alignment and constant series explicitly.
+- [x] **CH07.06** — Compute rolling means, volatility, beta and correlations with trailing windows; test no future data.
+- [x] **CH07.07** — Compute cross-sectional ranks and standardized features with winsorization fit only on training periods.
+- [x] **CH07.08** — Test analytical two-asset covariance and portfolio variance; verify symmetry, PSD, units and sample denominator.
+- [x] **CH07.09** — Implement summaries and compare assets, frequency and selected dates in UI.
+
+Evidence: [Descriptive methodology](docs/DESCRIPTIVE_STATISTICS.md), 27,230 local statistical profiles, 2,093,782 rolling rows, 2,064,429 cross-sectional rows and four complete-case reference covariance matrices. The statistical research pipeline and comparison UI are implemented; G02 remains required for historical financial-model approval and G03.
 
 
 

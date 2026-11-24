@@ -63,13 +63,14 @@ def graph():
     put("G02","G01","CH03.11","CH04.09","CH05.12","CH06.12","UNIV.01")
 
     # Basic statistics, forecast and risk. Advanced analyses may run only after applicable data.
-    ch(7,list(range(1,10)),"G02")
+    # Descriptive research and synthetic tests can precede actual data approval.
+    ch(7,list(range(1,10)),"CH06.12")
     ch(8,[1,4,2],"CH05.09","CH07.06")
     ch(9,[1,2,8],"CH07.08")
     ch(11,[1,2,3,5,9,10],"CH07.08")
     ch(13,[1,5,6,2],"G02")
     ch(14,[1,2,3,4,5,6,7,8,10],"CH09.08","CH08.02","CH02.15","CH12.02")
-    put("G03","CH07.09","CH09.08","CH11.10","CH13.02","CH14.10")
+    put("G03","G02","CH07.09","CH09.08","CH11.10","CH13.02","CH14.10")
 
     # Explicit baseline engine before full backtest or advanced economic model evaluation.
     ch(23,[1],"G02")
