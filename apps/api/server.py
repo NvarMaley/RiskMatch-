@@ -13,6 +13,7 @@ from riskmatch.behavioral.discovery import session as discovery_session, score a
 from riskmatch.market_data.security_master import universe_report
 from riskmatch.market_data.source_catalog import source_report
 from riskmatch.market_data.point_in_time import snapshot_report
+from riskmatch.market_data.returns import returns_report
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -64,6 +65,11 @@ class Handler(SimpleHTTPRequestHandler):
                 if as_of > date.today() or as_of < date(1900, 1, 1):
                     raise ValueError("invalid_universe_date")
                 return self.respond(snapshot_report(ROOT, as_of))
+            if self.path == "/api/returns":
+                as_of = date.fromisoformat(data["as_of"])
+                if as_of > date.today() or as_of < date(1900,1,1):
+                    raise ValueError("invalid_universe_date")
+                return self.respond(returns_report(ROOT, as_of))
             if self.path == "/api/candidates":
                 if isinstance(data, dict) and data.get("schema_version") == SCHEMA_VERSION:
                     report = validate_mandate(data)

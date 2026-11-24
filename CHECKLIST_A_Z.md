@@ -306,31 +306,37 @@ Evidence: [Point-in-time preparation](docs/POINT_IN_TIME.md), local Parquet and 
 
 Notebook: [chapter 06](notebooks/RiskMatch_V3.ipynb#chapitre-06) · Guide chapter 3.1.
 
-- [ ] Study and formalize: Calculate simple/log/total returns, FX and reconcile adjusted prices.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
-- [ ] Verify local rendering and update documentation.
-- [ ] Create a PR, obtain review and merge.
+- [x] Study and formalize: Calculate simple/log/total returns, FX and reconcile adjusted prices.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
+- [x] Verify local rendering and update documentation.
+- [x] Publish through the owner-approved solo workflow (D003).
 
 ### 06 — A. Detailed Tasks
 
 
-- [ ] **CH06.01** — Calculate simple return P_t/P_(t-1)-1 and log return log(1+r) where valid.
-- [ ] **CH06.02** — Calculate total return with adjusted split/dividend handling without double counting.
-- [ ] **CH06.03** — Compare raw-close and total-return series on hand-calculated dividend/split fixtures.
-- [ ] **CH06.04** — Compound simple returns over horizons; verify product(1+r)-1 equals exp(sum(log(1+r)))-1 when valid.
-- [ ] **CH06.05** — Calculate arithmetic and geometric average; distinguish forecast mean from realized CAGR.
-- [ ] **CH06.06** — Compute daily/weekly/monthly aggregation with explicit trading dates and K=252/52/12 conventions.
-- [ ] **CH06.07** — Compute base-currency return (1+r_local)(1+r_FX)-1; test reciprocal quotation.
-- [ ] **CH06.08** — Compute nominal to real return (1+r)/(1+inflation)-1; align inflation availability.
-- [ ] **CH06.09** — Normalize cash accrual using appropriate day count; model excess return vs matching rf series.
-- [ ] **CH06.10** — Separate dirty bond price/coupons and futures cash P&L; skip log returns for nonpositive futures prices.
-- [ ] **CH06.11** — Reconcile NAV with dated contributions/retractions; calculate TWR and MWR/IRR.
-- [ ] **CH06.12** — Report units, frequency, missingness, and base currency in output charts.
+- [x] **CH06.01** — Calculate simple return P_t/P_(t-1)-1 and log return log(1+r) where valid.
+- [x] **CH06.02** — Calculate total return with adjusted split/dividend handling without double counting.
+- [x] **CH06.03** — Compare raw-close and total-return series on hand-calculated dividend/split fixtures.
+- [x] **CH06.04** — Compound simple returns over horizons; verify product(1+r)-1 equals exp(sum(log(1+r)))-1 when valid.
+- [x] **CH06.05** — Calculate arithmetic and geometric average; distinguish forecast mean from realized CAGR.
+- [x] **CH06.06** — Compute daily/weekly/monthly aggregation with explicit trading dates and K=252/52/12 conventions.
+  Crypto daily convention K=365; incomplete intervals remain null.
+- [x] **CH06.07** — Compute base-currency return (1+r_local)(1+r_FX)-1; test reciprocal quotation.
+- [x] **CH06.08** — Compute nominal to real return (1+r)/(1+inflation)-1; align inflation availability.
+  USD latest-vintage CPI ex-post reference; historical release approval remains open.
+- [x] **CH06.09** — Normalize cash accrual using appropriate day count; model excess return vs matching rf series.
+- [x] **CH06.10** — Separate dirty bond price/coupons and futures cash P&L; skip log returns for nonpositive futures prices.
+  Nominal conditional cash-flow scenarios and TIPS/futures synthetic cases. Actual clean/dirty and cash receipts remain unresolved; futures archived.
+- [x] **CH06.11** — Reconcile NAV with dated contributions/retractions; calculate TWR and MWR/IRR.
+  Synthetic NAV/flow tests; real ledger validation remains BT00 and chapter 23.
+- [x] **CH06.12** — Report units, frequency, missingness, and base currency in output charts.
+
+Evidence: [Return methodology](docs/RETURNS.md), 30 local content-addressed return tables, source-separated CRSP and SOFR reconciliations, single notebook and bilingual quality view. Technical implementation is complete; source approval and actual investment eligibility remain governed by G02.
 
 
 

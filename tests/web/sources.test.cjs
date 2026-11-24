@@ -47,3 +47,17 @@ test("Point-in-time quality panel displays blocked historical approval", async (
   context.window.SourcesView.render();
   assert.match(el.innerHTML, /Missing return: 1/);
 });
+
+test("Return coverage distinguishes price and total returns", async () => {
+  const el = {innerHTML: "", addEventListener() {}};
+  const context = {document: {getElementById: () => el}, window: {RM: {t: k => k, language: "fr"}}};
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, "../../apps/web/sources.js"), "utf8"), context);
+  await context.window.SourcesView.load(async endpoint => endpoint === "returns" ?
+    {approved:false,datasets:[{dataset:"fixture",rows:4,price_returns:3,total_returns:0,chf_price_returns:2,chf_total_returns:0}]} : {rows:[]});
+  assert.match(el.innerHTML,/06 · Rendements et devises/);
+  assert.match(el.innerHTML,/3 \/ 0/);
+  assert.match(el.innerHTML,/75%/);
+  context.window.RM.language="en";
+  context.window.SourcesView.render();
+  assert.match(el.innerHTML,/06 · Returns and FX/);
+});
