@@ -203,6 +203,22 @@ def main():
                 "max_abs_nav_gap_pct",
             )
         }
+    folder, receipt = latest(RAW / "delisting_reference")
+    if receipt:
+        check(folder, receipt["file"])
+        check(DERIVED / "market_matches", receipt["local_leads_file"])
+        summary["delistings"] = {
+            "events": receipt["rows"],
+            "cohort_leads": receipt["candidate_leads"],
+        }
+    folder, receipt = latest(RAW / "cash_reference")
+    if receipt:
+        for row in receipt["series"]:
+            check(folder, row["file"])
+        summary["cash_reference"] = {
+            r["symbol"]: {"days": r["days"], "last": r["last"], "unit": r["unit"]}
+            for r in receipt["series"]
+        }
     out = DERIVED / "research_extensions.json"
     with tempfile.NamedTemporaryFile(mode="w", dir=out.parent, delete=False) as stream:
         json.dump(summary, stream, indent=2)

@@ -64,6 +64,27 @@ def main():
         source_snapshot="2026-09-30",
         acquired_at_utc=datetime.now(timezone.utc).isoformat(),
     )
+    index_folder, index_receipt = latest(raw / "sec_filing_index")
+    if index_receipt:
+        index = index_folder / ("filings-" + index_receipt["sha256"][:16] + ".parquet")
+        leads = db.execute(
+            """select distinct c.local_permno,i.cik,f.accessionNumber,f.filingDate,f.form
+                          from cohort c join identities i on c.local_permno=i.lpermno
+                          join read_parquet(?) f on f.cik=i.cik
+                          where try_cast(c.sessions as integer)<? and f.form in ('25','25-NSE','25/A','25-NSE/A')
+                          and f.filingDate between cast(? as date) and cast(? as date)
+                          order by c.local_permno,f.filingDate""",
+            [str(index), prices["expected_days"], prices["first"], prices["last"]],
+        )
+        rows = leads.fetchall()
+        payload = io.StringIO()
+        writer = csv.writer(payload)
+        writer.writerow([x[0] for x in leads.description])
+        writer.writerows(rows)
+        report["issuer_delisting_leads"] = len({r[0] for r in rows})
+        report["lead_file"] = immutable_save(
+            dest, "issuer-form25", gzip.compress(payload.getvalue().encode(), mtime=0), "csv.gz"
+        )
     immutable_save(dest, "identity", json.dumps(report, indent=2).encode(), "json")
     print({k: v for k, v in report.items() if k != "file"})
 
