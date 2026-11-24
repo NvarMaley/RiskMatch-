@@ -62,21 +62,22 @@ test("Return coverage distinguishes price and total returns", async () => {
   assert.match(el.innerHTML,/06 · Returns and FX/);
 });
 
-test("Descriptive comparison exposes selected assets and common covariance", async () => {
+test("Universe research renders the asset library and opens an explained statistical profile", async () => {
   const elements=new Map();
-  const get=id=>{if(!elements.has(id))elements.set(id,{innerHTML:"",value:"",selectedOptions:[],addEventListener(){}});return elements.get(id);};
+  const defaults={"research-start":"2025-01-01","research-end":"2025-01-02","research-currency":"USD","research-kind":"total_return"};
+  const get=id=>{if(!elements.has(id))elements.set(id,{innerHTML:"",value:defaults[id]||"",querySelectorAll(){return [];},scrollIntoView(){}});return elements.get(id);};
   const context={document:{getElementById:get},window:{RM:{t:k=>k,language:"fr"}}};
-  vm.runInNewContext(fs.readFileSync(path.join(__dirname,"../../apps/web/sources.js"),"utf8"), context);
-  await context.window.SourcesView.load(async endpoint=>{
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname,"../../apps/web/asset-research.js"),"utf8"), context);
+  await context.window.AssetResearch.load(async endpoint=>{
     if(endpoint==="statistics")return {datasets:[{rows:2}],sources:[{source:"listed_daily",frequency:"daily"}],covariance_checks:[]};
-    if(endpoint==="statistics/assets")return {assets:["A","B"],first:"2025-01-01",last:"2025-01-02"};
-    if(endpoint==="statistics/compare")return {assets:[{instrument:"A",statistics:{count:2,missing:0,mean:.01},distribution:{histogram:[],cdf:[],qq:[]}}],matrix:{count:2,psd:true,covariance:[[.01]],pearson:[[1]],spearman:[[1]]},frequency:"daily",currency:"USD"};
+    if(endpoint==="statistics/assets")return {assets:["A","B"],labels:{A:"Asset A"},kinds:["total_return"],first:"2025-01-01",last:"2025-01-02"};
+    if(endpoint==="statistics/compare")return {assets:[{source:"listed_daily",instrument:"A",statistics:{count:2,missing:0,mean:.01},distribution:{histogram:[],cdf:[],qq:[]}}],matrix:{count:2,psd:true,covariance:[[.01]],pearson:[[1]],spearman:[[1]]},frequency:"daily",currency:"USD"};
     return {rows:[]};
-  });
-  await Promise.resolve();
-  assert.match(get("sources-report").innerHTML,/07 · Statistiques descriptives/);
-  get("stats-assets").selectedOptions=[{value:"A"}];
-  await get("stats-compare").onclick();
-  assert.match(get("stats-result").innerHTML,/Intervalles communs/);
-  assert.match(get("stats-result").innerHTML,/PSD: true/);
+  },"2025-01-02");
+  assert.match(get("universe-statistics").innerHTML,/Fiches des actifs/);
+  assert.match(get("universe-statistics").innerHTML,/Asset A/);
+  await context.window.AssetResearch.openListed("A");
+  assert.match(get("universe-statistics").innerHTML,/Moyenne arithmétique/);
+  assert.match(get("universe-statistics").innerHTML,/1.00%/);
+  assert.match(get("universe-statistics").innerHTML,/Dépendance temporelle/);
 });

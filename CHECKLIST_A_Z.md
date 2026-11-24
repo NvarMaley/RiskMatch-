@@ -367,6 +367,7 @@ Notebook: [chapter 07](notebooks/RiskMatch_V3.ipynb#chapitre-07) · Guide chapte
 - [x] **CH07.07** — Compute cross-sectional ranks and standardized features with winsorization fit only on training periods.
 - [x] **CH07.08** — Test analytical two-asset covariance and portfolio variance; verify symmetry, PSD, units and sample denominator.
 - [x] **CH07.09** — Implement summaries and compare assets, frequency and selected dates in UI.
+  Universe includes searchable individual statistical profiles, explanatory graphs, and same-frequency multi-source comparisons; the portfolio comparison remains separate.
 
 Evidence: [Descriptive methodology](docs/DESCRIPTIVE_STATISTICS.md), 27,230 local statistical profiles, 2,093,782 rolling rows, 2,064,429 cross-sectional rows and four complete-case reference covariance matrices. The statistical research pipeline and comparison UI are implemented; G02 remains required for historical financial-model approval and G03.
 

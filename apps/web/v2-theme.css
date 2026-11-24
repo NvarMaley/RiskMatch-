@@ -111,6 +111,25 @@ body[data-session="unlocked"] #save-access-controls { display:none; }
 .universe-table-wrap table { min-width:900px; }
 .universe-table-wrap td { vertical-align:top; }
 .universe-table-wrap small { display:block;font-size:.76rem;color:#b3c6d3;margin-top:4px; }
+.research-tabs,.research-tray,.research-pagination {display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0;}
+.research-asset-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0;}
+.research-asset {background:#0d2837;border:1px solid #507587;border-radius:12px;padding:12px;min-width:0;}
+.research-asset small {display:block;color:#b3c6d3;overflow-wrap:anywhere;}
+.research-asset div {display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.research-asset button {padding:7px 9px;font-size:.8rem;}
+.research-hub .mandate-grid {margin:14px 0;}
+.research-charts,.research-metrics {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin:16px 0;}
+.research-metrics {grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;}
+.research-metric,.research-chart {margin:0;border:1px solid #3c6071;border-radius:13px;background:#0d2633;padding:15px;min-width:0;}
+.research-metric strong {display:block;color:#b9e9f1;font-size:1.5rem;margin:6px 0;}
+.research-metric p,.research-chart small {font-size:.83rem;line-height:1.45;color:#b3c6d3;}
+.research-chart figcaption {font-weight:700;color:#edf9ff;margin-bottom:10px;}
+.research-chart svg {width:100%;height:auto;display:block;}
+.research-bar-row {display:grid;grid-template-columns:minmax(72px,1fr) 2fr minmax(60px,auto);gap:8px;align-items:center;margin:10px 0;font-size:.85rem;}
+.research-bar-track {height:12px;background:#29424f;border-radius:5px;overflow:hidden;}
+.research-bar-track i {height:100%;display:block;border-radius:5px;}
+.research-matrix {min-width:initial!important;font-size:.85rem;}
+.research-matrix td {text-align:center;white-space:nowrap;}
 .universe-meter { display:block;width:105px;height:8px;background:#29485a;border-radius:6px;overflow:hidden; }
 .universe-meter span { display:block;height:100%;background:#a8e2db; }
 .save-panel { max-width: 640px; margin: 35px auto; text-align:center; }

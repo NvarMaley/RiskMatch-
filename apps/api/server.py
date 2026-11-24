@@ -14,7 +14,7 @@ from riskmatch.market_data.security_master import universe_report
 from riskmatch.market_data.source_catalog import source_report
 from riskmatch.market_data.point_in_time import snapshot_report
 from riskmatch.market_data.returns import returns_report
-from riskmatch.analytics.descriptive_report import descriptive_report, assets as descriptive_assets, compare as descriptive_compare
+from riskmatch.analytics.descriptive_report import descriptive_report, assets as descriptive_assets, compare as descriptive_compare, compare_series
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -79,6 +79,9 @@ class Handler(SimpleHTTPRequestHandler):
                     return self.respond(descriptive_report(ROOT,as_of))
                 if self.path=="/api/statistics/assets":
                     return self.respond(descriptive_assets(ROOT,data["source"],as_of))
+                if "series" in data:
+                    return self.respond(compare_series(ROOT,data["series"],date.fromisoformat(data["start"]),
+                        date.fromisoformat(data["end"]),data["currency"],data["kind"],as_of))
                 return self.respond(descriptive_compare(ROOT,data["source"],data["instruments"],
                     date.fromisoformat(data["start"]),date.fromisoformat(data["end"]),data["currency"],data["kind"],as_of))
             if self.path == "/api/candidates":
