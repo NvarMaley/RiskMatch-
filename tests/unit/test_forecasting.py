@@ -4,7 +4,7 @@ import json
 import numpy as np
 import pytest
 
-from riskmatch.analytics.forecasting import forecast, lagged_examples, factor_reference
+from riskmatch.analytics.forecasting import forecast, lagged_examples, factor_reference, _bound
 
 
 def fixture():
@@ -58,6 +58,11 @@ def test_factor_reference_analytical():
     assert result["multifactor"]["beta"]==pytest.approx([1.2,.4,-.3])
     assert result["multifactor"]["alpha"]==pytest.approx(.002)
     assert result["black_litterman_no_view"]==pytest.approx([.025,.025])
+
+
+def test_simple_return_economic_bound():
+    assert _bound(np.array([-1.5,-.2,.1]),"total_return").tolist()==[-1.,-.2,.1]
+    assert _bound(-1.5,"excess_return")==-1.5
 
 
 def test_machine_learning_models_are_available_and_test_isolation():

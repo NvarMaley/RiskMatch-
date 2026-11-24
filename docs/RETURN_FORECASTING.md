@@ -67,14 +67,30 @@ as regular. Every attempted source and reason is retained. Results and all
 held-out predictions are stored in the ignored local forecasts directory,
 with a content-hashed manifest, resumable checkpoint, and no Git data export.
 
-The 2026-11-24 run examined all 1,474 items: 1,010 computed all ten core
-models plus the zero-return and ablation references; 464 unavailable
-(445 irregular intervals, 18 insufficient contiguous history, one absent
-return series). No fit errors. Of the computed assets, 580 monthly and 430
-daily forecasts; 579 total-return and 431 price-return. These results have
-different observation cutoffs, frequencies and return targets. Constructing
-a common-horizon, common-cutoff total-return vector is a later validation
-step, not implied by this batch. The Sources page shows aggregate coverage;
+The corrected 2026-11-24 run examined all 1,474 items: 1,008 computed all ten
+core models plus references, 464 have separate conditional estimates and
+two remain unavailable (one insufficient history, one absent series). No
+fit errors. Of the computed assets, 580 monthly and 428 daily forecasts;
+579 total-return and 429 price-return. Price/total simple forecasts and
+intervals are bounded below by -100% before scoring and calibration; excess
+returns have no such bound. Audit found no predictions below that bound.
+
+The conditional estimates cover 391 nominal bills/notes/bonds, 53 TIPS,
+19 short-history stocks and one cash reference. Bond yields use the latest
+dated FedInvest marks (clean-price assumption), contractual maturity and
+coupon, semiannual bond-equivalent yield for notes/bonds/TIPS and ACT/365
+effective annual yield for bills. TIPS yield is real. Cash uses latest SOFR
+as an indicative annualized overnight rate. Short histories use the arithmetic
+mean of at least three valid observed intervals without filling gaps; no
+out-of-sample validation or implied certainty. These are not comparable to
+one-period expected returns. Two stocks have too little or no usable data.
+
+A separate historical research vector includes 575 monthly USD total-return
+forecasts with the same last observation date, 2025-12-31. This is not a current
+or approved allocation input. No price-only returns, annual yields, mixed
+frequencies or short-history estimates are silently converted to total returns.
+The latest common-cutoff universe remains dependent on fresh and approved data.
+The Sources page shows aggregate coverage;
 the asset profile can load its saved universe forecast independently of
 an on-demand calculation.
 

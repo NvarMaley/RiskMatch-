@@ -61,3 +61,23 @@ def test_return_panel_does_not_bridge_missing_session(monkeypatch):
             insert into equity_calendar values ('2025-01-02',null),('2025-01-03','2025-01-02'),('2025-01-06','2025-01-03')""")
         result=db.execute(series_sql("fixture","reported")+" order by end_date").fetchall()
         assert result[-1][-2:]==(None,None)
+
+
+def test_split_adjusted_price_and_unverified_jump(monkeypatch):
+    import duckdb
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]/"scripts"))
+    from build_return_panel import series_sql
+    with duckdb.connect() as db:
+        db.execute("""create table fixture(instrument varchar,observation_date date,close double,reported double);
+            insert into fixture values ('X','2025-01-02',10,null),('X','2025-01-03',84,.05),('X','2025-01-06',210,null);
+            create table equity_calendar(session_date date,previous_day date);
+            insert into equity_calendar values ('2025-01-02',null),('2025-01-03','2025-01-02'),('2025-01-06','2025-01-03');
+            create table crsp_split_events(instrument varchar,observation_date date,factor double,ambiguous int);
+            insert into crsp_split_events values ('X','2025-01-03',.125,0);
+            create table public_split_events(instrument varchar,observation_date date,factor double,events int);
+            insert into public_split_events values ('X','2025-01-03',.125,1)""")
+        crsp=db.execute(series_sql("fixture","reported",adjustment="crsp_daily")+" order by end_date").fetchall()
+        assert crsp[1][-2]==pytest.approx(.05)
+        public=db.execute(series_sql("fixture","reported",adjustment="public")+" order by end_date").fetchall()
+        assert public[1][-2]==pytest.approx(.05)
+        assert public[2][-2] is None

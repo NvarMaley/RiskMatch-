@@ -1,5 +1,6 @@
 """Build chapter 8 for all catalogue items, with reproducible local checkpoints."""
 import argparse
+from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
 from datetime import date
 import hashlib
@@ -20,6 +21,7 @@ from riskmatch.analytics.descriptive_report import client_catalog
 from riskmatch.analytics.forecast_batch import prepare_item, run_item, summarize_rows
 from riskmatch.analytics.forecasting import VERSION
 from riskmatch.market_data.returns import returns_report
+from riskmatch.analytics.forecast_fallback import fallback
 
 
 def build(as_of, workers):
@@ -31,7 +33,7 @@ def build(as_of, workers):
     folder=ROOT/"data/processed/returns"/report["return_id"]
     base=ROOT/"data/processed/forecasts"
     base.mkdir(parents=True,exist_ok=True)
-    policy="USD; total then price; monthly then weekly then daily; no splicing"
+    policy="USD; total then price; monthly then weekly then daily; no splicing; conditional fallback v1"
     key=hashlib.sha256(json.dumps([report["return_id"],VERSION,as_of.isoformat(),policy,
                                 [a["id"] for a in catalogue]],sort_keys=True).encode()).hexdigest()
     dest=base/key
@@ -47,8 +49,15 @@ def build(as_of, workers):
                     done[row["id"]]=row
         print(f"Catalogue: {len(catalogue)}; resume: {len(done)}",flush=True)
         with duckdb.connect(config={"threads":1}) as db:
-            jobs=[prepare_item(a,db,folder,sources,as_of) for a in catalogue if a["id"] not in done]
-        print(f"Ready to fit: {sum(j['status']=='ready' for j in jobs)}; unavailable: {sum(j['status']!='ready' for j in jobs)}",flush=True)
+            pit_folder=ROOT/"data/processed/pit"/report["snapshot_id"]
+            jobs=[]
+            for a in catalogue:
+                if a["id"] in done: continue
+                job=prepare_item(a,db,folder,sources,as_of)
+                if job["status"]!="ready":
+                    job=fallback(a,job,db,folder,pit_folder,as_of)
+                jobs.append(job)
+        print(f"Ready to fit: {sum(j['status']=='ready' for j in jobs)}; fallback: {sum(j['status']=='fallback' for j in jobs)}; unavailable: {sum(j['status']=='unavailable' for j in jobs)}",flush=True)
         with checkpoint.open("a") as stream, ProcessPoolExecutor(max_workers=workers) as pool:
             for row in pool.map(run_item,((j,as_of,report["return_id"]) for j in jobs),chunksize=4):
                 stream.write(json.dumps(row,allow_nan=False,separators=(",",":"))+"\n")
@@ -63,6 +72,20 @@ def build(as_of, workers):
         meta={"status":"complete","approved":False,"run_id":key,"data_version":report["return_id"],
               "model_version":VERSION,"as_of":as_of.isoformat(),"policy":policy,"file_hash":file_hash,
               **summarize_rows(list(done.values()))}
+        # A separate, single-origin monthly TOTAL-return research vector.
+        origins=Counter(r["last"] for r in done.values() if r["status"]=="computed"
+                        and r["frequency"]=="monthly" and r["kind"]=="total_return")
+        anchor=max(origins,key=lambda day:(origins[day],day)) if origins else None
+        comparable=[{"id":r["id"],"source":r["source"],"instrument":r["instrument"],
+                     "expected_return":r["forecast"]["models"][r["forecast"]["selected_model"]]["expected_return"],
+                     "model":r["forecast"]["selected_model"]}
+                    for r in done.values() if r["status"]=="computed" and r["frequency"]=="monthly"
+                    and r["kind"]=="total_return" and r["last"]==anchor]
+        common=dest/"common_monthly_total_return.json"
+        common.write_text(json.dumps({"approved":False,"as_of":anchor,"currency":"USD","frequency":"monthly",
+                          "kind":"total_return","assets":comparable},allow_nan=False))
+        meta["common_monthly"]={"as_of":anchor,"count":len(comparable),"approved":False,
+            "file_hash":hashlib.sha256(common.read_bytes()).hexdigest()}
         with tempfile.NamedTemporaryFile(mode="w",dir=base,delete=False) as stream:
             json.dump(meta,stream,indent=2,allow_nan=False)
             temp=Path(stream.name)

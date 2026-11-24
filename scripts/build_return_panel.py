@@ -21,29 +21,51 @@ def digest(path):
         return hashlib.file_digest(stream,"sha256").hexdigest()
 
 
-def series_sql(table, reported, price="close", calendar="equity_calendar", daily=True):
+def series_sql(table, reported, price="close", calendar="equity_calendar", daily=True,
+               adjustment=None):
     """Keep source-separated return windows, with exact preceding sessions."""
     previous = "lag(observation_date) over w"
     valid = "start_date=expected_start" if daily else "date_diff('month',start_date,end_date)=1"
     expected_join = f"left join {calendar} c on a.end_date=c.session_date" if daily else ""
     expected = ",c.previous_day expected_start" if daily else ""
+    extra=",ex_distribution_return" if adjustment=="crsp_monthly" else ""
+    actions=""
+    price_expr="close/prior_close-1"
+    if adjustment=="crsp_monthly":
+        price_expr="case when isfinite(ex_distribution_return) and ex_distribution_return>=-1 then ex_distribution_return end"
+    elif adjustment=="crsp_daily":
+        actions="""left join crsp_split_events s on b.instrument=s.instrument and b.end_date=s.observation_date"""
+        price_expr="""case when coalesce(s.ambiguous,0)=0 and
+          (reported is null or abs(close/prior_close*coalesce(s.factor,1)-1-reported)<=0.25)
+          then close/prior_close*coalesce(s.factor,1)-1 end"""
+    elif adjustment=="public":
+        actions="""left join public_split_events s on b.instrument=s.instrument and b.end_date=s.observation_date"""
+        # A known split is applied only when the raw close ratio is consistent
+        # with that factor; ambiguous large moves are quarantined, not invented.
+        price_expr="""case when s.events is null and abs(close/prior_close-1)<=0.5 then close/prior_close-1
+          when s.events=1 and abs(close/prior_close*s.factor-1)<=0.5
+            and abs(ln(close/prior_close*s.factor))<abs(ln(close/prior_close))
+          then close/prior_close*s.factor-1
+          when s.events=1 and abs(close/prior_close-1)<=0.5
+            and abs(ln(close/prior_close))<abs(ln(close/prior_close*s.factor))
+          then close/prior_close-1 end"""
     return f"""with a as (select instrument,observation_date end_date,{previous} start_date,
-      {price} close,lag({price}) over w prior_close,{reported} reported
+      {price} close,lag({price}) over w prior_close,{reported} reported{extra}
       from {table} window w as(partition by instrument order by observation_date)),
       b as(select a.*{expected} from a {expected_join})
-      select instrument,start_date,end_date,
-      case when {valid} and prior_close>0 and close>=0 then close/prior_close-1 end price_return,
+      select b.instrument,start_date,end_date,
+      case when {valid} and prior_close>0 and close>0 then {price_expr} end price_return,
       case when {valid} and isfinite(reported) and reported>=-1 then reported end total_return
-      from b"""
+      from b {actions}"""
 
 
 def base_queries():
     return [
-        ("etf_crsp_daily","daily","USD",series_sql("etf_crsp_daily","reported_return"),"reported total return"),
-        ("etf_crsp_monthly","monthly","USD",series_sql("etf_crsp_monthly","reported_return",daily=False),"reported total return"),
-        ("listed_daily","daily","USD",series_sql("listed_daily","research_return"),"research event-adjusted return; missing events stay missing"),
+        ("etf_crsp_daily","daily","USD",series_sql("etf_crsp_daily","reported_return",adjustment="crsp_daily"),"reported total return; CRSP distribution-factor adjusted price return, ambiguous events excluded"),
+        ("etf_crsp_monthly","monthly","USD",series_sql("etf_crsp_monthly","reported_return",daily=False,adjustment="crsp_monthly"),"reported total and ex-distribution returns"),
+        ("listed_daily","daily","USD",series_sql("listed_daily","research_return",adjustment="public"),"research event-adjusted return; missing events stay missing"),
         ("stock_monthly","monthly","USD","select instrument,ranking_date start_date,observation_date end_date,cast(null as double) price_return,observed_return total_return from stock_outcomes","reported following-month cohort return"),
-        ("stock_ticker_reference","daily","USD",series_sql("stock_ticker_reference","cast(null as double)"),"price-only, identity reference"),
+        ("stock_ticker_reference","daily","USD",series_sql("stock_ticker_reference","cast(null as double)",adjustment="public"),"split-reviewed price-only identity reference; unverified extreme moves excluded"),
         ("btc","daily","USD",series_sql("btc_usd","cast(null as double)",calendar="crypto_calendar"),"spot price return"),
         ("eth","daily","USD",series_sql("eth_usd","cast(null as double)",calendar="crypto_calendar"),"spot price return"),
         ("bill_marks","irregular","USD","select instrument,start_date,observation_date end_date,mark_return price_return,cast(null as double) total_return from bill_mark_returns","government marks before maturity"),
@@ -119,7 +141,7 @@ def main():
         with tempfile.TemporaryDirectory(dir=DEST) as tmp, duckdb.connect() as db:
             stage=Path(tmp)
             db.execute("set threads=1")
-            names=("etf_crsp_daily","etf_crsp_monthly","listed_daily","stock_outcomes","stock_refresh_ticker_reference","stock_refresh_identity","btc-usd","eth-usd","fx_usd_chf","bill_mark_returns","wrds_daily_index","wrds_monthly_index","sofrindex","sofr","fedinvest_marks","us_equity_sessions","cpiaucsl","fama_french","nominal_accrual","nominal_contractual_payments")
+            names=("etf_crsp_daily","etf_crsp_monthly","listed_daily","stock_outcomes","stock_refresh_ticker_reference","stock_refresh_identity","btc-usd","eth-usd","fx_usd_chf","bill_mark_returns","wrds_daily_index","wrds_monthly_index","sofrindex","sofr","fedinvest_marks","us_equity_sessions","cpiaucsl","fama_french","nominal_accrual","nominal_contractual_payments","wrds_distributions","split")
             for name in names:
                 path=str(source/f"{name}.parquet").replace("'","''")
                 db.execute(f"create view {name.replace('-','_')} as select * from read_parquet('{path}')")
@@ -129,6 +151,13 @@ def main():
                 from generate_series(date '2015-01-01',date '2026-11-23',interval 1 day) x(session_date)""")
             db.execute("""create temp view stock_ticker_reference as select a.* from stock_refresh_ticker_reference a
                 where exists(select 1 from stock_refresh_identity b where b.snapshot_ticker=a.instrument)""")
+            db.execute("""create temp table crsp_split_events as
+                select instrument,observation_date,
+                product(case when distype='FRS' and disdetailtype in ('STKSPL','STKDIV') and disfacpr>-1 then 1+disfacpr else 1 end) factor,
+                count(*) filter(where disfacpr!=0 and not (distype='FRS' and disdetailtype in ('STKSPL','STKDIV') and disfacpr>-1)) ambiguous
+                from wrds_distributions where disfacpr!=0 group by 1,2""")
+            db.execute("""create temp table public_split_events as select instrument,observation_date,
+                count(*) events,product(to_factor/for_factor) factor from split group by 1,2""")
             rows=[build_partition(db,stage,*spec) for spec in base_queries()]
             for name in ("etf_crsp_daily","listed_daily","stock_ticker_reference","btc","eth","benchmark_daily"):
                 calendar="crypto_calendar" if name in ("btc","eth") else "equity_calendar"

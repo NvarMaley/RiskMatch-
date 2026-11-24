@@ -370,7 +370,7 @@ Notebook: [chapter 07](notebooks/RiskMatch_V3.ipynb#chapitre-07) · Guide chapte
 - [x] **CH07.09** — Implement summaries and compare assets, frequency and selected dates in UI.
   Universe presents a searchable client catalogue with name, ticker, source and a direct link to a dedicated statistical profile. Profiles include explanatory graphs and same-frequency multi-source comparisons; acquisition audits and portfolio comparison remain separate.
 
-Evidence: [Descriptive methodology](docs/DESCRIPTIVE_STATISTICS.md), 27,230 local statistical profiles, 2,093,782 rolling rows, 2,064,429 cross-sectional rows and four complete-case reference covariance matrices. The statistical research pipeline and comparison UI are implemented; G02 remains required for historical financial-model approval and G03.
+Evidence: [Descriptive methodology](docs/DESCRIPTIVE_STATISTICS.md), 27,230 local statistical profiles, 2,093,782 rolling rows, 2,064,387 cross-sectional rows and four complete-case reference covariance matrices after corporate-action correction. The statistical research pipeline and comparison UI are implemented; G02 remains required for historical financial-model approval and G03.
 
 
 
@@ -414,7 +414,7 @@ Notebook: [chapter 08](notebooks/RiskMatch_V3.ipynb#chapitre-08) · Guide chapte
 - [ ] **CH08.11** — Show forecasts vs realized values, intervals and limitations in UI.
   Experimental bilingual screen implemented and browser-tested; formal closure depends on CH08.10.
 
-Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), synthetic fixture, experimental local API and asset-profile panel. Universe batch examined 1,474 distinct catalogue items; 1,010 have all ten core model forecasts, 464 have explicit exclusions (445 irregular series, 18 insufficient continuous history, one missing series). No fit errors. Prior chapter coverage audit found 1,473 assets with returns and descriptive profiles. G02/G07 and CH10/CH15 dependencies remain open; mixed horizons, targets and historical origins prohibit a directly optimizable expected-return vector.
+Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), corrected corporate-action returns, bounded unlevered forecasts, synthetic tests and local API/asset profile. All 1,474 items examined: 1,008 have all ten core forecasts, 464 have separate conditional estimates, two remain unavailable. No fit errors or forecasts below -100%. A separate 575-asset monthly USD total-return cohort at 2025-12-31 is historical research only; different horizons/targets are not merged. Prior chapter coverage audit found 1,473 assets with returns and descriptive profiles. G02/G07 and CH10/CH15 dependencies remain open.
 
 
 

@@ -73,7 +73,8 @@ def run_item(job):
 
 def summarize_rows(rows):
     states=Counter(r["status"] for r in rows)
-    reasons=Counter(r["reason"] for r in rows if "reason" in r)
+    reasons=Counter(r["reason"] for r in rows if "reason" in r and r["status"] in ("unavailable","error"))
+    fallback_reasons=Counter(r["reason"] for r in rows if "reason" in r and r["status"]=="fallback")
     categories={}
     groups=Counter()
     models=Counter()
@@ -83,7 +84,7 @@ def summarize_rows(rows):
         if "forecast" in row:
             groups[(row["frequency"],row["kind"],row["last"])]+=1
             models.update(row["forecast"]["models"].keys())
-    return {"catalogue_count":len(rows),"statuses":dict(states),"reasons":dict(reasons),
+    return {"catalogue_count":len(rows),"statuses":dict(states),"reasons":dict(reasons),"fallback_reasons":dict(fallback_reasons),
             "by_category":{k:dict(v) for k,v in categories.items()},
             "by_model":dict(models),
             "cohorts":[{"frequency":f,"kind":k,"last":d,"count":n} for (f,k,d),n in sorted(groups.items())]}
@@ -103,6 +104,10 @@ def batch_report(root, as_of):
         with (base/name/"results.jsonl").open("rb") as stream:
             if hashlib.file_digest(stream,"sha256").hexdigest()!=meta["file_hash"]:
                 return {"status":"unavailable"}
+        if "common_monthly" in meta:
+            with (base/name/"common_monthly_total_return.json").open("rb") as stream:
+                if hashlib.file_digest(stream,"sha256").hexdigest()!=meta["common_monthly"]["file_hash"]:
+                    return {"status":"unavailable"}
         return meta
     except (OSError,ValueError,TypeError,KeyError):
         return {"status":"unavailable"}

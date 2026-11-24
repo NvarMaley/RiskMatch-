@@ -11,7 +11,7 @@ from scipy.stats import spearmanr
 
 from riskmatch.contracts import ForecastBundle, RunMetadata, Status
 
-VERSION = "forecast-v1.1.0"
+VERSION = "forecast-v1.2.0"
 SEED = 42
 MIN_OBSERVATIONS = 100
 
@@ -81,7 +81,12 @@ def _scores(y, p, lower, upper, cost):
             "buy_hold_mean":float(np.mean(y)), "turnover_mean":float(turnover.mean())}
 
 
-def _optional_models(X, y, val_x, val_y, all_x):
+def _bound(values, kind):
+    """Unlevered simple price/total returns cannot lose more than all capital."""
+    return np.maximum(values,-1.) if kind in ("total_return","price_return") else values
+
+
+def _optional_models(X, y, val_x, val_y, all_x, kind):
     """Use actual libraries when installed; never relabel a substitute."""
     models, unavailable = {}, {}
     try:
@@ -107,7 +112,7 @@ def _optional_models(X, y, val_x, val_y, all_x):
                     warnings.simplefilter("always",ConvergenceWarning)
                     model.fit(X,(y-ym)/ys)
                 converged=not any(issubclass(w.category,ConvergenceWarning) for w in report)
-                predict = lambda x: model.predict(x)*ys+ym
+                predict = lambda x: _bound(model.predict(x)*ys+ym,kind)
                 if converged:
                     candidates.append((float(np.mean((val_y-predict(val_x))**2)),
                                        params | {"library_version":sklearn.__version__,"converged":True},predict(all_x)))
@@ -128,8 +133,8 @@ def _optional_models(X, y, val_x, val_y, all_x):
             params=dict(max_depth=depth,n_estimators=60,learning_rate=.05,random_state=SEED,n_jobs=1)
             model=XGBRegressor(**params)
             model.fit(X,(y-ym)/ys)
-            prediction=model.predict(val_x)*ys+ym
-            candidates.append((float(np.mean((val_y-prediction)**2)),params | {"library_version":xgboost.__version__},model.predict(all_x)*ys+ym))
+            prediction=_bound(model.predict(val_x)*ys+ym,kind)
+            candidates.append((float(np.mean((val_y-prediction)**2)),params | {"library_version":xgboost.__version__},_bound(model.predict(all_x)*ys+ym,kind)))
         _, params, predictions=min(candidates,key=lambda c:c[0])
         models["xgboost"]=(predictions,params)
     except (ImportError, OSError):
@@ -172,6 +177,8 @@ def forecast(returns, dates, *, instrument, frequency, currency, kind, data_vers
     r=np.asarray(returns,float)
     if frequency not in ("daily","weekly","monthly") or kind not in ("total_return","price_return","excess_return"):
         raise ValueError("Unsupported frequency or target")
+    if kind in ("total_return","price_return") and np.any(r < -1):
+        raise ValueError("Invalid unlevered simple return")
     if not isinstance(window,int) or window<10 or not 0<=cost<=1:
         raise ValueError("Invalid forecast window or transaction cost")
     if len(r)!=len(dates) or len(r)<max(MIN_OBSERVATIONS,window+60):
@@ -189,7 +196,7 @@ def forecast(returns, dates, *, instrument, frequency, currency, kind, data_vers
     for name,ratio in (("ridge",0.),("lasso",1.),("elastic_net",.5)):
         candidates=[]
         for alpha in (1e-5,1e-4,1e-3,.01,.1):
-            p=_linear(X[:a],y[:a],alpha,ratio)(all_x)
+            p=_bound(_linear(X[:a],y[:a],alpha,ratio)(all_x),kind)
             candidates.append((float(np.mean((y[a:b]-p[a:b])**2)),alpha,p))
         _, alpha,p=min(candidates,key=lambda c:c[0])
         models[name]=(p,{"alpha":alpha,"l1_ratio":ratio})
@@ -211,21 +218,22 @@ def forecast(returns, dates, *, instrument, frequency, currency, kind, data_vers
                  "cash":"requires aligned risk-free series",
                  "cross_sectional_rank_ic":"requires point-in-time multi-asset panel"}
     if include_ml:
-        optional, missing=_optional_models(X[:a],y[:a],X[a:b],y[a:b],all_x)
+        optional, missing=_optional_models(X[:a],y[:a],X[a:b],y[a:b],all_x,kind)
         models.update(optional); unavailable.update(missing)
     else:
         unavailable.update({m:"optional advanced model run not requested" for m in ("random_forest","xgboost","neural_network")})
     results={}
     for name,(p,params) in models.items():
+        p=_bound(p,kind)
         errors=y[a:b]-p[a:b]
         lo,hi=np.quantile(errors,[.05,.95])
-        pred=p[b:n]; lower=pred+lo; upper=pred+hi
+        pred=p[b:n]; lower=_bound(pred+lo,kind); upper=_bound(pred+hi,kind)
         metrics=_scores(y[b:],pred,lower,upper,cost)
         results[name]={"parameters":params,"validation_mse":float(np.mean(errors**2)),
                        "test":metrics,"expected_return":float(p[-1]),
-                       "interval":[float(p[-1]+lo),float(p[-1]+hi)],
+                       "interval":[float(_bound(p[-1]+lo,kind)),float(_bound(p[-1]+hi,kind))],
                        "residual_quantiles":np.quantile(y[b:]-pred,[.05,.5,.95]).tolist(),
-                       "history":[[str(dates[window+i])[:10],float(y[i]),float(p[i]),float(p[i]+lo),float(p[i]+hi)] for i in range(b,n)]}
+                       "history":[[str(dates[window+i])[:10],float(y[i]),float(p[i]),float(lower[i-b]),float(upper[i-b])] for i in range(b,n)]}
     chosen=min(results,key=lambda m:results[m]["validation_mse"])
     stamp=datetime.fromisoformat(str(as_of)[:10]).replace(tzinfo=timezone.utc)
     run=hashlib.sha256(repr((VERSION,data_version,instrument,frequency,currency,kind,str(as_of),window,cost,include_ml,tuple(r),tuple(map(str,dates)),[(name,info["parameters"]) for name,info in results.items()])).encode()).hexdigest()

@@ -22,7 +22,7 @@ The Universe tab opens a searchable, paginated client catalogue displaying each 
 
 ## Local validation
 
-The 2026-11-24 build covers 26 return-source/frequency groups and produced 27,230 statistical profiles, 2,093,782 rolling observations and 2,064,429 cross-sectional observations. It contains 1,650,398 valid rolling means and 1,195,285 matched-benchmark rolling betas. No standardized return is populated before the training cutoff.
+The corrected 2026-11-24 build covers 26 return-source/frequency groups and produced 27,230 statistical profiles, 2,093,782 rolling observations and 2,064,387 cross-sectional observations. It contains 1,649,925 valid rolling means and 1,195,183 matched-benchmark rolling betas. No standardized return is populated before the training cutoff.
 
 | Covariance reference | Assets | Exact common intervals | PSD |
 |---|---:|---:|---|

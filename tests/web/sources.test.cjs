@@ -75,6 +75,7 @@ test("Forecast coverage distinguishes computed and unavailable catalogue assets"
 
 test("Universe research renders the asset library and opens an explained statistical profile", async () => {
   const elements=new Map();
+  let savedFallback=false;
   const defaults={"research-start":"2025-01-01","research-end":"2025-01-02","research-currency":"USD","research-kind":"total_return"};
   const get=id=>{if(!elements.has(id))elements.set(id,{innerHTML:"",value:defaults[id]||"",querySelectorAll(){return [];},scrollIntoView(){}});return elements.get(id);};
   const context={document:{getElementById:get},window:{RM:{t:k=>k,language:"fr"}}};
@@ -88,6 +89,7 @@ test("Universe research renders the asset library and opens an explained statist
     }
     if(endpoint==="forecast/universe/asset"){
       assert.equal(payload.id,"asset-a");
+      if(savedFallback)return {status:"fallback",estimate:{method:"indicative_ytm",units:"annual yield",value:.04,as_of:"2025-01-02",source:"fixture",currency:"USD"}};
       return {status:"computed",source:"fixture",last:"2025-01-02",forecast:{selected_model:"historical",frequency:"monthly",currency:"USD",kind:"total_return",split:{train:60,validation:20,test:20},models:{historical:{expected_return:.01,interval:[-.02,.03],history:[["2025-01-02",.02,.01,-.02,.03]],test:{mse:.0001,mae:.01,directional_accuracy:1,interval_coverage:1,net_strategy_mean:.019}}},unavailable:{}}};
     }
     return {rows:[]};
@@ -112,6 +114,10 @@ test("Universe research renders the asset library and opens an explained statist
   assert.match(get("universe-statistics").innerHTML,/Réseau neuronal/);
   await get("forecast-batch").onclick();
   assert.match(get("universe-statistics").innerHTML,/Calcul global enregistré/);
+  savedFallback=true;
+  await get("forecast-batch").onclick();
+  assert.match(get("universe-statistics").innerHTML,/Rendement actuariel indicatif/);
+  assert.match(get("universe-statistics").innerHTML,/4.00%/);
   await context.window.AssetResearch.open("asset-b");
   assert.match(get("universe-statistics").innerHTML,/Aucune série statistique exploitable/);
 });
