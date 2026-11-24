@@ -8,6 +8,7 @@ from pathlib import Path
 import tempfile
 
 import duckdb
+from pit_supplemental import supplemental_inputs
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -138,6 +139,47 @@ def partitions():
                "try_cast(vwretd as double) value_weighted_return,"
                "try_cast(ewretd as double) equal_weighted_return,sprtrn",
                "instrument,observation_date", "isfinite(value_weighted_return)", "decimal")
+    yield ("stock_refresh_ticker_reference", single("raw/public_market_history/*/market-bars-9f693b43066213bd.parquet"),
+           "act_symbol instrument,date observation_date,open,high,low,close,volume",
+           "instrument,observation_date", "close>0 and isfinite(close) and volume>=0", "USD/share; shares; ticker reference only")
+    yield ("stock_refresh_identity", single("processed/universe/market_matches/issuer-crosscheck-*.csv.gz"),
+           "cast(local_permno as varchar) instrument,date '2026-09-30' observation_date,snapshot_ticker,sessions,cik,issuer_supports_ticker,other_observed_issuer_tickers",
+           "instrument,observation_date", "snapshot_ticker is not null", "dated issuer crosscheck; identity review")
+    yield ("etf_liquidity", single("processed/universe/etf_liquidity/liquidity-*.csv.gz"),
+           "ticker instrument,cast(as_of as date) observation_date,sessions,close,average_close_times_volume_usd,nav,net_assets_usd,close_to_nav_pct",
+           "instrument,observation_date", "sessions>0 and close>0", "USD; percent NAV deviation")
+    yield ("etf_daily_volume", BASE/"etf_daily_volume.csv.gz",
+           "cast(permno as varchar) instrument,cast(date as date) observation_date,ticker,price,total_return,bid,ask,volume",
+           "instrument,observation_date", "price>0 and volume>=0", "USD/share; shares; decimal")
+    yield ("benchmark_membership_reference", single("raw/benchmark_membership/sp500-*.csv.gz"),
+           "'SP500' instrument,cast(date as date) observation_date,tickers",
+           "instrument,observation_date", "tickers is not null", "reported dated membership; ticker identities unverified")
+    yield ("fund_fees", single("raw/fund_fees/fund-fees-*.csv.gz"),
+           "ticker instrument,try_cast(date as date) observation_date,expense_ratio_pct,precision,label_at_source,source_name",
+           "instrument,observation_date", "expense_ratio_pct>=0 and isfinite(expense_ratio_pct)", "percent per year")
+    yield ("fund_fee_changes", single("raw/fund_fees/fee-changes-*.csv.gz"),
+           "ticker instrument,try_cast(effective_date as date) observation_date,try_cast(announced_date as date) announced_date,old_expense_ratio_pct,new_expense_ratio_pct,source_name",
+           "instrument,observation_date,announced_date", "new_expense_ratio_pct>=0", "percent per year")
+    yield ("nominal_contractual_payments", verified(windows, win["treasuries"]["nominal_file"]),
+           "cast(cusip as varchar) instrument,cast(contractual_date as date) observation_date,coupon_per_100,redemption_per_100",
+           "instrument,observation_date", "coupon_per_100>=0 and redemption_per_100>=0", "USD per 100 face; contractual")
+    yield ("bill_mark_returns", verified(windows, win["treasuries"]["bill_file"]),
+           'cast(cusip as varchar) instrument,cast("end" as date) observation_date,cast("start" as date) start_date,government_mark_return_before_maturity mark_return',
+           "instrument,observation_date,start_date", "isfinite(mark_return)", "decimal; mark return")
+    for frequency in ("annual", "quarterly"):
+        yield (f"filing_reference_{frequency}", single(f"processed/universe/filing_reference/{frequency}-*.parquet"),
+               "gvkey instrument,period observation_date,cik,adsh,form,filed,accepted reported_acceptance_utc",
+               "instrument,observation_date,adsh", "reported_acceptance_utc is not null", "verified acceptance timestamp; public release review separate")
+    yield ("ccm_links", delivered("links"),
+           "gvkey instrument,try_cast(linkdt as date) observation_date,try_cast(linkenddt as date) valid_until_inclusive,linkenddt source_end,linkprim,linktype,lpermno,lpermco,cik",
+           "instrument,observation_date,linktype,linkprim,lpermno", "lpermno is not null and (source_end='E' or valid_until_inclusive>=observation_date)", "dated identity links")
+    for frequency, suffix in (("annual", ""),("quarterly","q")):
+        yield (f"compustat_{frequency}", delivered(frequency),
+               f"gvkey instrument,try_cast(datadate as date) observation_date,curcd{suffix} currency,datafmt,indfmt,consol,"
+               f'try_cast("at{suffix}" as double) assets,try_cast("lt{suffix}" as double) liabilities,try_cast("sale{suffix}" as double) revenue,'
+               f"try_cast(ni{suffix} as double) net_income,try_cast(ceq{suffix} as double) common_equity",
+               "instrument,observation_date,currency,datafmt,indfmt,consol", "currency is not null",
+               "reported vendor monetary units; latest-vintage accounting")
 
 
 def normalize(db, spec, stage):
@@ -149,6 +191,8 @@ def normalize(db, spec, stage):
     if match and not version.startswith(match[1]):
         raise ValueError("Input filename digest mismatch")
     reader = "read_parquet(?)" if path.suffix == ".parquet" else "read_csv_auto(?, sample_size=-1)"
+    if name == "ccm_links" or name.startswith("compustat_"):
+        reader = "read_csv_auto(?, all_varchar=true)"
     db.execute(f"create or replace temp table projected as select {projection} from {reader}", [str(path)])
     if digest(path) != version:
         raise ValueError("Input changed during normalization")
@@ -206,6 +250,27 @@ def calendar_partition(db, stage):
             "quality":{},"pit_eligible":False,"reason":"exchange_close_schedule_unverified"}
 
 
+def monthly_etf_input(db, stage):
+    source = single("new data */data_plus/raw/wrds/crsp_msf.csv")
+    fingerprint = digest(source)
+    dest = stage/"monthly_etf_input.parquet"
+    db.execute("""copy (
+        select cast(m.PERMNO as varchar) instrument,try_cast(m.MthCalDt as date) observation_date,
+               try_cast(m.MthPrc as double) close,try_cast(m.MthRet as double) reported_return,
+               try_cast(m.MthRetx as double) ex_distribution_return,try_cast(m.MthVol as double) volume,
+               m.MthRetFlg return_flag,m.MthDelFlg delisting_flag,? original_source_hash
+        from read_csv(?,all_varchar=true) m
+        where exists(select 1 from read_csv_auto(?) d where cast(d.PERMNO as varchar)=m.PERMNO)
+        order by instrument,observation_date,close,reported_return,ex_distribution_return,volume,return_flag,delisting_flag
+        ) to ? (format parquet, compression zstd)""",
+        [fingerprint,str(source),str(BASE/"crsp_etf_daily_extract.csv"),str(dest)])
+    if digest(source) != fingerprint:
+        raise ValueError("Monthly CRSP source changed")
+    return ("etf_crsp_monthly",dest,"*","instrument,observation_date",
+            "close>0 and isfinite(close) and (reported_return is null or reported_return>=-1)",
+            "USD/share; decimal; reported monthly volume")
+
+
 def main():
     DEST.mkdir(parents=True, exist_ok=True)
     with (DEST / "build.lock").open("a") as lock:
@@ -219,6 +284,8 @@ def build():
         with duckdb.connect() as db:
             db.execute("set threads=1")
             rows = [normalize(db, spec, stage) for spec in partitions()]
+            rows.extend(normalize(db, spec, stage) for spec in supplemental_inputs(DATA, stage, verified, digest))
+            rows.append(normalize(db, monthly_etf_input(db, stage), stage))
             rows.append(calendar_partition(db, stage))
         snapshot_id = hashlib.sha256(json.dumps(rows, sort_keys=True).encode()).hexdigest()
         snapshot = DEST / snapshot_id

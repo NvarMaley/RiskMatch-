@@ -283,6 +283,7 @@ Notebook: [chapter 05](notebooks/RiskMatch_V3.ipynb#chapitre-05) · Guide chapte
   Typed keys, event-specific keys and source versions. Futures are archived; no active contract ingestion.
 - [x] **CH05.03** — Ingest raw data without modification, then produce a deterministic cleaned layer.
   Content-addressed Parquet research partitions, input and output hashes, original raw files preserved.
+  Supplemental normalization includes CRSP monthly ETFs, company accounts and CCM, Fama-French/Momentum, real-time macro vintages, FedInvest and TIPS, stock refresh references, fees, assets, liquidity and benchmark membership.
 - [x] **CH05.04** — Store observation_date, availability_time, release/vintage and as_of; as-of join only availability_time <= decision time.
   Unknown availability never qualifies. Historical availability remains a source-approval condition.
 - [x] **CH05.05** — Detect duplicates, gaps, outliers, stale quotes, invalid prices and missing FX; differentiate closed market from missing data.
