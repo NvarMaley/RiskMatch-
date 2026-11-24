@@ -71,6 +71,7 @@ test("Universe research renders the asset library and opens an explained statist
   await context.window.AssetResearch.load(async endpoint=>{
     if(endpoint==="statistics/catalog")return {items:[{id:"asset-a",name:"Asset A",ticker:"A",category:"equity_etf",provider:"Fixture source",series:[{source:"listed_daily",instrument:"A",frequency:"daily",kinds:["total_return"],first:"2025-01-01",last:"2025-01-02"}]},{id:"asset-b",name:"Asset B",ticker:"B",category:"stock",provider:"Fixture source",series:[]}]};
     if(endpoint==="statistics/compare")return {assets:[{source:"listed_daily",instrument:"A",statistics:{count:2,missing:0,mean:.01},distribution:{histogram:[],cdf:[],qq:[]}}],matrix:{count:2,psd:true,covariance:[[.01]],pearson:[[1]],spearman:[[1]]},frequency:"daily",currency:"USD"};
+    if(endpoint==="forecast")return {selected_model:"historical",split:{train:60,validation:20,test:20},models:{historical:{expected_return:.01,interval:[-.02,.03],history:[["2025-01-02",.02,.01,-.02,.03]],test:{mse:.0001,mae:.01,directional_accuracy:1,interval_coverage:1,net_strategy_mean:.019}}},unavailable:{}};
     return {rows:[]};
   },"2025-01-02");
   assert.match(get("universe-statistics").innerHTML,/Catalogue/);
@@ -82,6 +83,10 @@ test("Universe research renders the asset library and opens an explained statist
   assert.match(get("universe-statistics").innerHTML,/1.00%/);
   assert.match(get("universe-statistics").innerHTML,/Dépendance temporelle/);
   assert.doesNotMatch(get("universe-statistics").innerHTML,/catalog-card/);
+  assert.match(get("universe-statistics").innerHTML,/Calculer les prévisions/);
+  await get("forecast-run").onclick();
+  assert.match(get("universe-statistics").innerHTML,/Prévision prochaine période/);
+  assert.match(get("universe-statistics").innerHTML,/Rendements réalisés \(test\)/);
   await context.window.AssetResearch.open("asset-b");
   assert.match(get("universe-statistics").innerHTML,/Aucune série statistique exploitable/);
 });

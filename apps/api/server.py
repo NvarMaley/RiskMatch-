@@ -15,6 +15,7 @@ from riskmatch.market_data.source_catalog import source_report
 from riskmatch.market_data.point_in_time import snapshot_report
 from riskmatch.market_data.returns import returns_report
 from riskmatch.analytics.descriptive_report import descriptive_report, assets as descriptive_assets, compare as descriptive_compare, compare_series, client_catalog
+from riskmatch.analytics.forecast_report import asset_forecast
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -71,6 +72,13 @@ class Handler(SimpleHTTPRequestHandler):
                 if as_of > date.today() or as_of < date(1900,1,1):
                     raise ValueError("invalid_universe_date")
                 return self.respond(returns_report(ROOT, as_of))
+            if self.path == "/api/forecast":
+                as_of=date.fromisoformat(data["as_of"])
+                if as_of>date.today() or as_of<date(1900,1,1):
+                    raise ValueError("invalid_universe_date")
+                return self.respond(asset_forecast(ROOT,data["source"],data["instrument"],
+                    date.fromisoformat(data["start"]),date.fromisoformat(data["end"]),
+                    data["currency"],data["kind"],as_of,data.get("include_ml",False)))
             if self.path in ("/api/statistics","/api/statistics/assets","/api/statistics/compare","/api/statistics/catalog"):
                 as_of = date.fromisoformat(data["as_of"])
                 if as_of>date.today() or as_of<date(1900,1,1):

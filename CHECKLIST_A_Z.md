@@ -379,29 +379,40 @@ Evidence: [Descriptive methodology](docs/DESCRIPTIVE_STATISTICS.md), 27,230 loca
 Notebook: [chapter 08](notebooks/RiskMatch_V3.ipynb#chapitre-08) · Guide chapter 4.
 
 - [ ] Study and formalize: Historical, EWMA, CAPM, Black-Litterman and uncertainty.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
-- [ ] Verify local rendering and update documentation.
-- [ ] Create a PR, obtain review and merge.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness of implemented models.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
+- [x] Verify local rendering and update documentation.
+- [x] Publish experimental implementation through owner-approved solo workflow (D003).
 
 ### 08 — A. Detailed Tasks
 
 
-- [ ] **CH08.01** — Define forecast target (total/excess return), horizon and timestamped lagged features.
+- [x] **CH08.01** — Define forecast target (total/excess return), horizon and timestamped lagged features.
+  One-period total/price return target implemented; excess target defined but requires matched RF for real assets.
 - [ ] **CH08.02** — Set naive historical-mean and cash/zero-alpha baselines; estimate rolling means and EWMA.
+  Historical, rolling, EWMA and zero-return implemented; aligned cash/RF baseline pending.
 - [ ] **CH08.03** — Estimate CAPM beta and expected excess return; compare Fama-French multifactor model and Black-Litterman references.
-- [ ] **CH08.04** — Split chronological train/validation/test; purge overlapping labels and embargo where necessary.
+  Synthetic CAPM/multifactor/no-view BL references implemented; CH10.04/CH15.06 remain open.
+- [x] **CH08.04** — Split chronological train/validation/test; purge overlapping labels and embargo where necessary.
+  One-period labels are nonoverlapping; tests verify test-period isolation.
 - [ ] **CH08.05** — Fit OLS with diagnostics; Ridge, Lasso and Elastic Net using train-only scaling and tuning.
+  Train-only OLS and regularization implemented; full diagnostics and G07 remain open.
 - [ ] **CH08.06** — Fit Random Forest, XGBoost and neural-network candidates; tune on validation only and record seeds/parameters.
-- [ ] **CH08.07** — Record predictions, forecast intervals, residual distributions and uncertainty; avoid claims of reliable return prediction.
+  Optional real-library candidates exercised on a synthetic fixture; isolated runtime dependencies and CH08.05 pending.
+- [x] **CH08.07** — Record predictions, forecast intervals, residual distributions and uncertainty; avoid claims of reliable return prediction.
 - [ ] **CH08.08** — Evaluate MSE, MAE, rank IC, directional accuracy and calibration; compare net economic performance.
+  Held-out MSE, MAE, temporal rank correlation, direction, coverage and illustrative net strategy implemented; cross-sectional IC/backtest pending.
 - [ ] **CH08.09** — Run ablations on features, outlier policy, windows and model complexity; report instability.
+  Lag-only, train-clipping and shorter rolling-window ablations implemented; broader sensitivity remains pending.
 - [ ] **CH08.10** — Register ForecastBundle with expected return, distribution, horizon, confidence, data_version and model_version.
-- [ ] **CH08.11** — Show forecasts vs realized values, intervals and limitations in UI.
+  Experimental bundle with provenance and empirical interval; confidence calibration and downstream acceptance pending.
+- [x] **CH08.11** — Show forecasts vs realized values, intervals and limitations in UI.
+
+Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), synthetic fixture, experimental local API and asset-profile panel. G02/G07 and CH10/CH15 dependencies remain open.
 
 
 
