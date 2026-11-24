@@ -62,6 +62,17 @@ test("Return coverage distinguishes price and total returns", async () => {
   assert.match(el.innerHTML,/06 · Returns and FX/);
 });
 
+test("Forecast coverage distinguishes computed and unavailable catalogue assets",async()=>{
+  const el={innerHTML:"",addEventListener(){}};
+  const context={document:{getElementById:()=>el},window:{RM:{t:k=>k,language:"fr"}}};
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname,"../../apps/web/sources.js"),"utf8"),context);
+  await context.window.SourcesView.load(async endpoint=>endpoint==="forecast/universe"?
+    {status:"complete",catalogue_count:2,statuses:{computed:1,unavailable:1},by_category:{stock:{computed:1,unavailable:1}}}:{rows:[]});
+  assert.match(el.innerHTML,/08 · Couverture des prévisions/);
+  assert.match(el.innerHTML,/2 actifs examinés/);
+  assert.match(el.innerHTML,/1 calculés avec les dix modèles/);
+});
+
 test("Universe research renders the asset library and opens an explained statistical profile", async () => {
   const elements=new Map();
   const defaults={"research-start":"2025-01-01","research-end":"2025-01-02","research-currency":"USD","research-kind":"total_return"};
@@ -74,6 +85,10 @@ test("Universe research renders the asset library and opens an explained statist
     if(endpoint==="forecast"){
       assert.equal(payload.include_ml,true);
       return {selected_model:"historic",split:{train:60,validation:20,test:20},models:Object.fromEntries(["historic","random_forest","xgboost","neural_network"].map(name=>[name,{expected_return:.01,interval:[-.02,.03],history:[["2025-01-02",.02,.01,-.02,.03]],test:{mse:.0001,mae:.01,directional_accuracy:1,interval_coverage:1,net_strategy_mean:.019}}])),unavailable:{}};
+    }
+    if(endpoint==="forecast/universe/asset"){
+      assert.equal(payload.id,"asset-a");
+      return {status:"computed",source:"fixture",last:"2025-01-02",forecast:{selected_model:"historical",frequency:"monthly",currency:"USD",kind:"total_return",split:{train:60,validation:20,test:20},models:{historical:{expected_return:.01,interval:[-.02,.03],history:[["2025-01-02",.02,.01,-.02,.03]],test:{mse:.0001,mae:.01,directional_accuracy:1,interval_coverage:1,net_strategy_mean:.019}}},unavailable:{}}};
     }
     return {rows:[]};
   },"2025-01-02");
@@ -95,6 +110,8 @@ test("Universe research renders the asset library and opens an explained statist
   assert.match(get("universe-statistics").innerHTML,/Random Forest/);
   assert.match(get("universe-statistics").innerHTML,/XGBoost/);
   assert.match(get("universe-statistics").innerHTML,/Réseau neuronal/);
+  await get("forecast-batch").onclick();
+  assert.match(get("universe-statistics").innerHTML,/Calcul global enregistré/);
   await context.window.AssetResearch.open("asset-b");
   assert.match(get("universe-statistics").innerHTML,/Aucune série statistique exploitable/);
 });

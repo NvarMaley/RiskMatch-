@@ -16,6 +16,7 @@ from riskmatch.market_data.point_in_time import snapshot_report
 from riskmatch.market_data.returns import returns_report
 from riskmatch.analytics.descriptive_report import descriptive_report, assets as descriptive_assets, compare as descriptive_compare, compare_series, client_catalog
 from riskmatch.analytics.forecast_report import asset_forecast
+from riskmatch.analytics.forecast_batch import batch_report, batch_asset
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -72,6 +73,13 @@ class Handler(SimpleHTTPRequestHandler):
                 if as_of > date.today() or as_of < date(1900,1,1):
                     raise ValueError("invalid_universe_date")
                 return self.respond(returns_report(ROOT, as_of))
+            if self.path in ("/api/forecast/universe","/api/forecast/universe/asset"):
+                as_of=date.fromisoformat(data["as_of"])
+                if as_of>date.today() or as_of<date(1900,1,1):
+                    raise ValueError("invalid_universe_date")
+                if self.path.endswith("/asset"):
+                    return self.respond(batch_asset(ROOT,as_of,data["id"]))
+                return self.respond(batch_report(ROOT,as_of))
             if self.path == "/api/forecast":
                 as_of=date.fromisoformat(data["as_of"])
                 if as_of>date.today() or as_of<date(1900,1,1):

@@ -414,7 +414,7 @@ Notebook: [chapter 08](notebooks/RiskMatch_V3.ipynb#chapitre-08) · Guide chapte
 - [ ] **CH08.11** — Show forecasts vs realized values, intervals and limitations in UI.
   Experimental bilingual screen implemented and browser-tested; formal closure depends on CH08.10.
 
-Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), synthetic fixture, experimental local API and asset-profile panel. G02/G07 and CH10/CH15 dependencies remain open.
+Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), synthetic fixture, experimental local API and asset-profile panel. Universe batch examined 1,474 distinct catalogue items; 1,010 have all ten core model forecasts, 464 have explicit exclusions (445 irregular series, 18 insufficient continuous history, one missing series). No fit errors. Prior chapter coverage audit found 1,473 assets with returns and descriptive profiles. G02/G07 and CH10/CH15 dependencies remain open; mixed horizons, targets and historical origins prohibit a directly optimizable expected-return vector.
 
 
 

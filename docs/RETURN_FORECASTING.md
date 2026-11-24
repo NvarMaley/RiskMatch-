@@ -55,3 +55,31 @@ or local data.
 The asset profile exposes research forecasts, uncertainty and held-out
 metrics. ForecastBundle carries version, provenance, one-period horizon,
 currency, distribution reference and experimental status.
+
+## Universe-wide batch
+
+Run `.venv/bin/python scripts/build_forecast_universe.py --as-of 2026-11-24 --workers 4`.
+Each catalogue item receives one outcome. In USD, prefer total return over
+price return, then monthly, weekly and daily frequency; within a choice prefer
+the latest available source. Require at least 100 contiguous intervals and
+do not splice sources, fabricate missing history, or treat irregular returns
+as regular. Every attempted source and reason is retained. Results and all
+held-out predictions are stored in the ignored local forecasts directory,
+with a content-hashed manifest, resumable checkpoint, and no Git data export.
+
+The 2026-11-24 run examined all 1,474 items: 1,010 computed all ten core
+models plus the zero-return and ablation references; 464 unavailable
+(445 irregular intervals, 18 insufficient contiguous history, one absent
+return series). No fit errors. Of the computed assets, 580 monthly and 430
+daily forecasts; 579 total-return and 431 price-return. These results have
+different observation cutoffs, frequencies and return targets. Constructing
+a common-horizon, common-cutoff total-return vector is a later validation
+step, not implied by this batch. The Sources page shows aggregate coverage;
+the asset profile can load its saved universe forecast independently of
+an on-demand calculation.
+
+Run `.venv/bin/python scripts/audit_catalogue_coverage.py --as-of 2026-11-24`
+to verify prior chapters against the distinct catalogue. Chapters 6 and 7
+each have 1,473 assets with usable return/statistics profiles; one stock
+has no usable series. The verified point-in-time snapshot has 61 partitions
+and the return snapshot 30 partitions. These remain research artifacts.
