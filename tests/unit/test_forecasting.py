@@ -58,3 +58,24 @@ def test_factor_reference_analytical():
     assert result["multifactor"]["beta"]==pytest.approx([1.2,.4,-.3])
     assert result["multifactor"]["alpha"]==pytest.approx(.002)
     assert result["black_litterman_no_view"]==pytest.approx([.025,.025])
+
+
+def test_machine_learning_models_are_available_and_test_isolation():
+    r,d=fixture()
+    def run_ml(values):
+        return forecast(values,d,instrument="fixture",frequency="daily",currency="USD",
+                        kind="total_return",data_version="synthetic-v1",as_of=d[-1],include_ml=True)
+    original=run_ml(r)
+    changed=r.copy()
+    changed[-30:]+=.25
+    alternative=run_ml(changed)
+    for name in ("random_forest","xgboost","neural_network"):
+        assert name not in original["unavailable"]
+        a,b=original["models"][name],alternative["models"][name]
+        assert a["parameters"]["random_state"]==42
+        assert a["parameters"]["library_version"]
+        assert a["parameters"]==b["parameters"]
+        assert a["validation_mse"]==pytest.approx(b["validation_mse"],abs=1e-12)
+        assert len(a["history"])==original["split"]["test"]
+        assert np.isfinite(a["test"]["mse"])
+    json.dumps(original,allow_nan=False)

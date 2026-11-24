@@ -402,7 +402,7 @@ Notebook: [chapter 08](notebooks/RiskMatch_V3.ipynb#chapitre-08) · Guide chapte
 - [ ] **CH08.05** — Fit OLS with diagnostics; Ridge, Lasso and Elastic Net using train-only scaling and tuning.
   Train-only OLS and regularization implemented; full diagnostics and G07 remain open.
 - [ ] **CH08.06** — Fit Random Forest, XGBoost and neural-network candidates; tune on validation only and record seeds/parameters.
-  Optional real-library candidates exercised on a synthetic fixture; isolated runtime dependencies and CH08.05 pending.
+  Technical implementation operational: pinned scikit-learn/XGBoost installed in the isolated environment, synthetic leakage tests and local real-history tests passed on four assets across equity, Treasury ETF and commodity ETF; ML enabled by default in the asset profile. Formal closure remains blocked by CH08.05/G07.
 - [ ] **CH08.07** — Record predictions, forecast intervals, residual distributions and uncertainty; avoid claims of reliable return prediction.
   Implemented for the experimental models; formal closure depends on CH08.06.
 - [ ] **CH08.08** — Evaluate MSE, MAE, rank IC, directional accuracy and calibration; compare net economic performance.

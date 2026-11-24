@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import warnings
 from dataclasses import asdict
 from datetime import datetime, timezone
 
@@ -10,7 +11,7 @@ from scipy.stats import spearmanr
 
 from riskmatch.contracts import ForecastBundle, RunMetadata, Status
 
-VERSION = "forecast-v1.0.0"
+VERSION = "forecast-v1.1.0"
 SEED = 42
 MIN_OBSERVATIONS = 100
 
@@ -84,7 +85,9 @@ def _optional_models(X, y, val_x, val_y, all_x):
     """Use actual libraries when installed; never relabel a substitute."""
     models, unavailable = {}, {}
     try:
+        import sklearn
         from sklearn.ensemble import RandomForestRegressor
+        from sklearn.exceptions import ConvergenceWarning
         from sklearn.neural_network import MLPRegressor
         from sklearn.pipeline import make_pipeline
         from sklearn.preprocessing import StandardScaler
@@ -92,7 +95,7 @@ def _optional_models(X, y, val_x, val_y, all_x):
             "random_forest":[(dict(max_depth=d,n_estimators=60,random_state=SEED,n_jobs=1),
                               RandomForestRegressor) for d in (2,4)],
             "neural_network":[(dict(hidden_layer_sizes=(h,),alpha=.01,random_state=SEED,
-                                    max_iter=500,solver="lbfgs"),MLPRegressor) for h in (4,8)],
+                                    max_iter=2000,max_fun=30000,solver="lbfgs"),MLPRegressor) for h in (4,8)],
         }
         for name, choices in families.items():
             candidates = []
@@ -100,22 +103,33 @@ def _optional_models(X, y, val_x, val_y, all_x):
             ym, ys = y.mean(), max(y.std(), 1e-8)
             for params, cls in choices:
                 model = make_pipeline(StandardScaler(),cls(**params))
-                model.fit(X,(y-ym)/ys)
+                with warnings.catch_warnings(record=True) as report:
+                    warnings.simplefilter("always",ConvergenceWarning)
+                    model.fit(X,(y-ym)/ys)
+                converged=not any(issubclass(w.category,ConvergenceWarning) for w in report)
                 predict = lambda x: model.predict(x)*ys+ym
-                candidates.append((float(np.mean((val_y-predict(val_x))**2)),params,predict(all_x)))
+                if converged:
+                    candidates.append((float(np.mean((val_y-predict(val_x))**2)),
+                                       params | {"library_version":sklearn.__version__,"converged":True},predict(all_x)))
+            if not candidates:
+                unavailable[name]="No candidate converged on training data"
+                continue
             _, params, predictions = min(candidates,key=lambda c:c[0])
             models[name]=(predictions,params)
     except ImportError:
         for name in ("random_forest","neural_network"):
             unavailable[name]="scikit-learn unavailable"
     try:
+        import xgboost
         from xgboost import XGBRegressor
         candidates=[]
+        ym, ys = y.mean(), max(y.std(), 1e-8)
         for depth in (2,3):
             params=dict(max_depth=depth,n_estimators=60,learning_rate=.05,random_state=SEED,n_jobs=1)
             model=XGBRegressor(**params)
-            model.fit(X,y)
-            candidates.append((float(np.mean((val_y-model.predict(val_x))**2)),params,model.predict(all_x)))
+            model.fit(X,(y-ym)/ys)
+            prediction=model.predict(val_x)*ys+ym
+            candidates.append((float(np.mean((val_y-prediction)**2)),params | {"library_version":xgboost.__version__},model.predict(all_x)*ys+ym))
         _, params, predictions=min(candidates,key=lambda c:c[0])
         models["xgboost"]=(predictions,params)
     except (ImportError, OSError):
@@ -214,7 +228,7 @@ def forecast(returns, dates, *, instrument, frequency, currency, kind, data_vers
                        "history":[[str(dates[window+i])[:10],float(y[i]),float(p[i]),float(p[i]+lo),float(p[i]+hi)] for i in range(b,n)]}
     chosen=min(results,key=lambda m:results[m]["validation_mse"])
     stamp=datetime.fromisoformat(str(as_of)[:10]).replace(tzinfo=timezone.utc)
-    run=hashlib.sha256(repr((VERSION,data_version,instrument,frequency,currency,kind,str(as_of),window,cost,include_ml,tuple(r),tuple(map(str,dates)))).encode()).hexdigest()
+    run=hashlib.sha256(repr((VERSION,data_version,instrument,frequency,currency,kind,str(as_of),window,cost,include_ml,tuple(r),tuple(map(str,dates)),[(name,info["parameters"]) for name,info in results.items()])).encode()).hexdigest()
     bundle=ForecastBundle(meta=RunMetadata(as_of=stamp,run_id=run,model_version=VERSION,
         units=(("return","decimal per period"),),provenance=(data_version,),status=Status.EXPERIMENTAL),
         snapshot_id=data_version,instrument_ids=(instrument,),expected_returns=(results[chosen]["expected_return"],),

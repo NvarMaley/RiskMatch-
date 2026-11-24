@@ -21,8 +21,10 @@ Historical mean, rolling mean, EWMA (decay .94), zero-return reference; OLS,
 Ridge, Lasso and Elastic Net (standardization fitted on train). Regularized
 coefficients minimize mean squared loss / 2 plus alpha times the L1/L2 penalty.
 Prespecified lag-only, shorter rolling-window and train-label clipping ablations. Random Forest,
-XGBoost and MLP use actual optional packages when installed; deterministic
-seed 42, validation-only depth/width selection. Missing packages are explicit.
+XGBoost and MLP use pinned scikit-learn 1.6.1 and XGBoost 3.1.2 (CPU-only
+distribution on Linux); deterministic seed 42, validation-only depth/width
+selection, train-only target scaling. Non-converged MLP candidates are rejected.
+The selected parameters record library versions. Missing packages are explicit.
 
 ## Evaluation and uncertainty
 
@@ -42,9 +44,13 @@ covariance times market weights. Actual factor inputs, factor availability,
 market covariance, cash benchmark and views require CH10/CH15/G02/G07.
 Cross-sectional IC requires a contemporaneous eligible multi-asset panel.
 Additional window ablations, extended OLS diagnostics and full economic backtests
-remain pending. The optional ML packages are separate from the baseline
-runtime; the legacy environment was used only to exercise their synthetic
-paths. Do not publish licensed series, predictions or local data.
+remain pending. The advanced ML dependencies are installed by INSTALL.command
+and CI from requirements-forecast.txt. The isolated macOS runtime successfully
+fit all three models on synthetic data and on four local real-history assets
+covering equity ETFs, a Treasury ETF, a commodity ETF and an individual stock.
+The UI enables ML by default. Technical availability does not imply model
+approval or closure of CH08.05/G07. Do not publish licensed series, predictions
+or local data.
 
 The asset profile exposes research forecasts, uncertainty and held-out
 metrics. ForecastBundle carries version, provenance, one-period horizon,

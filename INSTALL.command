@@ -8,6 +8,7 @@ if [[ -d .venv ]] && ! .venv/bin/python -c 'import sys, pathlib; assert sys.vers
 fi
 [[ -d .venv ]] || python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock
+.venv/bin/python -m pip install -r requirements-forecast.txt
 .venv/bin/python -m pip install --no-build-isolation --no-deps -e .
 .venv/bin/python -m pip check
 .venv/bin/python -m pytest
