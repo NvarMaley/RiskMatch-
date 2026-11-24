@@ -8,6 +8,7 @@ import csv
 import json
 
 from .universe import Holding, treasury_etf_eligible, treasury_eligible
+from .local_sources import local_market_paths, monthly_audit, daily_audit, audit_available_for_as_of, treasury_identity_summary, issuer_holdings_summary
 
 ROOT = Path(__file__).resolve().parents[3]
 CATALOG_PATH = ROOT / "configs/universe_catalog.json"
@@ -331,14 +332,33 @@ def reported_coverage(instruments, path, as_of, *, available_on=date(2026, 11, 2
 
 def universe_report(as_of, *, price_path=None, rate_path=None, records_dir=None, summary_path=None):
     payload, instruments = load_catalog()
-    if price_path is None:
-        price_path = ROOT / "data/data/raw/etf_prices_adjusted.csv"
-    try:
-        coverage = coverage_matrix(instruments, read_adjusted_csv(price_path), source="local_adjusted_etf_csv", as_of=as_of)
-        source_status = "observed_local_unvalidated"
-    except (OSError, ValueError, TypeError, KeyError):
+    default_sources = price_path is None
+    paths = [(name, path / "etf_prices_adjusted.csv") for name, path in local_market_paths()] if default_sources else [("explicit", price_path)]
+    coverage = {}
+    source_status = "local_source_unavailable"
+    for name, path in paths:
+        try:
+            coverage = coverage_matrix(instruments, read_adjusted_csv(path), source=f"{name}_adjusted_etf_csv", as_of=as_of)
+            source_status = "observed_local_unvalidated"
+            break
+        except (OSError, ValueError, TypeError, KeyError):
+            continue
+    if not coverage:
         coverage = reported_coverage(instruments, summary_path or ROOT / "data/data/processed/series_catalogue.csv", as_of)
         source_status = "local_summary_only" if coverage else "local_source_unavailable"
+    audit = audit_available_for_as_of(monthly_audit(), as_of) if default_sources else None
+    daily = audit_available_for_as_of(daily_audit(), as_of) if default_sources else None
+    issuer_snapshots=issuer_holdings_summary(as_of) if default_sources else {}
+    treasury_summary=treasury_identity_summary(as_of) if default_sources else None
+    if rate_path is None and default_sources:
+        rate = {"status": "local_source_unavailable", "reference": "FRED:DTB3", "kind": "nontradable_discount_yield"}
+        for name, path in local_market_paths():
+            rate = rate_coverage(as_of, path / "DTB3.csv")
+            if rate["status"] != "local_source_unavailable":
+                rate["source"] = name
+                break
+    else:
+        rate = rate_coverage(as_of, rate_path)
     records = load_dated_records(records_dir or ROOT / "data/raw/universe")
     rows = []
     for item in instruments:
@@ -355,11 +375,24 @@ def universe_report(as_of, *, price_path=None, rate_path=None, records_dir=None,
                                  "aum_usd": record.aum_usd, "expense_ratio": record.expense_ratio}
                                 if record else None)
         row["coverage"] = coverage.get(item.ticker)
+        monthly = audit.get("etf", {}).get(item.ticker) if audit else None
+        row["monthly_coverage"] = {k:v for k,v in monthly.items() if k!="permno"} if monthly else None
+        row["crsp_daily_coverage"] = daily.get("etf", {}).get(item.ticker) if daily else None
+        row["issuer_snapshot"] = issuer_snapshots.get(item.ticker)
+        if row["issuer_snapshot"] and not row["issuer_snapshot"]["strict_direct_treasury_snapshot_pass"]:
+            row["reasons"].append("current_treasury_snapshot_blocked")
         rows.append(row)
     return {"version": payload["version"], "as_of": as_of.isoformat(),
             "metadata_reviewed_on": payload["metadata_reviewed_on"], "source_status": source_status,
             "record_status": records["status"],
-            "rows": rows, "cash": payload["cash"], "risk_free": rate_coverage(as_of, rate_path),
+            "rows": rows, "cash": payload["cash"], "risk_free": rate,
+            "monthly_audit": ({"observed_etfs": audit["observed_etfs"], "snapshot_date": audit["snapshot_date"],
+                               "stock_candidate_count": audit["stock_candidate_count"], "selected_count": audit["selected_count"],
+                               "status": "local_unvalidated"} if audit else None),
+            "daily_audit": ({"observed_etfs":daily["observed_etfs"],"snapshot_date":daily["snapshot_date"],
+                             "stock_snapshot_count_with_return":daily["stock_snapshot_count_with_return"],"status":"local_unvalidated"} if daily else None),
+            "treasury_identity":treasury_summary,
+            "futures_roots":FUTURES_ROOTS,
             "eligible_count": sum(r["eligible"] for r in rows),
             "mode": "research_candidates_not_allocations"}
 

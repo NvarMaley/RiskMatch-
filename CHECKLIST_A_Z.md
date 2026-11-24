@@ -196,50 +196,61 @@ Notebook: [chapter 03](notebooks/RiskMatch_V3.ipynb#chapitre-03) · Guide chapte
   Initial candidate selection: 17 equity/real-estate ETFs, 5 Treasury ETF candidates and USD cash. Dated liquidity screen defined; actual liquidity and market data remain unverified and no candidate is approved for allocation.
 - [x] **CH03.03** — Design permanent security ID, ticker history, asset_class, sector, issuer, currency, valid_from/to and multiplier fields.
 - [x] **CH03.04** — Store dated investability, listing/delisting, liquidity, expense ratio, AUM and restrictions.
-  Local dated-record schema, validation and receipt reader implemented; no fabricated records. Actual local investability/holdings files missing.
+  Local dated-record schema, validation and receipt reader implemented; no fabricated records. Current holdings snapshots available. Historical eligibility records remain incomplete.
 - [ ] **CH03.05** — Define 300–3000-stock second-stage universe with historical constituents, delistings and historical market cap.
-  PIT PERMNO ranking and synthetic tests ready; actual WRDS schema/licenses/coverage and G06 prerequisites pending.
+  Monthly reconstruction now ranks 1,000 dated candidates in each of 336 months (1998–2025). Apply ranks only after month end; validate historical availability and liquidity before use. Earlier single-date scan located 3,658 preliminary US common-stock PERMNO candidates at 2025-12-31; 1,000 ranked locally, all 1,000 with a daily return observation on that date. Research candidates only; license/PIT/G06 prerequisites pending.
 - [ ] **CH03.06** — Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings.
-  Direct Treasury schema and dated holdings checks prepared; actual issuer/holdings history pending.
+  Public auction receipts yielded 3,468 historical Treasury CUSIPs and 444 non-matured candidates at 2026-11-24; five issuer snapshots obtained. All report money-market shares, blocked by the strict direct Treasury-only rule; actual historical holdings, outstanding status/prices and G06 prerequisites pending. FedInvest government valuation snapshots acquired and hash-checked; two separate historical archives, 310 monthly debt statements and 322,922 daily ratios for 108 TIPS audited. Daily completeness, cash flows and execution-price validation remain open.
 - [ ] **CH03.07** — Design per-expiry futures catalog for equity indexes, rates, commodities and FX; verify contract specification and expiry.
-  Candidate roots and expiry/spec contract prepared; real contract-level specifications and G06 prerequisites pending.
+  Weekly CFTC market aggregates acquired for all ten roots, plus one dated ESZ6/NQZ6 transaction sample; real contract-level specifications and G06 prerequisites pending.
 - [ ] **CH03.08** — Create hedge instrument map for USD/CHF, equity and rates; mark options as extension only when explicitly authorized.
   Hedge map drafted; no options enabled. Actual instruments remain gated by CH03.07.
 - [x] **CH03.09** — Choose benchmark per strategy and cash/risk-free series; distinguish tradable benchmark and non-tradable proxy.
 - [x] **CH03.10** — Produce coverage matrix by instrument, date, frequency, missingness, liquidity and source; avoid invented pre-launch data.
-  Synthetic coverage tests; live raw ETF file unreadable/cloud placeholder; prior local summary reports 12 candidates, explicitly unreconciled; DTB3 readable. No price series fabricated.
+  New local source: adjusted daily prices for 12 ETFs through Nov 2026; CRSP monthly AND daily returns for all 22 through 2025, matched by unique PERMNO. No cross-vendor splice; 132,278 ETF security/date keys now matched to daily volume with identical reported returns. The 2026 CRSP refresh, liquidity tests and historical holdings validation remain open. Local extracts and audits under data/processed/universe/ only.
 - [x] **CH03.11** — Expose universe filters, availability chart and exclusion reason in UI.
 
 Evidence: [US Universe](docs/US_UNIVERSE.md), `configs/universe_catalog.json`, `security_master.py`, notebook cell `a8500da9`, synthetic fixture and unit/HTTP/JS tests. This is a candidate catalog and coverage interface, not a validated investable universe. UNIV.01, G02, G06, actual holdings and liquidity remain open. Owner visual confirmation and GitHub publication pending.
 
 
 
+The optional crypto research extension contains BTC/USD and ETH/USD spot observations. Mandate, liquidity and custody eligibility remain open.
+
 ## 04. Sources and Licenses
 
 Notebook: [chapter 04](notebooks/RiskMatch_V3.ipynb#chapitre-04) · Guide chapter 3.
 
-- [ ] Study and formalize: Catalog providers, licenses and data availability dates.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Catalog providers, licenses and data availability dates.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 04 — A. Detailed Tasks
 
 
-- [ ] **CH04.01** — Inventory prices, corporate actions, fundamentals, index membership, futures, Treasury prices and curves, macro, factor and FX datasets.
-- [ ] **CH04.02** — For each source record provider, field, frequency, earliest date, coverage, latency, timezone, revision policy and identifiers.
+- [x] **CH04.01** — Inventory prices, corporate actions, fundamentals, index membership, futures, Treasury prices and curves, macro, factor and FX datasets.
+- [x] **CH04.02** — For each source record provider, field, frequency, earliest date, coverage, latency, timezone, revision policy and identifiers.
 - [ ] **CH04.03** — Verify licensing for local storage, transformation and collaboration before obtaining data; record license and permitted use.
+  External terms, local-only policy and WRDS entitlement checks documented; individual license/redistribution confirmation still required. Do not publish licensed source data.
 - [ ] **CH04.04** — Compare CRSP/WRDS and licensed alternatives; assess public SEC EDGAR, Treasury, FRED/ALFRED and factor datasets.
+  Acquisition comparison completed in docs/DATA_ACQUISITION_PLAN.md; pending CH04.03.
 - [ ] **CH04.05** — Define provider adapters with explicit as_of and dataset version; mock unavailable provider access.
+  ProviderRequest and explicit local/public adapters implemented; worktree validation pending.
 - [ ] **CH04.06** — Document API limits, retry/backoff, caching and missing-data behavior without committing credentials.
+  Public downloader bounded, retries transient errors; source-specific limits and permissions documented. Optional authorized EODHD update adapter added; no token configured, no live price update claimed.
 - [ ] **CH04.07** — Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date.
+  Immutable public receipt hashes, data_catalog_schema.sql, local extraction audits implemented. Actual normalized tables belong to CH05.
 - [ ] **CH04.08** — Separate proprietary data from synthetic test fixtures and Git-tracked configs.
+  Downloads and CRSP extracts kept under ignored data/; no WRDS observations or identifiers committed.
 - [ ] **CH04.09** — Create a source quality report and a data dictionary; confirm required fields before approving each method.
+  All 11 downloaded WRDS files scanned. Daily volume reconciliation completed for 22 ETFs. Quarterly availability, historical holdings and rights checks remain open. No allocation approved.
+
+Evidence: docs/DATA_ACQUISITION_PLAN.md, configs/source_catalog.json, scripts/audit_crsp_monthly.py, scripts/audit_crsp_daily.py, scripts/fetch_public_universe_data.py, configs/data_catalog_schema.sql. Public downloads: Treasury legacy/v2 auction records and 15 latest-vintage FRED series. Source files remain local. CH04.03–09 remain open until their prerequisites and validation evidence are satisfied.
 
 
 

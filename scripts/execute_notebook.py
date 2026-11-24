@@ -10,7 +10,7 @@ from nbclient import NotebookClient
 ROOT = Path(__file__).resolve().parents[1]
 APPROVED = {
     "8f95cdb2", "g00-contract-demo", "2ce6b6ef", "5705c45e",
-    "d5074fea", "48f37aec", "2cfe2469", "ab589f19", "a8500da9",
+    "d5074fea", "48f37aec", "2cfe2469", "ab589f19", "a8500da9", "bc4f8e89",
 }
 
 

@@ -47,6 +47,7 @@ document.querySelectorAll("[data-page]").forEach(button => button.onclick = hand
   page(button.dataset.page);
   if (activePage==="explore") await loadPortfolios();
   if (activePage==="universe") await window.UniverseView.load(api);
+  if (activePage==="sources") await window.SourcesView.load(api);
   if (activePage==="discovery") {
     await showCard();
   }
@@ -150,6 +151,7 @@ document.addEventListener("riskmatch:language",()=>{
   if(activePage==="explore"&&portfolios.length)showPortfolio();
   if(activePage==="compare")compare();
   if(activePage==="universe")window.UniverseView.render();
+  if(activePage==="sources")window.SourcesView.render();
   if(activePage==="mandate"&&!$("mandate-report").hidden)renderMandateReport();
 });
 
@@ -196,7 +198,7 @@ async function restoreSimulation(snapshot){
   portfolios=nextPortfolios;swipes=nextSwipes.slice();shortlist=portfolios.filter((_,i)=>swipes[i]==="like");confirmed.clear();scoreReport=null;
   if(fullMandate)window.MandateForm.restore(fullMandate);
   else{window.MandateForm.reset();const f=$("form");f.querySelector('[name="currency"]').value="USD";f.elements.capital.value=mandate.capital;f.elements.cash.value=mandate.capital;f.elements.loss_capacity_amount.value=mandate.capital*mandate.max_stress_loss;f.elements.stress_loss.value=mandate.max_stress_loss*100;f.elements.loss_budget.value=mandate.max_stress_loss*100;}
-  const target=["home","mandate","discovery","universe","explore","compare"].includes(snapshot.activePage)?snapshot.activePage:"home";
+  const target=["home","mandate","discovery","universe","sources","explore","compare"].includes(snapshot.activePage)?snapshot.activePage:"home";
   return fullMandate&&!mandateReport.demo_eligible&&["explore","compare"].includes(target)?"mandate":target;
 }
 async function enterSavedStudio(target){
@@ -205,4 +207,5 @@ async function enterSavedStudio(target){
   if(target==="discovery")await showCard();
   if(target==="explore")showPortfolio();
   if(target==="universe")await window.UniverseView.load(api);
+  if(target==="sources")await window.SourcesView.load(api);
 }

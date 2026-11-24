@@ -32,6 +32,8 @@ The original V2 animated opening and visual/audio identity are retained. The int
 - [Experiment registry](docs/EXPERIMENT_REGISTRY.md): run IDs, data versions and validation evidence.
 - [Client mandate](docs/CLIENT_MANDATE.md): Chapter 01 input schema, deterministic funding calculations and constraints.
 - [US universe](docs/US_UNIVERSE.md): issuer-sourced ETF candidate catalog, dated identity, liquidity, coverage, Treasury-only rules and gated extensions.
+- [Data acquisition](docs/DATA_ACQUISITION_PLAN.md): verified local coverage, public downloads and precise missing WRDS fields.
+- [Data monitoring](docs/DATA_MONITORING_PLAN.md): current Treasury identity/holdings checks, provider comparison and future refresh architecture.
 
 ## Start on Mac
 
