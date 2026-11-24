@@ -264,31 +264,40 @@ Evidence: docs/DATA_ACQUISITION_PLAN.md, configs/source_catalog.json, scripts/au
 
 Notebook: [chapter 05](notebooks/RiskMatch_V3.ipynb#chapitre-05) · Guide chapter 3.1.
 
-- [ ] Study and formalize: Normalize snapshots, corporate actions, calendars and leakage tests.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Normalize snapshots, corporate actions, calendars and leakage tests.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 05 — A. Detailed Tasks
 
 
-- [ ] **CH05.01** — Define canonical trading calendar, UTC timestamps and local exchange close.
-- [ ] **CH05.02** — Implement unique instrument/date keys, types, corporate actions, contract expiration and series version checks.
-- [ ] **CH05.03** — Ingest raw data without modification, then produce a deterministic cleaned layer.
-- [ ] **CH05.04** — Store observation_date, availability_time, release/vintage and as_of; as-of join only availability_time <= decision time.
-- [ ] **CH05.05** — Detect duplicates, gaps, outliers, stale quotes, invalid prices and missing FX; differentiate closed market from missing data.
-- [ ] **CH05.06** — Handle split factors, dividends, capital changes, mergers, delistings and ticker changes.
-- [ ] **CH05.07** — Build historical membership and fundamental publication lag tests; never use today's constituents retrospectively.
-- [ ] **CH05.08** — Align cross-market timestamps without leaking later closes; prohibit uncontrolled forward fill.
-- [ ] **CH05.09** — Create feature store with explicit lag, lookback, units and data hash.
-- [ ] **CH05.10** — Test corrected/revised data, missing assets, late arrivals and deliberately injected future data.
-- [ ] **CH05.11** — Record completeness, rejection reason, lineage, freshness and reproducible snapshot in MarketSnapshot.
-- [ ] **CH05.12** — Display data coverage and freshness in UI; block dependent runs on invalid snapshots.
+- [x] **CH05.01** — Define canonical trading calendar, UTC timestamps and local exchange close.
+  Explicit exchange schedule contract and observed session partition. Actual historical early-close timestamps remain unverified and null.
+- [x] **CH05.02** — Implement unique instrument/date keys, types, corporate actions, contract expiration and series version checks.
+  Typed keys, event-specific keys and source versions. Futures are archived; no active contract ingestion.
+- [x] **CH05.03** — Ingest raw data without modification, then produce a deterministic cleaned layer.
+  Content-addressed Parquet research partitions, input and output hashes, original raw files preserved.
+- [x] **CH05.04** — Store observation_date, availability_time, release/vintage and as_of; as-of join only availability_time <= decision time.
+  Unknown availability never qualifies. Historical availability remains a source-approval condition.
+- [x] **CH05.05** — Detect duplicates, gaps, outliers, stale quotes, invalid prices and missing FX; differentiate closed market from missing data.
+  Explicit calendar, nulls and quality counts; candidate anomalies are flags, not automatic corrections.
+- [x] **CH05.06** — Handle split factors, dividends, capital changes, mergers, delistings and ticker changes.
+  Normalized WRDS distributions, delisting successor/proceeds fields and dated name history plus public split/dividend events. Cash settlement and return reconciliation continue in Chapter 6; ambiguous events remain unavailable.
+- [x] **CH05.07** — Build historical membership and fundamental publication lag tests; never use today's constituents retrospectively.
+  Dated membership and source filing chronology are distinct from observed outcomes; synthetic availability tests passed.
+- [x] **CH05.08** — Align cross-market timestamps without leaking later closes; prohibit uncontrolled forward fill.
+- [x] **CH05.09** — Create feature store with explicit lag, lookback, units and data hash.
+- [x] **CH05.10** — Test corrected/revised data, missing assets, late arrivals and deliberately injected future data.
+- [x] **CH05.11** — Record completeness, rejection reason, lineage, freshness and reproducible snapshot in MarketSnapshot.
+- [x] **CH05.12** — Display data coverage and freshness in UI; block dependent runs on invalid snapshots.
+
+Evidence: [Point-in-time preparation](docs/POINT_IN_TIME.md), local Parquet and metadata report, synthetic notebook and API/JS/Python tests. Chapter 5 technical work is separate from actual historical approval: CH04.03/09 and G02 remain open; all real-data partitions remain research-only.
 
 
 

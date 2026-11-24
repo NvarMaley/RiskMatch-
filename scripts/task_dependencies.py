@@ -56,10 +56,11 @@ def graph():
     # Metadata tooling can be verified with fixtures. Approval also requires the rights review.
     ch(4,[4,5,6,7,8],"CH04.02")
     put("CH04.09","CH04.03","CH04.08")
-    ch(5,[1,2,3,4,5,6,8,9,10,11,12],"CH04.09","CH03.04")
+    # Private research normalization and synthetic leakage tests precede source approval.
+    ch(5,[1,2,3,4,5,6,8,9,10,11,12],"CH04.08","CH03.04")
     ch(6,[1,2,3,4,5,6,7,8,9,12],"CH05.11")
     put("UNIV.01","SYS.02","CH03.03","CH05.04")
-    put("G02","G01","CH03.11","CH05.12","CH06.12","UNIV.01")
+    put("G02","G01","CH03.11","CH04.09","CH05.12","CH06.12","UNIV.01")
 
     # Basic statistics, forecast and risk. Advanced analyses may run only after applicable data.
     ch(7,list(range(1,10)),"G02")
@@ -94,7 +95,7 @@ def graph():
     # Catalog evidence can close before activation. Every consumer of the extension
     # retains the original model and data-quality gates.
     ch(3,[5,6,7,8],"CH03.04")
-    ch(5,[7],"CH03.05","CH05.04","G06","CH04.09")
+    ch(5,[7],"CH03.05","CH05.04")
     ch(21,range(1,13),"CH03.06","CH05.11","G06","CH04.09")
     ch(22,range(1,12),"CH03.07","CH05.11","G06","CH04.09")
     ch(6,[10],"CH21.11","CH22.10")
@@ -209,6 +210,7 @@ def graph():
     assert set(many("OBJ",11,1)) <= ancestors("G01")
     assert "G01" in ancestors("G03")
     assert "UNIV.01" in ancestors("G02")
+    assert "CH04.09" in ancestors("G02")
     assert "UNIV.01" in ancestors("MATCH.01")
     assert "BT00.06" in ancestors("G06")
     assert "G04" in ancestors("G05")

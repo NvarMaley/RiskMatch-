@@ -33,3 +33,17 @@ test("Local inventory counts and rights are shown in both languages", async () =
   context.window.SourcesView.render();
   assert.match(el.innerHTML, /11 file versions, 3 source groups/);
 });
+
+test("Point-in-time quality panel displays blocked historical approval", async () => {
+  const el = {innerHTML: "", addEventListener() {}};
+  const context = {document: {getElementById: () => el}, window: {RM: {t: k => k, language: "fr"}}};
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, "../../apps/web/sources.js"), "utf8"), context);
+  await context.window.SourcesView.load(async endpoint => endpoint === "snapshot" ?
+    {approved: false, datasets: [{dataset:"fixture",rows:3,quality:{missing_return:1}}]} : {rows: []});
+  assert.match(el.innerHTML, /Qualité et données historiques/);
+  assert.match(el.innerHTML, /Rendement manquant: 1/);
+  assert.match(el.innerHTML, /bloqués/);
+  context.window.RM.language = "en";
+  context.window.SourcesView.render();
+  assert.match(el.innerHTML, /Missing return: 1/);
+});

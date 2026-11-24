@@ -92,6 +92,9 @@ class MarketSnapshot:
     dataset_hash: str
     instrument_ids: tuple[str, ...]
     frequency: Frequency
+    completeness: tuple[tuple[str, int, int], ...] = ()
+    rejection_reasons: tuple[str, ...] = ()
+    latest_observation: date | None = None
 
 
 @dataclass(frozen=True, kw_only=True)

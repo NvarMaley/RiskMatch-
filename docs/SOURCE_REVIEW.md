@@ -2,6 +2,8 @@
 
 Reviewed 2026-11-24. The 16 logical datasets and their provider, identifiers, required fields, frequency and revision rules are in [the source catalog](../configs/source_catalog.json). A dataset may combine multiple physical sources. The local inventory groups files by acquisition feed. A group count is distinct from a dataset count.
 
+The owner clarified that RiskMatch is a private university-course application and WRDS extracts were supplied through UNIL. Technical research preparation can proceed in this scope; specific data-use and historical approval checks remain documented.
+
 ## Field dictionary and method decisions
 
 | Catalog dataset | Fields and units to check | Current research use and remaining condition |
