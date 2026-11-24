@@ -88,7 +88,7 @@ def test_stock_expansion_is_point_in_time():
 
 def test_prior_summary_is_not_raw_coverage_and_no_lookahead(tmp_path):
     path=tmp_path/"summary.csv"
-    path.write_text("series,frequency,first_observation,last_observation,observed,missing_on_source_grid\nSPY,daily,2005-01-03,2026-11-18,100,2\nGLD,daily,2005-01-03,2026-11-18,100,0\n")
+    path.write_text("series,frequency,first_observation,last_observation,observed,missing_on_source_grid\nSPY,daily,2005-01-03,2026-11-18,100,2\nOUTSIDE,daily,2005-01-03,2026-11-18,100,0\n")
     summary=reported_coverage(list(instruments().values()),path,D)
     assert set(summary)=={"SPY"} and summary["SPY"]["status"]=="reported_unvalidated"
     assert not reported_coverage(list(instruments().values()),path,date(2026,11,21))

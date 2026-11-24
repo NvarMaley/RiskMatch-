@@ -1,5 +1,7 @@
 # US Investment Universe — Chapter 03
 
+The frozen listed universe comprises 22 original ETF candidates and five commodity ETPs (GLD, USO, SLV, CPER and WEAT). Historical return windows and restrictions are documented in the [acquisition plan](DATA_ACQUISITION_PLAN.md).
+
 Catalog version `universe-v1.0.0`, metadata reviewed 2026-11-24. These are research candidates, not an investable portfolio, recommendations or validated current/historical eligibility. The shared public manifest is `configs/universe_catalog.json`; each ETF has an internal immutable ID, current ticker, sponsor, asset class, sector/style, fund inception, US domicile, USD currency, reference index and issuer source. Inception is not necessarily exchange listing. Listing dates not independently identified remain null, not fabricated. Current benchmark descriptions must not be retroactively assumed to be historical benchmark versions.
 
 ## CH03.01–02 — Candidate catalog

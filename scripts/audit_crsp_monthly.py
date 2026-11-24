@@ -78,7 +78,7 @@ def main():
     with tempfile.NamedTemporaryFile(mode="w",dir=dest.parent,delete=False,encoding="utf-8") as out:
         json.dump(result,out,indent=2); temp=Path(out.name)
     temp.replace(dest)
-    print(f"Monthly ETF coverage: {result['observed_etfs']}/22; preliminary stock count: {result['stock_candidate_count']}; selected {result['selected_count']}. Local audit only.")
+    print(f"Monthly ETF coverage: {result['observed_etfs']}/{len(result['etf'])}; preliminary stock count: {result['stock_candidate_count']}; selected {result['selected_count']}. Local audit only.")
 
 
 if __name__ == "__main__":

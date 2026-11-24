@@ -55,7 +55,7 @@ def main():
     with tempfile.NamedTemporaryFile(mode="w",dir=dest,delete=False,encoding="utf-8") as f:
         json.dump(result,f,indent=2);temp=Path(f.name)
     temp.replace(dest/"crsp_daily_audit.json")
-    print(f"Daily CRSP ETF coverage: {result['observed_etfs']}/22; selected stock snapshot with daily return: {result['stock_snapshot_count_with_return']}. Local only.")
+    print(f"Daily CRSP ETF coverage: {result['observed_etfs']}/{len(result['etf'])}; selected stock snapshot with daily return: {result['stock_snapshot_count_with_return']}. Local only.")
 
 
 if __name__=="__main__":main()

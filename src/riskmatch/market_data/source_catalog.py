@@ -68,8 +68,8 @@ def source_report(as_of, root=ROOT):
     treasury=treasury_identity_summary(as_of,root);holdings=issuer_holdings_summary(as_of,root);fed=fedinvest_summary(as_of,root)
     def present(path):return bool(new and (new/path).is_file())
     available={
-      "ETF_DAILY":("local_partial" if daily or present("data_plus/raw/wrds/crsp_dsf.csv") else "missing", f"CRSP daily {daily['observed_etfs']}/22; no volume field; ends 2025" if daily else "Daily CRSP audit pending"),
-      "ETF_MONTHLY":("local_partial" if monthly or present("data_plus/raw/wrds/crsp_msf.csv") else "missing",f"{monthly['observed_etfs']}/22 monthly ETF histories through 2025" if monthly else "Monthly audit pending"),
+      "ETF_DAILY":("local_partial" if daily or present("data_plus/raw/wrds/crsp_dsf.csv") else "missing", f"CRSP daily {daily['observed_etfs']}/{len(daily['etf'])}; no volume field; ends 2025" if daily else "Daily CRSP audit pending"),
+      "ETF_MONTHLY":("local_partial" if monthly or present("data_plus/raw/wrds/crsp_msf.csv") else "missing",f"{monthly['observed_etfs']}/{len(monthly['etf'])} monthly ETF histories through 2025" if monthly else "Monthly audit pending"),
       "EQUITY_MASTER":("local_partial" if monthly or present("data_plus/raw/wrds/crsp_msf.csv") else "missing",f"{monthly['stock_candidate_count']} raw classified candidates; {monthly['selected_count']} ranked locally at {monthly['snapshot_date']}" if monthly else "Monthly audit pending"),
       "ETF_HOLDINGS":("local_partial" if holdings else "missing", f"{len(holdings)}/5 current issuer snapshots audited; strict rule blocks reported money-market shares; historical holdings still missing" if holdings else "No verified dated Treasury ETF holding snapshots"),
       "FUNDAMENTALS":("local_partial" if present("data_plus/raw/wrds/comp_funda.csv") else "missing","Annual export lacks verified release/revision history"),
@@ -221,6 +221,14 @@ def source_report(as_of, root=ROOT):
         fields = (crypto["BTC-USD"]["days"],crypto["ETH-USD"]["days"],crypto["ETH-USD"]["missing"])
         research("CRYPTO_SPOT","Coinbase Exchange spot OHLCV: %s BTC/USD and %s ETH/USD UTC days; %s missing ETH days." % fields,
                  "Coinbase Exchange au comptant : %s jours BTC/USD et %s jours ETH/USD en UTC, dont %s dates ETH absentes du calendrier." % fields)
+    windows = local_audit("research_window_summary.json")
+    if windows:
+        for category,english,french in [
+            ("ETF_DAILY",f"{windows['bridge']}/{windows['products']} closing prices reconciled on the December 2025 boundary.",f"{windows['bridge']}/{windows['products']} cours de clôture concordent au raccord de décembre 2025."),
+            ("EQUITY_MASTER",f"{windows['stock_gaps']} missing next-month returns among {windows['stock_rows']} ranked observations.",f"{windows['stock_gaps']} rendements du mois suivant manquent sur {windows['stock_rows']} observations classées."),
+            ("TREASURY_DAILY",f"{windows['issues_with_marks']} issues have official marks. {windows['schedules']} nominal issues have contractual schedules.",f"{windows['issues_with_marks']} titres ont des valorisations officielles. {windows['schedules']} titres nominaux ont un échéancier contractuel.")
+        ]:
+            research(category,available[category][1]+" "+english,(translations.get(category) or "")+" "+french)
     rows=[]
     for row in meta["entries"]:
         status,evidence=available[row["id"]];rows.append(row|{"status":status,"evidence":evidence,"evidence_fr":translations.get(row["id"]),"allocation_approved":False})

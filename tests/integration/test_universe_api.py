@@ -19,7 +19,7 @@ def test_universe_api_uses_coverage_without_approving_allocations(tmp_path):
         request=Request(f"http://127.0.0.1:{server.server_port}/api/universe",data=json.dumps({"as_of":"2018-06-20"}).encode(),headers={"Content-Type":"application/json"})
         try:
             with opener.open(request,timeout=5) as response:result=json.load(response)
-            assert len(result["rows"])==22 and result["eligible_count"]==0
+            assert len(result["rows"])==27 and result["eligible_count"]==0
             xlc=next(r for r in result["rows"] if r["ticker"]=="XLC")
             assert xlc["coverage"]["prelaunch_rejected"]==2 and "market_data_not_validated" in xlc["reasons"]
         finally:

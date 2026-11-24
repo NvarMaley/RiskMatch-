@@ -1,5 +1,5 @@
 {
-  "version": "universe-v1.0.0",
+  "version": "universe-v1.1.0",
   "metadata_reviewed_on": "2026-11-24",
   "status": "candidate_catalog_not_investability",
   "instruments": [
@@ -309,6 +309,76 @@
       "currency": "USD",
       "benchmark": "ICE U.S. Treasury Inflation Linked Bond Index",
       "source": "https://www.ishares.com/us/literature/fact-sheet/tip-ishares-tips-bond-etf-fund-fact-sheet-en-us.pdf",
+      "listing_date": null
+    },
+    {
+      "security_id": "RM-ETP-023",
+      "ticker": "GLD",
+      "name": "SPDR Gold Shares",
+      "asset_class": "commodity_etp",
+      "sector": "gold",
+      "sponsor": "World Gold Trust Services",
+      "inception": "2004-11-18",
+      "domicile": "US",
+      "currency": "USD",
+      "benchmark": "LBMA Gold Price PM",
+      "source": "https://www.spdrgoldshares.com/usa/",
+      "listing_date": null
+    },
+    {
+      "security_id": "RM-ETP-024",
+      "ticker": "USO",
+      "name": "United States Oil Fund",
+      "asset_class": "commodity_etp",
+      "sector": "crude_oil",
+      "sponsor": "USCF",
+      "inception": "2006-04-10",
+      "domicile": "US",
+      "currency": "USD",
+      "benchmark": "Benchmark Oil Futures Contract",
+      "source": "https://www.uscfinvestments.com/uso",
+      "listing_date": null
+    },
+    {
+      "security_id": "RM-ETP-025",
+      "ticker": "SLV",
+      "name": "iShares Silver Trust",
+      "asset_class": "commodity_etp",
+      "sector": "silver",
+      "sponsor": "iShares",
+      "inception": "2006-04-21",
+      "domicile": "US",
+      "currency": "USD",
+      "benchmark": "LBMA Silver Price",
+      "source": "https://www.ishares.com/us/products/239855/ishares-silver-trust-fund",
+      "listing_date": null
+    },
+    {
+      "security_id": "RM-ETP-026",
+      "ticker": "CPER",
+      "name": "United States Copper Index Fund",
+      "asset_class": "commodity_etp",
+      "sector": "copper",
+      "sponsor": "USCF",
+      "inception": "2011-11-15",
+      "domicile": "US",
+      "currency": "USD",
+      "benchmark": "SummerHaven Copper Index Total Return",
+      "source": "https://www.uscfinvestments.com/cper",
+      "listing_date": null
+    },
+    {
+      "security_id": "RM-ETP-027",
+      "ticker": "WEAT",
+      "name": "Teucrium Wheat Fund",
+      "asset_class": "commodity_etp",
+      "sector": "wheat",
+      "sponsor": "Teucrium",
+      "inception": "2011-09-19",
+      "domicile": "US",
+      "currency": "USD",
+      "benchmark": "Teucrium Wheat Fund Benchmark",
+      "source": "https://etfs.teucrium.com/WEAT",
       "listing_date": null
     }
   ],

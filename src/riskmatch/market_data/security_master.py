@@ -12,7 +12,7 @@ from .local_sources import local_market_paths, monthly_audit, daily_audit, audit
 
 ROOT = Path(__file__).resolve().parents[3]
 CATALOG_PATH = ROOT / "configs/universe_catalog.json"
-ETF_CLASSES = {"equity_etf", "reit_etf", "treasury_etf"}
+ETF_CLASSES = {"equity_etf", "reit_etf", "treasury_etf", "commodity_etp"}
 MIN_ADV_USD = 1_000_000  # provisional screening threshold; not a liquidity guarantee
 MIN_AUM_USD = 100_000_000
 
