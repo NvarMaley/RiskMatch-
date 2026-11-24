@@ -392,7 +392,8 @@ def universe_report(as_of, *, price_path=None, rate_path=None, records_dir=None,
             "daily_audit": ({"observed_etfs":daily["observed_etfs"],"snapshot_date":daily["snapshot_date"],
                              "stock_snapshot_count_with_return":daily["stock_snapshot_count_with_return"],"status":"local_unvalidated"} if daily else None),
             "treasury_identity":treasury_summary,
-            "futures_roots":FUTURES_ROOTS,
+            "futures_roots":ARCHIVED_FUTURES_ROOTS,
+            "active_futures_roots":FUTURES_ROOTS,
             "eligible_count": sum(r["eligible"] for r in rows),
             "mode": "research_candidates_not_allocations"}
 
@@ -442,9 +443,10 @@ class TreasurySecurity:
                     isfinite(self.coupon_rate) and self.coupon_rate >= 0 and treasury_eligible(self.holding))
 
 
-FUTURES_ROOTS = {"ES": "equity", "NQ": "equity", "RTY": "equity", "ZT": "rates", "ZF": "rates",
+ARCHIVED_FUTURES_ROOTS = {"ES": "equity", "NQ": "equity", "RTY": "equity", "ZT": "rates", "ZF": "rates",
                  "ZN": "rates", "ZB": "rates", "CL": "commodity", "GC": "commodity", "6S": "fx"}
-HEDGE_MAP = {"USD_CHF": ("6S",), "US_EQUITY": ("ES", "NQ", "RTY"), "US_RATES": ("ZT", "ZF", "ZN", "ZB")}
+FUTURES_ROOTS: dict[str, str] = {}
+HEDGE_MAP: dict[str, tuple[str, ...]] = {"USD_CHF": (), "US_EQUITY": (), "US_RATES": ()}
 
 
 @dataclass(frozen=True)
@@ -461,7 +463,10 @@ class FuturesContract:
     source: str
 
     def eligible(self, as_of):
-        return bool(self.root in FUTURES_ROOTS and self.contract_id and self.source and
+        return self.root in FUTURES_ROOTS and self.valid_specification(as_of)
+
+    def valid_specification(self, as_of):
+        return bool(self.root in ARCHIVED_FUTURES_ROOTS and self.contract_id and self.source and
                     self.spec_available_on <= as_of <= self.last_trade_date <= self.expiry and
                     self.currency == "USD" and self.settlement in {"cash", "physical"} and
                     isfinite(self.multiplier) and self.multiplier > 0 and isfinite(self.tick_size) and self.tick_size > 0)
