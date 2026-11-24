@@ -26,7 +26,7 @@ def contiguous(rows):
     return valid
 
 
-def prepare_item(item, db, folder, sources, as_of):
+def prepare_item(item, db, folder, sources, as_of, minimum_observations=MIN_OBSERVATIONS):
     """Prefer total returns, then monthly, weekly, daily; never splice sources."""
     ident={k:item[k] for k in ("id","ticker","category")}
     candidates=item["series"]
@@ -44,7 +44,7 @@ def prepare_item(item, db, folder, sources, as_of):
                     [str(folder/f"{source}.parquet"),series["instrument"],as_of]).fetchall()[::-1]
                 valid=contiguous(rows)
                 attempts.append({"source":source,"frequency":frequency,"kind":kind,"observations":len(valid)})
-                if len(valid)>=MIN_OBSERVATIONS:
+                if len(valid)>=minimum_observations:
                     return ident | {"status":"ready","source":source,"instrument":series["instrument"],
                         "frequency":frequency,"kind":kind,"currency":"USD","attempts":attempts,
                         "dates":[d for d,_ in valid],"returns":[v for _,v in valid]}

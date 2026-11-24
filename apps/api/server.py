@@ -17,6 +17,7 @@ from riskmatch.market_data.returns import returns_report
 from riskmatch.analytics.descriptive_report import descriptive_report, assets as descriptive_assets, compare as descriptive_compare, compare_series, client_catalog
 from riskmatch.analytics.forecast_report import asset_forecast
 from riskmatch.analytics.forecast_batch import batch_report, batch_asset
+from riskmatch.analytics.risk_report import risk_batch_report, risk_batch_asset, asset_risk, matrix_risk
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -73,6 +74,18 @@ class Handler(SimpleHTTPRequestHandler):
                 if as_of > date.today() or as_of < date(1900,1,1):
                     raise ValueError("invalid_universe_date")
                 return self.respond(returns_report(ROOT, as_of))
+            if self.path in ("/api/risk/universe","/api/risk/universe/asset","/api/risk/asset","/api/risk/matrix"):
+                as_of=date.fromisoformat(data["as_of"])
+                if as_of>date.today() or as_of<date(1900,1,1):
+                    raise ValueError("invalid_universe_date")
+                if self.path=="/api/risk/universe":
+                    return self.respond(risk_batch_report(ROOT,as_of))
+                if self.path=="/api/risk/universe/asset":
+                    return self.respond(risk_batch_asset(ROOT,as_of,data["id"]))
+                start,end=date.fromisoformat(data["start"]),date.fromisoformat(data["end"])
+                if self.path=="/api/risk/asset":
+                    return self.respond(asset_risk(ROOT,data["source"],data["instrument"],start,end,data["currency"],data["kind"],as_of))
+                return self.respond(matrix_risk(ROOT,data["series"],start,end,data["currency"],data["kind"],as_of))
             if self.path in ("/api/forecast/universe","/api/forecast/universe/asset"):
                 as_of=date.fromisoformat(data["as_of"])
                 if as_of>date.today() or as_of<date(1900,1,1):

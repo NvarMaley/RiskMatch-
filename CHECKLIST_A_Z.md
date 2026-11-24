@@ -422,29 +422,38 @@ Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), corrected corporate-
 
 Notebook: [chapter 09](notebooks/RiskMatch_V3.ipynb#chapitre-09) · Guide chapter 4.
 
-- [ ] Study and formalize: EWMA, GARCH, shrinkage, DCC; PSD and OOS comparison.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
-- [ ] Verify local rendering and update documentation.
-- [ ] Create a PR, obtain review and merge.
+- [x] Study and formalize: EWMA, GARCH, shrinkage, DCC; PSD and OOS comparison.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness of research estimators.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
+- [x] Verify local API/rendering tests and update documentation.
+- [x] Publish research implementation via owner-approved solo workflow (D003).
 
 ### 09 — A. Detailed Tasks
 
 
-- [ ] **CH09.01** — Estimate sample covariance and annualize consistently with return mean.
-- [ ] **CH09.02** — Fit EWMA variance and covariance; test decay parameter and initialization.
+- [x] **CH09.01** — Estimate sample covariance and annualize consistently with return mean.
+- [x] **CH09.02** — Fit EWMA variance and covariance; test decay parameter and initialization.
 - [ ] **CH09.03** — Fit GARCH(1,1), EGARCH and GJR-GARCH; check convergence, persistence, residual autocorrelation and asymmetry.
+  Implemented and run on all regular candidates; nonconvergence, persistence and guards explicitly reported. G04 remains open.
 - [ ] **CH09.04** — Compare historical volatility with conditional forecasts and simple rolling baselines.
+  Implemented chronological validation/test comparison; formal closure depends on CH09.03.
 - [ ] **CH09.05** — Fit Ledoit-Wolf and OAS shrinkage; compare out-of-sample realized risk and condition number.
+  Implemented six exact-interval cohorts; formal closure depends on CH09.04.
 - [ ] **CH09.06** — Implement factor covariance model B*Sigma_f*B' + Sigma_e; evaluate residual covariance choices.
+  Train-only PCA factor reference and diagonal/full residual variants implemented; economic factor approval requires CH10.10.
 - [ ] **CH09.07** — Fit DCC-GARCH conditional correlation where appropriate; test correlation/covariance PSD.
-- [ ] **CH09.08** — Apply numerical regularization only with traceable diagnostics and explicit tolerances.
+  Three small aligned cohorts fitted; formal closure depends on CH09.05.
+- [x] **CH09.08** — Apply numerical regularization only with traceable diagnostics and explicit tolerances.
 - [ ] **CH09.09** — Evaluate QLIKE, variance forecast errors, realized risk and portfolio stability in chronological validation.
+  Implemented QLIKE/MSE and inverse-volatility stability diagnostic; full backtest remains pending.
 - [ ] **CH09.10** — Build rolling volatility/correlation charts, covariance heatmap and confidence warnings.
+  Experimental asset and comparison views implemented; formal closure depends on CH09.09.
+
+Evidence: [Volatility and covariance](docs/VOLATILITY_COVARIANCE.md), 1,474 catalogue assets examined, 1,015 regular-model profiles, 457 descriptive-only and two unavailable; six covariance cohorts including exact 575-asset Chapter 8 vector, all sample/shrinkage/PCA matrices PSD, three DCC fits. G04 and CH10.10 prerequisites remain open.
 
 
 

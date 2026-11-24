@@ -9,6 +9,7 @@ fi
 [[ -d .venv ]] || python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock
 .venv/bin/python -m pip install -r requirements-forecast.txt
+.venv/bin/python -m pip install -r requirements-risk.txt
 .venv/bin/python -m pip install --no-build-isolation --no-deps -e .
 .venv/bin/python -m pip check
 .venv/bin/python -m pytest

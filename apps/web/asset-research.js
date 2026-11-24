@@ -8,6 +8,7 @@
   let api,catalog,category="all",query="",page=0,mode="library",active=null,tray=[],result=null,revision=0;
   let cutoff, start,end,currency="USD",kind="total_return",error="";
   let forecastResult=null,forecastEstimate=null,forecastError="",forecastModel="",forecastRevision=0,forecastAdvanced=true;
+  let riskResult=null,riskError="",riskModel="",riskRevision=0;
   const classes={all:["All assets","Tous les actifs"],equity_etf:["Equity ETFs","ETF actions"],reit_etf:["Real estate ETFs","ETF immobiliers"],commodity_etp:["Commodities","Matières premières"],treasury_etf:["Treasury ETFs","ETF souverains"],stock:["Stocks","Actions"],treasury:["Government bonds","Obligations d’État"],crypto:["Crypto","Cryptomonnaies"],cash:["Cash","Liquidités"]};
   const descriptions={
     mean:["Arithmetic mean","Moyenne arithmétique","Average observed return per period.","Moyenne des rendements observés par période."],
@@ -114,6 +115,42 @@
     const table=f?'<div class="universe-table-wrap"><table class="research-matrix"><thead><tr><th>'+tr("Model","Modèle")+'</th><th>MSE</th><th>MAE</th><th>'+tr("Direction","Direction")+'</th><th>'+tr("Coverage","Couverture")+'</th><th>'+tr("Net strategy mean","Moyenne stratégie nette")+'</th></tr></thead><tbody>'+Object.entries(f.models).map(([k,v])=>`<tr><th>${esc(modelName(k))}</th><td>${num(v.test.mse)}</td><td>${pct(v.test.mae)}</td><td>${pct(v.test.directional_accuracy)}</td><td>${pct(v.test.interval_coverage)}</td><td>${pct(v.test.net_strategy_mean)}</td></tr>`).join("")+'</tbody></table></div>':"";
     return `<article class="forecast-panel"><h2>${tr("Return forecasting — experimental","Prévision des rendements — expérimentale")}</h2><p>${tr("Research only. Forecasts are not reliable predictions or investment recommendations. One period at the selected frequency; a separate chronological test.","Recherche uniquement. Les prévisions ne sont ni fiables ni des recommandations d’investissement. Une période à la fréquence sélectionnée ; test chronologique séparé.")}</p><button id="forecast-run" class="primary">${tr("Run forecast research","Calculer les prévisions")}</button> <button id="forecast-batch">${tr("View saved universe run","Voir le calcul global")}</button> <label><input type="checkbox" id="forecast-advanced" ${forecastAdvanced?"checked":""}> ${tr("Include machine learning","Inclure les modèles de machine learning")}</label><p role="status">${esc(forecastError)}</p>${f&&m?`<p>${f.savedBatch?tr("Saved universe run","Calcul global enregistré")+" · ":""}${esc(f.frequency||"")} · ${esc(f.currency||"")} · ${esc(f.kind||"")} · ${esc(f.source||"")}</p><p>${tr("Train / validation / test","Entraînement / validation / test")}: ${f.split.train} / ${f.split.validation} / ${f.split.test} · ${tr("Last observation","Dernière observation")}: ${esc(f.last||f.split.test_end||"")} · ${tr("Validation-selected model","Modèle choisi sur validation")}: ${esc(modelName(f.selected_model))}</p><label>${tr("Inspect model","Examiner un modèle")}<select id="forecast-model">${Object.keys(f.models).map(k=>`<option value="${esc(k)}" ${k===forecastModel?"selected":""}>${esc(modelName(k))}</option>`).join("")}</select></label><div class="mandate-summary"><div><span>${tr("Next-period forecast","Prévision prochaine période")}</span><b>${pct(m.expected_return)}</b></div><div><span>${tr("90% empirical interval","Intervalle empirique à 90 %")}</span><b>${pct(m.interval[0])} – ${pct(m.interval[1])}</b></div></div><div class="research-charts">${lineChart(m.history.map(h=>[h[0],h[1]]),tr("Realized returns (test)","Rendements réalisés (test)"),tr("Held-out chronological test observations.","Observations du test chronologique séparé."),pct)}${lineChart(m.history.map(h=>[h[0],h[2]]),tr("Predicted returns (test)","Rendements prévus (test)"),tr("Forecasts made from prior observations only.","Prévisions à partir des seules observations antérieures."),pct)}${lineChart(m.history.map(h=>[h[0],h[3]]),tr("Lower interval bound","Borne inférieure"),tr("Calibrated on validation residuals.","Calibrée sur les résidus de validation."),pct)}${lineChart(m.history.map(h=>[h[0],h[4]]),tr("Upper interval bound","Borne supérieure"),tr("Not a guaranteed interval.","Intervalle non garanti."),pct)}</div>${table}<p>${tr("Unavailable / deferred","Indisponibles / reportés")}: ${esc(Object.keys(f.unavailable).join(", "))}</p>`:""}</article>`;
   }
+  function riskPanel(){
+    if(mode==="library"||mode==="detail"&&!active?.item.series.length||mode==="compare"&&tray.length<2)return "";
+    const r=riskResult, m=r?.models?.[riskModel], matrix=mode==="compare";
+    const label={historical:["Historical volatility","Volatilité historique"],rolling:["Rolling volatility","Volatilité glissante"],ewma:["EWMA","EWMA"],garch:["GARCH(1,1)","GARCH(1,1)"],egarch:["EGARCH","EGARCH"],gjr_garch:["GJR-GARCH","GJR-GARCH"],sample:["Sample covariance","Covariance échantillon"],ledoit_wolf:["Ledoit-Wolf","Ledoit-Wolf"],oas:["OAS","OAS"],pca_factor_diagonal:["PCA factor / diagonal residual","Facteurs PCA / résidus diagonaux"],pca_factor_full:["PCA factor / full residual","Facteurs PCA / résidus complets"]};
+    const name=k=>label[k]?tr(...label[k]):k;
+    const options=r?.models?`<label>${tr("Risk model","Modèle de risque")}<select id="risk-model">${Object.keys(r.models).map(k=>`<option value="${esc(k)}" ${riskModel===k?"selected":""}>${esc(name(k))}</option>`).join("")}</select></label>`:"";
+    const table=r?.models?`<div class="universe-table-wrap"><table class="research-matrix"><thead><tr><th>${tr("Model","Modèle")}</th><th>${tr("Annualized volatility","Volatilité annualisée")}</th><th>QLIKE (test)</th><th>MSE (test)</th><th>${tr("Numerical guards","Gardes numériques")}</th></tr></thead><tbody>${Object.entries(r.models).map(([k,v])=>`<tr><th>${esc(name(k))}</th><td>${pct(matrix?v.equal_weight_annual_volatility:v.annualized_volatility)}</td><td>${num(v.test?.qlike)}</td><td>${num(v.test?.mse)}</td><td>${esc(v.numerical_guard_count??0)}</td></tr>`).join("")}</tbody></table></div>`:"";
+    let charts="";
+    if(m&&matrix){
+      const assets=r.series||tray.map(a=>a.item.series[a.index]);
+      const c=m.covariance, corr=c.map((row,i)=>row.map((v,j)=>c[i][i]>0&&c[j][j]>0?v/Math.sqrt(c[i][i]*c[j][j]):null));
+      charts=matrixChart(m.annualized_covariance,assets,tr("Annualized covariance","Covariance annualisée"),tr("Training covariance; squared decimal returns per year.","Covariance d’entraînement ; rendements décimaux au carré par an."))+matrixChart(corr,assets,tr("Correlation","Corrélation"),tr("Common exact intervals.","Intervalles exacts communs."))+
+        `<p>PSD: ${esc(m.diagnostics.before.psd)} · ${tr("Condition number","Conditionnement")}: ${num(m.diagnostics.before.condition_number)} · ${tr("Adjusted eigenvalues","Valeurs propres ajustées")}: ${m.diagnostics.eigenvalues_adjusted}</p>`+
+        (r.dcc?matrixChart(r.dcc.next_correlation,assets,"DCC-GARCH",tr("Next conditional correlation.","Corrélation conditionnelle prochaine période."))+lineChart(r.dcc.test_correlations.map((c,i)=>[r.dcc.dates?.[i]||i,c[0][1]]),tr("DCC correlation, first two assets","Corrélation DCC, deux premiers actifs"),tr("Held-out conditional correlation.","Corrélation conditionnelle hors échantillon.")):r.dcc_unavailable?`<p>DCC: ${esc(r.dcc_unavailable)}</p>`:"");
+    }else if(m){
+      charts=`<div class="mandate-summary"><div><span>${tr("Next annualized volatility","Volatilité annualisée prévue")}</span><b>${pct(m.annualized_volatility)}</b></div><div><span>${tr("Persistence","Persistance")}</span><b>${num(m.persistence)}</b></div></div><div class="research-charts">${lineChart(m.history.map(h=>[h[0],h[1]]),tr("Conditional volatility (test)","Volatilité conditionnelle (test)"),tr("Annualized from causal one-step variance.","Annualisée à partir de la variance prédictive causale."),pct)}${lineChart(m.history.map(h=>[h[0],h[2]]),tr("Realized shock magnitude","Amplitude du choc réalisé"),tr("Annualized absolute return shock; noisy proxy.","Choc de rendement absolu annualisé ; mesure bruitée."),pct)}</div>`;
+    }
+    return `<article><h2>${tr("09 · Volatility and covariance","09 · Volatilité et covariance")}</h2><p>${tr("Experimental risk estimates, not approved portfolio inputs.","Estimations expérimentales du risque, non approuvées pour un portefeuille.")}</p><button id="risk-run" class="primary">${matrix?tr("Calculate covariance models","Calculer les modèles de covariance"):tr("Calculate volatility models","Calculer les modèles de volatilité")}</button>${matrix?"":` <button id="risk-saved">${tr("View saved risk run","Voir le calcul global du risque")}</button>`}<p role="status">${esc(riskError)}</p>${r?.status==="descriptive_only"?`<p>${tr("Descriptive interval volatility","Volatilité descriptive par intervalle")}: ${pct(r.interval_volatility)} · ${esc(r.frequency)} · ${esc(r.kind)} · ${tr("Observations","Observations")}: ${r.observations}. ${tr("No regular conditional model available.","Aucun modèle conditionnel régulier disponible.")}</p>`:""}${r?.models?`<p>${esc(r.frequency||"")} · ${esc(r.kind||"")} · ${esc(r.currency||"")} · ${esc(r.last||"")} · ${tr("Train / validation / test","Entraînement / validation / test")}: ${r.split.train} / ${r.split.validation} / ${r.split.test}</p>${options}${charts}${table}${Object.keys(r.unavailable||{}).length?`<p>${tr("Unavailable models","Modèles indisponibles")}: ${esc(Object.keys(r.unavailable).join(", "))}</p>`:""}`:""}</article>`;
+  }
+  function clearRisk(){riskRevision++;riskResult=null;riskError="";riskModel="";}
+  async function runRisk(saved=false){
+    clearRisk();const own=riskRevision;
+    riskError=tr("Calculating…","Calcul en cours…");render();
+    try{
+      let r;
+      if(saved){
+        const row=await api("risk/universe/asset",{as_of:cutoff,id:active.item.id});
+        r=row.risk?{...row.risk,frequency:row.frequency,currency:row.currency,kind:row.kind,last:row.last}:row;
+      }else{
+        const series=(mode==="compare"?tray:[active]).map(a=>a.item.series[a.index]).map(({source,instrument})=>({source,instrument}));
+        r=await api(mode==="compare"?"risk/matrix":"risk/asset",{as_of:cutoff,start,end,currency,kind,series,...series[0]});
+      }
+      if(own!==riskRevision)return;
+      riskResult=r;riskModel=r.selected_model||Object.keys(r.models||{})[0];riskError=r.status==="unavailable"?tr("No result available.","Aucun résultat disponible."):"";render();
+    }catch(e){if(own===riskRevision){riskError=e.message;render();}}
+  }
   function estimateHtml(){
     const e=forecastEstimate;if(!e)return "";
     const label={indicative_ytm:["Indicative yield to maturity","Rendement actuariel indicatif"],real_ytm:["Real yield to maturity (TIPS)","Rendement actuariel réel (TIPS)"],sofr:["SOFR overnight rate","Taux SOFR au jour le jour"],short_history_mean:["Short-history mean","Moyenne sur historique court"]}[e.method]||[e.method,e.method];
@@ -161,12 +198,12 @@
     const controls=`<div class="mandate-grid universe-controls"><label>${tr("Start","Début")}<input id="research-start" type="date" value="${esc(start||"")}"></label><label>${tr("End","Fin")}<input id="research-end" type="date" value="${esc(end||"")}"></label><label>${tr("Currency","Devise")}<select id="research-currency"><option ${currency==="USD"?"selected":""}>USD</option><option ${currency==="CHF"?"selected":""}>CHF</option></select></label><label>${tr("Return kind","Type de rendement")}<select id="research-kind"><option value="total_return" ${kind==="total_return"?"selected":""}>${tr("Total return","Rendement total")}</option><option value="price_return" ${kind==="price_return"?"selected":""}>${tr("Price return","Rendement du prix")}</option></select></label></div>`;
     const detail=active?`<div class="catalog-detail-header"><button id="research-back">← ${tr("Back to catalogue","Retour au catalogue")}</button><small>${esc(active.item.ticker)}</small><h2>${esc(active.item.name)}</h2><p>${tr("Source","Source")} · ${esc(active.item.provider)}</p>${active.item.series.length?`<button id="research-add">${tray.some(a=>a.item.id===active.item.id)?tr("In comparison","Dans le comparateur"):tr("+ Add to comparison","+ Ajouter à la comparaison")}</button>`:""}</div>${active.item.series.length?`<div class="universe-controls"><label>${tr("Historical series / frequency","Historique / fréquence")}<select id="research-series">${options(active.item,active.index)}</select></label></div>${controls}<button class="primary" id="research-run">${tr("Update analysis","Actualiser la fiche")}</button>`:`<p>${tr("No usable statistical series is available for this asset at the selected date.","Aucune série statistique exploitable n’est disponible pour cet actif à la date sélectionnée.")}</p>`}`:"";
     const compare=`<h2>${tr("Asset comparison","Comparateur d’actifs")}</h2>${tray.length?tray.map((a,i)=>`<div class="catalog-tray-item"><b>${esc(a.item.name)} · ${esc(a.item.ticker)}</b><select aria-label="${tr("Series","Série")}" data-tray-series="${i}">${options(a.item,a.index)}</select><button data-research-remove="${i}">×</button></div>`).join("")+controls+`<button class="primary" id="research-run">${tr("Compare selected assets","Comparer les actifs")}</button>`:`<p>${tr("Open an asset profile and add it to the comparison.","Ouvre une fiche et ajoute l’actif au comparateur.")}</p>`}`;
-    host.innerHTML=`<section class="research-hub">${tabs}${mode==="library"?library:mode==="detail"?detail:compare}<p role="status">${esc(error)}</p></section><div id="research-results">${forecastPanel()}${mode==="detail"?estimateHtml():""}${mode==="library"?"":renderResult()}</div>`;
+    host.innerHTML=`<section class="research-hub">${tabs}${mode==="library"?library:mode==="detail"?detail:compare}<p role="status">${esc(error)}</p></section><div id="research-results">${forecastPanel()}${riskPanel()}${mode==="detail"?estimateHtml():""}${mode==="library"?"":renderResult()}</div>`;
     const on=(id,event,fn)=>{const el=$(id);if(el)el[event]=fn;};
     on("research-category","onchange",()=>{category=$("research-category").value;page=0;render();});
     on("research-search","oninput",()=>{query=$("research-search").value;page=0;render();$("research-search").focus();$("research-search").setSelectionRange(query.length,query.length);});
     on("research-prev","onclick",()=>{page--;render();});on("research-next","onclick",()=>{page++;render();});
-    const go=next=>{revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";mode=next;result=null;error="";if(next==="compare")setRange(tray);render();};
+    const go=next=>{revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();mode=next;result=null;error="";if(next==="compare")setRange(tray);render();};
     on("research-library","onclick",()=>go("library"));on("research-back","onclick",()=>go("library"));
     on("research-compare","onclick",()=>go("compare"));
     on("research-series","onchange",()=>{active.index=Number($("research-series").value);setRange([active]);render();run();});
@@ -174,15 +211,18 @@
     on("research-run","onclick",run);
     on("forecast-run","onclick",runForecast);
     on("forecast-batch","onclick",loadBatchForecast);
+    on("risk-run","onclick",()=>runRisk(false));
+    on("risk-saved","onclick",()=>runRisk(true));
+    on("risk-model","onchange",()=>{riskModel=$("risk-model").value;render();});
     on("forecast-model","onchange",()=>{forecastModel=$("forecast-model").value;render();});
-    const clearForecast=()=>{forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";render();};
+    const clearForecast=()=>{forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();render();};
     on("research-start","onchange",()=>{start=$("research-start").value;clearForecast();});
     on("research-end","onchange",()=>{end=$("research-end").value;clearForecast();});
     on("research-currency","onchange",()=>{currency=$("research-currency").value;clearForecast();});
     on("research-kind","onchange",()=>{kind=$("research-kind").value;clearForecast();});
     host.querySelectorAll("[data-research-open]").forEach(el=>el.onclick=()=>open(el.dataset.researchOpen));
-    host.querySelectorAll("[data-research-remove]").forEach(el=>el.onclick=()=>{revision++;tray.splice(Number(el.dataset.researchRemove),1);setRange(tray);result=null;render();});
-    host.querySelectorAll("[data-tray-series]").forEach(el=>el.onchange=()=>{revision++;tray[Number(el.dataset.traySeries)].index=Number(el.value);setRange(tray);result=null;render();});
+    host.querySelectorAll("[data-research-remove]").forEach(el=>el.onclick=()=>{revision++;clearRisk();tray.splice(Number(el.dataset.researchRemove),1);setRange(tray);result=null;render();});
+    host.querySelectorAll("[data-tray-series]").forEach(el=>el.onchange=()=>{revision++;clearRisk();tray[Number(el.dataset.traySeries)].index=Number(el.value);setRange(tray);result=null;render();});
   }
   function setRange(choices){
     const series=choices.map(a=>a.item.series[a.index]).filter(Boolean);
@@ -194,7 +234,7 @@
   async function open(id){
     const item=catalog?.items.find(a=>a.id===id);
     if(!item)return;
-    revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";active={item,index:0};mode="detail";result=null;error="";setRange([active]);render();
+    revision++;forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();active={item,index:0};mode="detail";result=null;error="";setRange([active]);render();
     $("universe-statistics").scrollIntoView?.({block:"start"});
     if(item.series.length)await run();
   }
@@ -204,7 +244,7 @@
     tray.push({...active});render();
   }
   async function run(){
-    forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";
+    forecastRevision++;forecastResult=null;forecastEstimate=null;forecastError="";clearRisk();
     const choices=mode==="compare"?tray:active?[active]:[];
     const series=choices.map(a=>a.item.series[a.index]).filter(Boolean);
     start=$("research-start").value;end=$("research-end").value;currency=$("research-currency").value;kind=$("research-kind").value;

@@ -73,6 +73,15 @@ test("Forecast coverage distinguishes computed and unavailable catalogue assets"
   assert.match(el.innerHTML,/1 calculés avec les dix modèles/);
 });
 
+test("Risk coverage reports regular and descriptive profiles",async()=>{
+  const el={innerHTML:"",addEventListener(){}},context={document:{getElementById:()=>el},window:{RM:{t:k=>k,language:"fr"}}};
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname,"../../apps/web/sources.js"),"utf8"),context);
+  await context.window.SourcesView.load(async endpoint=>endpoint==="risk/universe"?
+    {status:"complete",catalogue_count:2,statuses:{computed:1,descriptive_only:1},cohorts:[]}:{rows:[]});
+  assert.match(el.innerHTML,/09 · Volatilité et covariance/);
+  assert.match(el.innerHTML,/1 descriptifs uniquement/);
+});
+
 test("Universe research renders the asset library and opens an explained statistical profile", async () => {
   const elements=new Map();
   let savedFallback=false;
@@ -92,6 +101,9 @@ test("Universe research renders the asset library and opens an explained statist
       if(savedFallback)return {status:"fallback",estimate:{method:"indicative_ytm",units:"annual yield",value:.04,as_of:"2025-01-02",source:"fixture",currency:"USD"}};
       return {status:"computed",source:"fixture",last:"2025-01-02",forecast:{selected_model:"historical",frequency:"monthly",currency:"USD",kind:"total_return",split:{train:60,validation:20,test:20},models:{historical:{expected_return:.01,interval:[-.02,.03],history:[["2025-01-02",.02,.01,-.02,.03]],test:{mse:.0001,mae:.01,directional_accuracy:1,interval_coverage:1,net_strategy_mean:.019}}},unavailable:{}}};
     }
+    if(endpoint==="risk/universe/asset")return {status:"computed",frequency:"daily",kind:"total_return",currency:"USD",risk:{
+      selected_model:"ewma",split:{train:60,validation:20,test:20},models:{ewma:{annualized_volatility:.2,
+      test:{qlike:1,mse:.01},history:[["2025-01-02",.2,.1]]}},unavailable:{}}};
     return {rows:[]};
   },"2025-01-02");
   assert.match(get("universe-statistics").innerHTML,/Catalogue/);
@@ -112,6 +124,9 @@ test("Universe research renders the asset library and opens an explained statist
   assert.match(get("universe-statistics").innerHTML,/Random Forest/);
   assert.match(get("universe-statistics").innerHTML,/XGBoost/);
   assert.match(get("universe-statistics").innerHTML,/Réseau neuronal/);
+  await get("risk-saved").onclick();
+  assert.match(get("universe-statistics").innerHTML,/Volatilité annualisée prévue/);
+  assert.match(get("universe-statistics").innerHTML,/20.00%/);
   await get("forecast-batch").onclick();
   assert.match(get("universe-statistics").innerHTML,/Calcul global enregistré/);
   savedFallback=true;
