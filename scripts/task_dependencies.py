@@ -52,7 +52,10 @@ def graph():
 
     # MVP universe first, extensions explicitly separated.
     ch(3,[1,2,3,4,9,10,11],"SYS.02")
-    ch(4,[1,2,3,4,5,6,7,8,9],"CH03.02")
+    ch(4,[1,2,3],"CH03.02")
+    # Metadata tooling can be verified with fixtures. Approval also requires the rights review.
+    ch(4,[4,5,6,7,8],"CH04.02")
+    put("CH04.09","CH04.03","CH04.08")
     ch(5,[1,2,3,4,5,6,8,9,10,11,12],"CH04.09","CH03.04")
     ch(6,[1,2,3,4,5,6,7,8,9,12],"CH05.11")
     put("UNIV.01","SYS.02","CH03.03","CH05.04")

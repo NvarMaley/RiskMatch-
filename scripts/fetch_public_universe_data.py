@@ -7,7 +7,10 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import os
+import tempfile
 import time
+from email.utils import parsedate_to_datetime
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -33,7 +36,17 @@ def request(url):
             if exc.code not in {429,500,502,503,504} or attempt==2:
                 raise
             delay=exc.headers.get("Retry-After", "")
-            time.sleep(min(int(delay),30) if delay.isdigit() else 2**attempt)
+            wait = 2**attempt
+            if delay.isdigit():
+                wait = int(delay)
+            elif delay:
+                try:
+                    wait = max(0, parsedate_to_datetime(delay).timestamp() - time.time())
+                except (TypeError, ValueError, OverflowError):
+                    pass
+            if wait > 30:
+                raise
+            time.sleep(wait)
         except (URLError, TimeoutError):
             if attempt==2: raise
             time.sleep(2**attempt)
@@ -43,11 +56,15 @@ def immutable_save(root, name, content, extension):
     digest=hashlib.sha256(content).hexdigest()
     root.mkdir(parents=True,exist_ok=True)
     path=root/f"{name}-{digest[:16]}.{extension}"
-    if not path.exists():
-        with path.open("xb") as stream:stream.write(content)
-    else:
-        if hashlib.sha256(path.read_bytes()).hexdigest()!=digest:
-            raise ValueError("Existing immutable file fingerprint mismatch")
+    with tempfile.NamedTemporaryFile(dir=root, prefix=".incoming-") as staged:
+        staged.write(content)
+        staged.flush()
+        os.fsync(staged.fileno())
+        try:
+            os.link(staged.name, path)
+        except FileExistsError:
+            if hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                raise ValueError("Existing immutable file fingerprint mismatch") from None
     return {"file":path.name,"sha256":digest,"size":len(content)}
 
 

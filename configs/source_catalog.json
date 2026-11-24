@@ -1,5 +1,5 @@
 {
-  "version": "sources-v1.2.0",
+  "version": "sources-v1.3.0",
   "reviewed_on": "2026-11-24",
   "entries": [
     {
@@ -230,16 +230,16 @@
     {
       "id": "CRYPTO_SPOT",
       "name": "Bitcoin and Ethereum spot",
-      "provider": "Coinbase via FRED",
+      "provider": "Coinbase Exchange (daily candles), Coinbase via FRED (separate reference series)",
       "frequency": "daily, seven-day calendar",
       "coverage": "BTC-USD and ETH-USD research candidates",
-      "required_fields": "series, observation date, USD spot price",
-      "acquisition": "Public FRED CSV",
+      "required_fields": "market pair, UTC candle start, USD OHLC, base-unit volume; series/date/USD spot for FRED references",
+      "acquisition": "Coinbase Exchange candles and separate FRED reference CSV",
       "action": "Check missing observations, venue costs, custody and mandate before inclusion.",
       "url": "https://fred.stlouisfed.org/series/CBBTCUSD",
-      "rights": "Local research only pending rights review",
+      "rights": "Internal research review only. External display, derived data and redistribution require separate authorization.",
       "availability_rule": "Use dated source receipts and the seven-day calendar.",
-      "timezone": "Provider observation at 5 PM Pacific; retain source date",
+      "timezone": "Exchange daily candles UTC; FRED reference observation 5 PM Pacific",
       "revision_policy": "Retain raw snapshots and fingerprints"
     }
   ]

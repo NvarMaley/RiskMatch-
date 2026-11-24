@@ -122,70 +122,70 @@ topological_order,ticket,direct_prerequisites,description
 121,CH03.09,CH03.04,Choose benchmark per strategy and cash/risk-free series; distinguish tradable benchmark and non-tradable proxy.
 122,CH03.05,CH03.04,"Define 300–3000-stock second-stage universe with historical constituents, delistings and historical market cap."
 123,CH04.03,CH04.02,"Verify licensing for local storage, transformation and collaboration before obtaining data; record license and permitted use."
-124,CH01.06,CH01.05,Calculate funding gap and required annual return for a single cash flow; solve dated multi-flow case numerically.
-125,CH12.01,CH01.05; SYS.01,"Define all 11 objectives as typed goals, not interchangeable portfolio names (catalog below)."
-126,CH02.08,CH02.07,"Show drawdown trajectories with equal horizon, uncertainty, costs and no guaranteed recovery."
-127,CH03.10,CH03.09,"Produce coverage matrix by instrument, date, frequency, missingness, liquidity and source; avoid invented pre-launch data."
-128,CH03.06,CH03.05,"Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings."
-129,CH04.04,CH04.03,"Compare CRSP/WRDS and licensed alternatives; assess public SEC EDGAR, Treasury, FRED/ALFRED and factor datasets."
-130,CH01.07,CH01.06,"Separate ability, willingness and required risk; never infer capacity from behavioral choices."
-131,CH12.02,CH12.01,"Separate objective function, eligibility constraint, benchmark, risk measure and preference weight."
-132,OBJ01.01,CH12.01,"Write the mathematical specification: P(W_T<W_0) and E[(W_0-W_T)+] in nominal and real terms. Specify units, convention, horizon and assumptions."
-133,OBJ02.01,CH12.01,"Write the mathematical specification: net income per period, coverage ratio and income volatility. Specify units, convention, horizon and assumptions."
-134,OBJ03.01,CH12.01,"Write the mathematical specification: minimize risk subject to return and liquidity constraints. Specify units, convention, horizon and assumptions."
-135,OBJ04.01,CH12.01,"Write the mathematical specification: mean-variance utility and risk budget. Specify units, convention, horizon and assumptions."
-136,OBJ05.01,CH12.01,"Write the mathematical specification: E[W_T] and real CAGR subject to constraints. Specify units, convention, horizon and assumptions."
-137,OBJ06.01,CH12.01,"Write the mathematical specification: maximize growth subject to volatility/ES/leverage budget. Specify units, convention, horizon and assumptions."
-138,OBJ07.01,CH12.01,"Write the mathematical specification: real return (1+r)/(1+π)-1 and CPI beta. Specify units, convention, horizon and assumptions."
-139,OBJ08.01,CH12.01,"Write the mathematical specification: net excess return over cash and downside. Specify units, convention, horizon and assumptions."
-140,OBJ09.01,CH12.01,"Write the mathematical specification: asset-liability PV gap and DV01/key-rate mismatch. Specify units, convention, horizon and assumptions."
-141,OBJ10.01,CH12.01,"Write the mathematical specification: P(W_T≥G), E[(G-W_T)+], shortfall per goal. Specify units, convention, horizon and assumptions."
-142,OBJ11.01,CH12.01,"Write the mathematical specification: loss below floor, hedge cost and gap stress. Specify units, convention, horizon and assumptions."
-143,CH02.09,CH02.08,Separate ambiguity and time-preference items from the unidimensional score.
-144,CH03.11,CH03.10,"Expose universe filters, availability chart and exclusion reason in UI."
-145,CH03.07,CH03.06,Determine which futures families qualify for the active universe.
-146,CH04.05,CH04.04,Define provider adapters with explicit as_of and dataset version; mock unavailable provider access.
-147,CH01.08,CH01.07,"Evaluate knowledge and experience separately for equities, Treasuries, futures, leverage and short selling."
-148,CH12.04,CH12.02,"Calculate required return with dated contributions, withdrawals and liabilities; report infeasibility."
-149,CH02.03,CH02.09,"Build the initial 60-card bank: 16 lottery, 12 gain/loss, 12 trajectory, 8 uncertainty/horizon, 8 style, 4 coherence items."
-150,CH03.08,CH03.07,"Record availability of futures hedges for USD/CHF, equities and rates."
-151,CH04.06,CH04.05,"Document API limits, retry/backoff, caching and missing-data behavior without committing credentials."
-152,CH01.09,CH01.08,"Define limits on losses, stress, volatility, liquidity, asset/issuer/sector weights, turnover and costs."
-153,CH12.07,CH12.04,"Support multiple goals with priorities, nonnegative normalized weights and documented penalty scaling."
-154,CH02.04,CH02.03,Sample the 30-card session with 8/6/6/4/4/2 block quotas and deterministic seed.
-155,CH04.07,CH04.06,"Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date."
-156,CH01.10,CH01.09,"Define ESG exclusions, tax assumptions, FX hedge preference, leverage, gross/net and derivatives permissions."
-157,CH02.10,CH02.04,Randomize order and left/right placement while preserving balanced design; record presentation order.
-158,CH04.08,CH04.07,Separate proprietary data from synthetic test fixtures and Git-tracked configs.
-159,CH01.11,CH01.10,"Represent hard vs soft constraints explicitly; define units, bounds and missing-value policy."
-160,CH02.11,CH02.10,"Support like/dislike, unsure, skip, undo, accessible keyboard and touch gestures."
-161,CH04.09,CH04.08,Create a source quality report and a data dictionary; confirm required fields before approving each method.
-162,CH01.12,CH01.11,Implement feasibility report and conflicting constraint examples; never silently relax constraints.
-163,CH02.12,CH02.11,Compute prudent fraction p and score = round(1+29p); threshold provisional coverage of 70%.
-164,CH05.01,CH03.04; CH04.09,"Define canonical trading calendar, UTC timestamps and local exchange close."
-165,CH01.13,CH01.12,Version ClientProfile and ConstraintSet; save synthetic examples and avoid real client data in notebooks.
-166,CH02.13,CH02.12,Calculate missing-response sensitivity range and flag paired inconsistencies; display no score when coverage is insufficient.
-167,CH05.02,CH05.01,"Implement unique instrument/date keys, types, corporate actions, contract expiration and series version checks."
-168,CH01.14,CH01.13,Review risk-budget and goal changes in a before/after UI; require explicit confirmation.
-169,CH02.14,CH02.13,Build simulated all-prudent/all-risk/mixed/missing/inconsistent response fixtures.
-170,CH05.03,CH05.02,"Ingest raw data without modification, then produce a deterministic cleaned layer."
-171,CH01.15,CH01.14,"Test zero capital, negative capital, inconsistent horizon, withdrawals exceeding resources, unsupported currency and missing consent."
-172,CH02.21,CH02.14,"Add score report, coverage, separate dimensions, methodology, revision, and consent screens; avoid gamification that rewards taking risk."
-173,CH02.15,CH01.07; CH02.14,Implement separate CRRA utility and prospect-theory likelihood exploration; keep score 1–30 independent of lambda and gamma.
-174,CH05.04,CH05.03,"Store observation_date, availability_time, release/vintage and as_of; as-of join only availability_time <= decision time."
-175,G01,CH01.15; CH02.21; CH12.07; G00; OBJ01.01; OBJ02.01; OBJ03.01; OBJ04.01; OBJ05.01; OBJ06.01; OBJ07.01; OBJ08.01; OBJ09.01; OBJ10.01; OBJ11.01,"Minimal mandate, specification of all 11 objectives (OBJ01–OBJ11), versioned discovery and protocol."
-176,CH02.16,CH02.15,"Pre-register pilot protocol, consent, data minimization, withdrawal and retention; pilot 30–50 volunteers exploratorily."
-177,CH05.05,CH05.04,"Detect duplicates, gaps, outliers, stale quotes, invalid prices and missing FX; differentiate closed market from missing data."
-178,UNIV.01,CH03.03; CH05.04; SYS.02,"Apply Treasury-only rule before allocation: classify issuer and type, verify PIT ETF holdings, reject corporate debt, MBS, agencies, municipals, foreign sovereigns, mixed ETFs and missing metadata; test acceptance/rejection."
-179,CH02.17,CH02.16,"Run cognitive interviews, readability/accessibility tests and timing/fatigue analysis (timing optional and never a direct excitation measure)."
-180,CH27.10,CH02.16; G00,"Add privacy consent, role separation, data minimization, local storage backups and tested restoration."
-181,CH05.06,CH05.05,"Handle split factors, dividends, capital changes, mergers, delistings and ticker changes."
-182,CH02.18,CH02.17,"Analyze item difficulty, discrimination, test-retest reliability, omega and factor dimensionality; report uncertainty."
-183,CH05.08,CH05.06,Align cross-market timestamps without leaking later closes; prohibit uncontrolled forward fill.
-184,CH02.19,CH02.18,Fit IRT/logistic model with person-level train/validation/test splits; check differential item functioning by language/order.
-185,CH05.09,CH05.08,"Create feature store with explicit lag, lookback, units and data hash."
-186,CH02.20,CH02.19,Compare predictive validity on independent simulated choices; document limitations and seek expert review.
-187,CH05.10,CH05.09,"Test corrected/revised data, missing assets, late arrivals and deliberately injected future data."
+124,CH04.04,CH04.02,"Compare CRSP/WRDS and licensed alternatives; assess public SEC EDGAR, Treasury, FRED/ALFRED and factor datasets."
+125,CH01.06,CH01.05,Calculate funding gap and required annual return for a single cash flow; solve dated multi-flow case numerically.
+126,CH12.01,CH01.05; SYS.01,"Define all 11 objectives as typed goals, not interchangeable portfolio names (catalog below)."
+127,CH02.08,CH02.07,"Show drawdown trajectories with equal horizon, uncertainty, costs and no guaranteed recovery."
+128,CH03.10,CH03.09,"Produce coverage matrix by instrument, date, frequency, missingness, liquidity and source; avoid invented pre-launch data."
+129,CH03.06,CH03.05,"Add only T-Bills, Treasury Notes, Treasury Bonds and TIPS; verify issuer and historical ETF holdings."
+130,CH04.05,CH04.04,Define provider adapters with explicit as_of and dataset version; mock unavailable provider access.
+131,CH01.07,CH01.06,"Separate ability, willingness and required risk; never infer capacity from behavioral choices."
+132,CH12.02,CH12.01,"Separate objective function, eligibility constraint, benchmark, risk measure and preference weight."
+133,OBJ01.01,CH12.01,"Write the mathematical specification: P(W_T<W_0) and E[(W_0-W_T)+] in nominal and real terms. Specify units, convention, horizon and assumptions."
+134,OBJ02.01,CH12.01,"Write the mathematical specification: net income per period, coverage ratio and income volatility. Specify units, convention, horizon and assumptions."
+135,OBJ03.01,CH12.01,"Write the mathematical specification: minimize risk subject to return and liquidity constraints. Specify units, convention, horizon and assumptions."
+136,OBJ04.01,CH12.01,"Write the mathematical specification: mean-variance utility and risk budget. Specify units, convention, horizon and assumptions."
+137,OBJ05.01,CH12.01,"Write the mathematical specification: E[W_T] and real CAGR subject to constraints. Specify units, convention, horizon and assumptions."
+138,OBJ06.01,CH12.01,"Write the mathematical specification: maximize growth subject to volatility/ES/leverage budget. Specify units, convention, horizon and assumptions."
+139,OBJ07.01,CH12.01,"Write the mathematical specification: real return (1+r)/(1+π)-1 and CPI beta. Specify units, convention, horizon and assumptions."
+140,OBJ08.01,CH12.01,"Write the mathematical specification: net excess return over cash and downside. Specify units, convention, horizon and assumptions."
+141,OBJ09.01,CH12.01,"Write the mathematical specification: asset-liability PV gap and DV01/key-rate mismatch. Specify units, convention, horizon and assumptions."
+142,OBJ10.01,CH12.01,"Write the mathematical specification: P(W_T≥G), E[(G-W_T)+], shortfall per goal. Specify units, convention, horizon and assumptions."
+143,OBJ11.01,CH12.01,"Write the mathematical specification: loss below floor, hedge cost and gap stress. Specify units, convention, horizon and assumptions."
+144,CH02.09,CH02.08,Separate ambiguity and time-preference items from the unidimensional score.
+145,CH03.11,CH03.10,"Expose universe filters, availability chart and exclusion reason in UI."
+146,CH03.07,CH03.06,Determine which futures families qualify for the active universe.
+147,CH04.06,CH04.05,"Document API limits, retry/backoff, caching and missing-data behavior without committing credentials."
+148,CH01.08,CH01.07,"Evaluate knowledge and experience separately for equities, Treasuries, futures, leverage and short selling."
+149,CH12.04,CH12.02,"Calculate required return with dated contributions, withdrawals and liabilities; report infeasibility."
+150,CH02.03,CH02.09,"Build the initial 60-card bank: 16 lottery, 12 gain/loss, 12 trajectory, 8 uncertainty/horizon, 8 style, 4 coherence items."
+151,CH03.08,CH03.07,"Record availability of futures hedges for USD/CHF, equities and rates."
+152,CH04.07,CH04.06,"Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date."
+153,CH01.09,CH01.08,"Define limits on losses, stress, volatility, liquidity, asset/issuer/sector weights, turnover and costs."
+154,CH12.07,CH12.04,"Support multiple goals with priorities, nonnegative normalized weights and documented penalty scaling."
+155,CH02.04,CH02.03,Sample the 30-card session with 8/6/6/4/4/2 block quotas and deterministic seed.
+156,CH04.08,CH04.07,Separate proprietary data from synthetic test fixtures and Git-tracked configs.
+157,CH01.10,CH01.09,"Define ESG exclusions, tax assumptions, FX hedge preference, leverage, gross/net and derivatives permissions."
+158,CH02.10,CH02.04,Randomize order and left/right placement while preserving balanced design; record presentation order.
+159,CH04.09,CH04.03; CH04.08,Create a source quality report and a data dictionary; confirm required fields before approving each method.
+160,CH01.11,CH01.10,"Represent hard vs soft constraints explicitly; define units, bounds and missing-value policy."
+161,CH02.11,CH02.10,"Support like/dislike, unsure, skip, undo, accessible keyboard and touch gestures."
+162,CH05.01,CH03.04; CH04.09,"Define canonical trading calendar, UTC timestamps and local exchange close."
+163,CH01.12,CH01.11,Implement feasibility report and conflicting constraint examples; never silently relax constraints.
+164,CH02.12,CH02.11,Compute prudent fraction p and score = round(1+29p); threshold provisional coverage of 70%.
+165,CH05.02,CH05.01,"Implement unique instrument/date keys, types, corporate actions, contract expiration and series version checks."
+166,CH01.13,CH01.12,Version ClientProfile and ConstraintSet; save synthetic examples and avoid real client data in notebooks.
+167,CH02.13,CH02.12,Calculate missing-response sensitivity range and flag paired inconsistencies; display no score when coverage is insufficient.
+168,CH05.03,CH05.02,"Ingest raw data without modification, then produce a deterministic cleaned layer."
+169,CH01.14,CH01.13,Review risk-budget and goal changes in a before/after UI; require explicit confirmation.
+170,CH02.14,CH02.13,Build simulated all-prudent/all-risk/mixed/missing/inconsistent response fixtures.
+171,CH05.04,CH05.03,"Store observation_date, availability_time, release/vintage and as_of; as-of join only availability_time <= decision time."
+172,CH01.15,CH01.14,"Test zero capital, negative capital, inconsistent horizon, withdrawals exceeding resources, unsupported currency and missing consent."
+173,CH02.21,CH02.14,"Add score report, coverage, separate dimensions, methodology, revision, and consent screens; avoid gamification that rewards taking risk."
+174,CH02.15,CH01.07; CH02.14,Implement separate CRRA utility and prospect-theory likelihood exploration; keep score 1–30 independent of lambda and gamma.
+175,CH05.05,CH05.04,"Detect duplicates, gaps, outliers, stale quotes, invalid prices and missing FX; differentiate closed market from missing data."
+176,UNIV.01,CH03.03; CH05.04; SYS.02,"Apply Treasury-only rule before allocation: classify issuer and type, verify PIT ETF holdings, reject corporate debt, MBS, agencies, municipals, foreign sovereigns, mixed ETFs and missing metadata; test acceptance/rejection."
+177,G01,CH01.15; CH02.21; CH12.07; G00; OBJ01.01; OBJ02.01; OBJ03.01; OBJ04.01; OBJ05.01; OBJ06.01; OBJ07.01; OBJ08.01; OBJ09.01; OBJ10.01; OBJ11.01,"Minimal mandate, specification of all 11 objectives (OBJ01–OBJ11), versioned discovery and protocol."
+178,CH02.16,CH02.15,"Pre-register pilot protocol, consent, data minimization, withdrawal and retention; pilot 30–50 volunteers exploratorily."
+179,CH05.06,CH05.05,"Handle split factors, dividends, capital changes, mergers, delistings and ticker changes."
+180,CH02.17,CH02.16,"Run cognitive interviews, readability/accessibility tests and timing/fatigue analysis (timing optional and never a direct excitation measure)."
+181,CH27.10,CH02.16; G00,"Add privacy consent, role separation, data minimization, local storage backups and tested restoration."
+182,CH05.08,CH05.06,Align cross-market timestamps without leaking later closes; prohibit uncontrolled forward fill.
+183,CH02.18,CH02.17,"Analyze item difficulty, discrimination, test-retest reliability, omega and factor dimensionality; report uncertainty."
+184,CH05.09,CH05.08,"Create feature store with explicit lag, lookback, units and data hash."
+185,CH02.19,CH02.18,Fit IRT/logistic model with person-level train/validation/test splits; check differential item functioning by language/order.
+186,CH05.10,CH05.09,"Test corrected/revised data, missing assets, late arrivals and deliberately injected future data."
+187,CH02.20,CH02.19,Compare predictive validity on independent simulated choices; document limitations and seek expert review.
 188,CH05.11,CH05.10,"Record completeness, rejection reason, lineage, freshness and reproducible snapshot in MarketSnapshot."
 189,CH05.12,CH05.11,Display data coverage and freshness in UI; block dependent runs on invalid snapshots.
 190,CH06.01,CH05.11,Calculate simple return P_t/P_(t-1)-1 and log return log(1+r) where valid.

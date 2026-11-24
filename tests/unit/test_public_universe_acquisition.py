@@ -29,3 +29,20 @@ def test_eod_update_fixture_no_future_or_duplicate(monkeypatch):
     assert m.validate_response(json.dumps([row]),date(2026,1,1),date(2026,11,24))["rows"]==1
     with pytest.raises(ValueError):m.validate_response(json.dumps([row,row]),date(2026,1,1),date(2026,11,24))
     with pytest.raises(ValueError):m.validate_response(json.dumps([dict(row,date="2026-11-25")]),date(2026,1,1),date(2026,11,24))
+
+
+def test_immutable_cache_concurrent_writers_and_corruption(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    monkeypatch.syspath_prepend(str(ROOT / "scripts"))
+    save = importlib.import_module("fetch_public_universe_data").immutable_save
+    def write(_):
+        return save(tmp_path, "fixture", b"synthetic", "csv")
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        records = list(pool.map(write, range(12)))
+    assert all(record == records[0] for record in records)
+    path = tmp_path / records[0]["file"]
+    assert list(tmp_path.iterdir()) == [path]
+    path.write_bytes(b"damaged fixture")
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        write(0)
+    assert path.read_bytes() == b"damaged fixture"

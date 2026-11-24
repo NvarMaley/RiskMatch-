@@ -242,21 +242,21 @@ Notebook: [chapter 04](notebooks/RiskMatch_V3.ipynb#chapitre-04) · Guide chapte
 - [x] **CH04.02** — For each source record provider, field, frequency, earliest date, coverage, latency, timezone, revision policy and identifiers.
 - [ ] **CH04.03** — Verify licensing for local storage, transformation and collaboration before obtaining data; record license and permitted use.
   External terms, local-only policy and WRDS entitlement checks documented; individual license/redistribution confirmation still required. Do not publish licensed source data.
-- [ ] **CH04.04** — Compare CRSP/WRDS and licensed alternatives; assess public SEC EDGAR, Treasury, FRED/ALFRED and factor datasets.
-  Acquisition comparison completed in docs/DATA_ACQUISITION_PLAN.md; pending CH04.03.
-- [ ] **CH04.05** — Define provider adapters with explicit as_of and dataset version; mock unavailable provider access.
-  ProviderRequest and explicit local/public adapters implemented; worktree validation pending.
-- [ ] **CH04.06** — Document API limits, retry/backoff, caching and missing-data behavior without committing credentials.
+- [x] **CH04.04** — Compare CRSP/WRDS and licensed alternatives; assess public SEC EDGAR, Treasury, FRED/ALFRED and factor datasets.
+  Acquisition comparison completed in docs/DATA_ACQUISITION_PLAN.md.
+- [x] **CH04.05** — Define provider adapters with explicit as_of and dataset version; mock unavailable provider access.
+  ProviderRequest and explicit local/public adapters implemented; exact-version DuckDB lookup respects the first verification date in UTC.
+- [x] **CH04.06** — Document API limits, retry/backoff, caching and missing-data behavior without committing credentials.
   Public downloader bounded, retries transient errors; source-specific limits and permissions documented. Optional authorized EODHD update adapter added; no token configured, no live price update claimed.
-- [ ] **CH04.07** — Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date.
+- [x] **CH04.07** — Design raw immutable storage, normalized Parquet and DuckDB catalog; record file hash, ingestion ID and access date.
   Immutable public receipt hashes, data_catalog_schema.sql, local extraction audits implemented. Actual normalized tables belong to CH05.
-- [ ] **CH04.08** — Separate proprietary data from synthetic test fixtures and Git-tracked configs.
-  Implementation verified locally; formal completion follows prerequisite CH04.07. Downloads and CRSP extracts kept under ignored data/; no WRDS observations or identifiers committed.
+- [x] **CH04.08** — Separate proprietary data from synthetic test fixtures and Git-tracked configs.
+  Separation verified by the Git exclusion check. Downloads and CRSP extracts kept under ignored data/; no WRDS observations or identifiers committed.
 - [ ] **CH04.09** — Create a source quality report and a data dictionary; confirm required fields before approving each method.
   The local research-window receipt includes a two-source year-end price check for all 27 listed products and an event-status panel. Source revisions, permitted use and historical continuity remain relevant to approval.
   All 11 WRDS files scanned and daily volumes reconciled for 22 ETFs. Public 2026 market bars, issuer NAV, historical N-PORT positions and SEC filing chronology now have independent local audits. See the November follow-up table for dates and verified counts. Rights, identifier continuity and completeness checks remain open. No allocation approved.
 
-Evidence: docs/DATA_ACQUISITION_PLAN.md, configs/source_catalog.json, scripts/audit_crsp_monthly.py, scripts/audit_crsp_daily.py, scripts/fetch_public_universe_data.py, configs/data_catalog_schema.sql. Public downloads: Treasury legacy/v2 auction records and 15 latest-vintage FRED series. Source files remain local. CH04.03–09 remain open until their prerequisites and validation evidence are satisfied.
+Evidence: docs/DATA_ACQUISITION_PLAN.md, configs/source_catalog.json, scripts/audit_crsp_monthly.py, scripts/audit_crsp_daily.py, scripts/fetch_public_universe_data.py, configs/data_catalog_schema.sql. Public downloads: Treasury legacy/v2 auction records and 15 latest-vintage FRED series. Source files remain local. CH04.03 and CH04.09 remain open. See [Source review and dictionary](docs/SOURCE_REVIEW.md) for method decisions and the signed-use evidence still needed.
 
 
 

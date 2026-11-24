@@ -4,7 +4,9 @@ As of 2026-11-24. No new paid subscription or account has been created. All data
 
 Budget constraint: CHF 0 for data acquisition. FedInvest is an official no-cost source of dated security-level government valuation marks. Initial snapshots have been acquired from the public historical-prices form; the complete daily backfill is still pending. Run `python3 scripts/fetch_fedinvest_prices.py --start 2008-09-02 --end 2026-11-23 --limit 100` in batches (existing dated receipts are skipped). Respect access limits; do not equate the source's buy/sell or end-of-day prices with executable market quotes. Zero buy values are not usable quotations. FRNs are outside the current investment scope; validate maturity, coupon, TIPS ratios, accrued interest and historical identity separately. Coverage near redemption may be incomplete.
 
-## Current completeness
+## Initial acquisition snapshot (superseded)
+
+See [Source review and dictionary](SOURCE_REVIEW.md) and the chapter 3 checklist for the latest scope. Futures backfill is archived.
 
 | Scope | Available now | Remaining |
 |---|---|---|

@@ -7,6 +7,7 @@ import json
 import stat
 from pathlib import Path
 
+from .source_inventory import inventory_counts, inventory_snapshot
 from .local_sources import new_data_root, monthly_audit, daily_audit, audit_available_for_as_of, treasury_identity_summary, issuer_holdings_summary, fedinvest_summary
 
 ROOT=Path(__file__).resolve().parents[3]
@@ -28,8 +29,10 @@ class ProviderRequest:
         if not self.provider or not self.dataset_version:raise ValueError("Missing provider/version")
 
 
-def request_snapshot(request, adapters):
+def request_snapshot(request, adapters=None, *, root=ROOT):
     """Explicit adapters only. Unavailable providers return a diagnostic, never synthetic substitutes."""
+    if adapters is None:
+        return inventory_snapshot(Path(root)/"data/processed/universe/source_inventory.duckdb", request)
     adapter=adapters.get(request.provider)
     if adapter is None:return {"status":"provider_unavailable","provider":request.provider,"dataset_version":request.dataset_version,"as_of":request.as_of.isoformat()}
     return adapter(request)
@@ -232,5 +235,5 @@ def source_report(as_of, root=ROOT):
     rows=[]
     for row in meta["entries"]:
         status,evidence=available[row["id"]];rows.append(row|{"status":status,"evidence":evidence,"evidence_fr":translations.get(row["id"]),"allocation_approved":False})
-    return {"version":meta["version"],"as_of":as_of.isoformat(),"rows":rows,"public_receipts":public,"treasury_identity":treasury,"issuer_holdings":holdings,
+    return {"inventory":inventory_counts(Path(root)/"data/processed/universe/source_inventory.duckdb",as_of), "version":meta["version"],"as_of":as_of.isoformat(),"rows":rows,"public_receipts":public,"treasury_identity":treasury,"issuer_holdings":holdings,
             "rights_policy":"local_only_pending_entitlement_and_redistribution_review","approved_for_allocation":0}
