@@ -403,14 +403,16 @@ Notebook: [chapter 08](notebooks/RiskMatch_V3.ipynb#chapitre-08) · Guide chapte
   Train-only OLS and regularization implemented; full diagnostics and G07 remain open.
 - [ ] **CH08.06** — Fit Random Forest, XGBoost and neural-network candidates; tune on validation only and record seeds/parameters.
   Optional real-library candidates exercised on a synthetic fixture; isolated runtime dependencies and CH08.05 pending.
-- [x] **CH08.07** — Record predictions, forecast intervals, residual distributions and uncertainty; avoid claims of reliable return prediction.
+- [ ] **CH08.07** — Record predictions, forecast intervals, residual distributions and uncertainty; avoid claims of reliable return prediction.
+  Implemented for the experimental models; formal closure depends on CH08.06.
 - [ ] **CH08.08** — Evaluate MSE, MAE, rank IC, directional accuracy and calibration; compare net economic performance.
   Held-out MSE, MAE, temporal rank correlation, direction, coverage and illustrative net strategy implemented; cross-sectional IC/backtest pending.
 - [ ] **CH08.09** — Run ablations on features, outlier policy, windows and model complexity; report instability.
   Lag-only, train-clipping and shorter rolling-window ablations implemented; broader sensitivity remains pending.
 - [ ] **CH08.10** — Register ForecastBundle with expected return, distribution, horizon, confidence, data_version and model_version.
   Experimental bundle with provenance and empirical interval; confidence calibration and downstream acceptance pending.
-- [x] **CH08.11** — Show forecasts vs realized values, intervals and limitations in UI.
+- [ ] **CH08.11** — Show forecasts vs realized values, intervals and limitations in UI.
+  Experimental bilingual screen implemented and browser-tested; formal closure depends on CH08.10.
 
 Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), synthetic fixture, experimental local API and asset-profile panel. G02/G07 and CH10/CH15 dependencies remain open.
 
