@@ -168,6 +168,7 @@ Notebook: [chapter 02](notebooks/RiskMatch_V3.ipynb#chapitre-02) · Guide chapte
 - [ ] **CH02.20** — Compare predictive validity on independent simulated choices; document limitations and seek expert review.
   Synthetic independent-choice test and baseline implemented; prospective human evidence and expert review pending.
 - [x] **CH02.21** — Add score report, coverage, separate dimensions, methodology, revision, and consent screens; avoid gamification that rewards taking risk.
+  Discovery navigation opens even before mandate confirmation and guides the client to complete the mandate before starting the questionnaire.
 
 Evidence (2026-11-24): [behavioral protocol](docs/RISKMATCH_BEHAVIORAL.md), [draft pilot](docs/BEHAVIORAL_PILOT.md), notebook chapter 02 cell `5705c45e`, `src/riskmatch/behavioral/discovery.py`, `utility.py`, `pilot_analysis.py`, unit/HTTP/JavaScript tests. The score and likelihoods are experimental; never change financial risk capacity. Human validation, owner visual confirmation and GitHub publication remain pending.
 

@@ -10,6 +10,12 @@ test("mandate must be previewed and explicitly confirmed; stale drafts and confl
   let report=makeReport(), calls=[];
   const ctx={window:{RM:{t:k=>k,language:"en"},MandateForm:{payload:()=>JSON.parse(JSON.stringify(draft)),reset(){},restore(){}}},document:{body:{dataset:{}},getElementById:$,querySelectorAll:()=>[],dispatchEvent(){},addEventListener(){},createElement:element},Event:class{},fetch:async url=>{calls.push(url);return{ok:true,json:async()=>url.endsWith("preview")?report:[]};}};
   vm.createContext(ctx);vm.runInContext(source,ctx);vm.runInContext("setSaveSession(true)",ctx);
+  vm.runInContext('page("discovery")',ctx);
+  await vm.runInContext("showCard()",ctx);
+  assert.equal($("discovery-consent").hidden,true);
+  assert.match($("result").innerHTML,/discovery-go-mandate/);
+  $("discovery-go-mandate").onclick();
+  assert.equal(vm.runInContext("activePage",ctx),"mandate");
   await $("form").onsubmit({preventDefault(){}});
   assert.equal(vm.runInContext("simulationSnapshot().mandate",ctx),null);
   assert.match($("mandate-report").innerHTML,/confirm-mandate/);

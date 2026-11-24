@@ -41,7 +41,6 @@ function page(name) {
 }
 document.querySelectorAll("[data-page]").forEach(button => button.onclick = handle(async () => {
   if(!sessionUnlocked)throw Error("saveRequired");
-  if (button.dataset.page==="discovery" && !mandate) throw Error("mandateRequired");
   if (button.dataset.page==="explore" && !mandate) throw Error("mandateRequired");
   if (button.dataset.page==="explore" && fullMandate && !mandateReport?.demo_eligible) throw Error("demoUnavailable");
   page(button.dataset.page);
@@ -96,12 +95,22 @@ $("discovery-start").onclick=handle(async()=>{
 $("discovery-reset").onclick=handle(async()=>{if(!sessionUnlocked||!discoveryConsent)return;if(!window.confirm(t("withdrawDiscoveryConfirm")))return;resetDiscovery();changed();await showCard();});
 async function discoveryScore(){return discoveryVersion?api("discovery/score",{seed:discoverySeed,currency:discoveryCurrency,answers,confidence:discoveryConfidence,locales:responseLocales}):api("score",answers);}
 async function showCard() {
-  $("discovery-consent").hidden=discoveryConsent||cards.length>0;
+  $("discovery-consent").hidden=!mandate||discoveryConsent||cards.length>0;
   $("discovery-question").hidden=!discoveryConsent&&!cards.length;
   $("back").hidden=!cards.length;
   $("discovery-reset").hidden=!cards.length;
   const card = cards[index];
   $("actions").hidden=!card; $("back").disabled=index===0; $("result").replaceChildren();
+  if(!mandate){
+    $("card").replaceChildren();
+    $("discovery-question").hidden=true;
+    $("actions").hidden=true;
+    $("back").hidden=true;
+    $("discovery-reset").hidden=true;
+    $("result").innerHTML='<article><h2>'+esc(t("mandateRequired"))+'</h2><button id="discovery-go-mandate" class="primary">'+esc(t("navMandate"))+' →</button></article>';
+    $("discovery-go-mandate").onclick=()=>page("mandate");
+    return;
+  }
   if (!card) {
     $("card").replaceChildren();
     if (!cards.length) return;
@@ -147,7 +156,7 @@ function compare(){
 }
 document.addEventListener("riskmatch:language",()=>{
   $("error").textContent=errorKey?diagnostic(errorKey):"";
-  if(activePage==="discovery"&&cards.length)showCard().catch(e=>{$("error").textContent=t(e.message);});
+  if(activePage==="discovery")showCard().catch(e=>{$("error").textContent=t(e.message);});
   if(activePage==="explore"&&portfolios.length)showPortfolio();
   if(activePage==="compare")compare();
   if(activePage==="universe")window.UniverseView.render();
