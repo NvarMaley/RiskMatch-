@@ -177,4 +177,24 @@ class MeanVariance:
             if high is not None and not low<proposal<high:proposal=(low+high)/2
             elif proposal<=low:proposal=max(2*k,low+1e-6)
             k=proposal
+        # A bracketed root is more robust for nearly flat tangency maps.
+        # Reuse feasible QP solutions and certify the actual final fixed-point residual.
+        best=None
+        def residual_at(k):
+            nonlocal warm,best
+            q=self.solve(return_weight=float(k),warm=warm,penalty=0.)
+            if q.get('status')!='optimal':raise ValueError('Uncertified tangency QP')
+            warm=q['weights'];e=q['expected_return']-self.rf;v=q['variance'];res=float(k*e-v)
+            if e>0 and (best is None or abs(res)<best[0]):best=(abs(res),q)
+            return res
+        try:
+            a=0.;b=max(k,1e-6);fa=residual_at(a);fb=residual_at(b)
+            for _ in range(30):
+                if fb>=0:break
+                b*=2;fb=residual_at(b)
+            if fa<0 and fb>=0:
+                root=brentq(residual_at,a,b,xtol=1e-11,maxiter=64);residual_at(root)
+                if best is not None and best[0]<=max(1e-8,1e-5*best[1]['variance']):
+                    return best[1]|{'method':'positive_excess_bracketed_convex_qp_tangency','tangency_residual':best[0],'tangency_iterations':30,'tangency_tolerance':max(1e-8,1e-5*best[1]['variance'])}
+        except ValueError:pass
         return {'status':'unconverged','reason':'Tangency fixed point not certified','last_residual':float(abs(residual))}

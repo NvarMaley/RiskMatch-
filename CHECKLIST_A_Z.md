@@ -634,15 +634,17 @@ Implementation evidence (2026-11-25): `optimization/mean_variance.py`, `mean_var
 
 Notebook: [chapter 15](notebooks/RiskMatch_V3.ipynb#chapitre-15) · Guide chapter 6.
 
-- [ ] Study and formalize: Prior, views, confidence, posterior and allocation.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Prior, views, confidence, posterior and allocation.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `optimization/black_litterman.py`, `black_litterman_report.py`, `build_black_litterman.py`, `/api/black-litterman`, bilingual interactive views and allocation comparison, analytical and edge-case tests. Dated restricted CRSP cap anchor covers all 549 equity constituents of 575-asset cohort; ETFs remain in optimizer but not double-counted in anchor. Prior/posterior uncertainty, correlated/duplicate/conflicting views, delta/tau sensitivities, separate Chapter 14 optimizer and training-only holdout against historical, CAPM and EWMA. No global market or suitability certification, historical membership and actual client hard constraint validation remain open; detailed tickets retain prerequisite gates.
 
 ### 15 — A. Detailed Tasks
 
