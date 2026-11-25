@@ -571,15 +571,17 @@ Implementation evidence (2026-11-25): `analytics/objectives.py`, `analytics/obje
 
 Notebook: [chapter 13](notebooks/RiskMatch_V3.ipynb#chapitre-13) · Guide chapter 6.
 
-- [ ] Study and formalize: Cash, 1/N, 60/40 and market benchmark.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Cash, 1/N, 60/40 and market benchmark.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `backtesting/baselines.py`, `baseline_report.py`, `/api/baselines`, `baselines.js`, `tests/unit/test_baselines.py`, `docs/BASELINES.md`. Eight fixed-reference variants on 223 matched USD ETF months from June 2007 to Dec 2025; 575-asset Chapter 8 retrospective equal-weight cohort on 100 matched months, compared to cash, 60/40 and SPY on the identical shorter window. CHF uses only continuous matched intervals and BIL as an unhedged cash proxy, not a risk-free rate. Ledger reconciles fees, flows and NAV. Executable fills, historical universe membership, CHF native RF and independent approval remain open; formal tasks retain prerequisite gates.
 
 ### 13 — A. Detailed Tasks
 
