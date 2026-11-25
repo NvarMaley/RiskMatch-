@@ -732,15 +732,17 @@ Implementation evidence (2026-11-25): `optimization/downside.py`, `downside_repo
 
 Notebook: [chapter 18](notebooks/RiskMatch_V3.ipynb#chapitre-18) · Guide chapter 6.
 
-- [ ] Study and formalize: Robust, resampled, DRO, Kelly, entropy and diagnostics.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Robust, resampled, DRO, Kelly, entropy and diagnostics.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `optimization/advanced.py`, `advanced_report.py`, `build_advanced.py`, `/api/advanced`, bilingual advanced configurator, [methodology](docs/ADVANCED.md). Block-bootstrap box/spectral robust utility, all-draw feasible resampled utility and trade-off points, Euclidean W1 robust mean with nominal covariance, positive-wealth Kelly and capped fractional blend, exact entropy/L1 mirror-prox. Zero-radius analytical equivalence, edge-case tests and separate training-only net holdout; explicit hypothetical stress. Four default USD/CHF configurations. Ambiguity calibration, true cash fractional blend when caps preclude it, unsupported mandate hard constraints, actual execution and independent approval remain explicitly limited; detailed formal dependency gates remain open.
 
 ### 18 — A. Detailed Tasks
 

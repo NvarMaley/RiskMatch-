@@ -14,6 +14,7 @@ function setSaveSession(open) {
   if(!open)window.BlackLittermanView?.clear();
   if(!open)window.HierarchicalView?.clear();
   if(!open)window.DownsideView?.clear();
+  if(!open)window.AdvancedView?.clear();
   document.body.dataset.session=sessionUnlocked?"unlocked":"locked";
   $("studio-nav").hidden=!sessionUnlocked;
 }
@@ -47,6 +48,7 @@ function page(name) {
   if (name==="compare")window.BlackLittermanView?.mount(api,fullMandate);
   if (name==="compare")window.HierarchicalView?.mount(api,fullMandate);
   if (name==="compare")window.DownsideView?.mount(api,fullMandate);
+  if (name==="compare")window.AdvancedView?.mount(api,fullMandate);
   if (name==="mandate") window.GoalsView?.mount(fullMandate,api);
   if (name==="saves") document.dispatchEvent(new Event("riskmatch:saves"));
   changed();
@@ -176,6 +178,7 @@ document.addEventListener("riskmatch:language",()=>{
   if(activePage==="compare")window.BlackLittermanView?.render();
   if(activePage==="compare")window.HierarchicalView?.render();
   if(activePage==="compare")window.DownsideView?.render();
+  if(activePage==="compare")window.AdvancedView?.render();
   if(activePage==="universe")window.UniverseView.render();
   if(activePage==="sources")window.SourcesView.render();
   if(activePage==="mandate"&&!$("mandate-report").hidden)renderMandateReport();
@@ -193,6 +196,7 @@ function clearSimulation(){
   window.BlackLittermanView?.clear();
   window.HierarchicalView?.clear();
   window.DownsideView?.clear();
+  window.AdvancedView?.clear();
   mandate=null;resetDiscovery();portfolios=[];swipes=[];shortlist=[];confirmed.clear();scoreReport=null;
   fullMandate=null;mandateReport=null;pendingMandate=null;pendingReport=null;
   lastSimulationPage="home";
