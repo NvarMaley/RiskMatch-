@@ -25,6 +25,7 @@ from riskmatch.backtesting.baseline_report import baseline_report
 from riskmatch.optimization.mean_variance_report import cached_report as mean_variance_report
 from riskmatch.optimization.black_litterman_report import cached_report as black_litterman_report
 from riskmatch.analytics.sentiment_report import sentiment_report, sentiment_asset
+from riskmatch.optimization.hierarchical_report import cached_report as hierarchical_report
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -70,6 +71,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.respond(mean_variance_report(ROOT,data))
             if self.path == "/api/black-litterman":
                 return self.respond(black_litterman_report(ROOT,data))
+            if self.path == "/api/hierarchical":
+                return self.respond(hierarchical_report(ROOT,data))
             if self.path in ("/api/sentiment","/api/sentiment/asset"):
                 as_of=date.fromisoformat(data['as_of'])
                 if as_of>date.today() or as_of<date(1900,1,1):raise ValueError('invalid_universe_date')

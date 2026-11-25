@@ -667,15 +667,17 @@ Implementation evidence (2026-11-25): `optimization/black_litterman.py`, `black_
 
 Notebook: [chapter 16](notebooks/RiskMatch_V3.ipynb#chapitre-16) · Guide chapter 6.
 
-- [ ] Study and formalize: RP, HRP, HERC, diversification and risk contributions.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: RP, HRP, HERC, diversification and risk contributions.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `optimization/hierarchical.py`, `hierarchical_report.py`, `build_hierarchical.py`, `/api/hierarchical`, bilingual risk budgets/dendrogram/holdout panel, [methodology](docs/HIERARCHICAL.md). Four configurations (575 cohort and five ETF, USD/CHF); Euler contribution checks, convex ERC and cap-active-set KKT, HRP heuristic, two-level HERC constrained cluster risk budgeting, maximum diversification ratio, linkage/cluster sensitivity, historical train-only holdout and pre-crisis tests with exact intervals. Equity/ETF caps can break exact equality of risk contributions; distinguish constrained optimum and heuristic. Actual historical eligibility/executions and unsupported mandate hard constraints remain unverified; formal dependency gates remain open.
 
 ### 16 — A. Detailed Tasks
 
