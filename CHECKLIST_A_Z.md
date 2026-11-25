@@ -936,18 +936,19 @@ Experimental implementation: [walk-forward specification](docs/WALK_FORWARD.md).
 
 Notebook: [chapter 24](notebooks/RiskMatch_V3.ipynb#chapitre-24) · Guide chapter 11.
 
-- [ ] Study and formalize: Scenarios, terminal wealth distribution, goals, flows and uncertainty.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Scenarios, terminal wealth distribution, goals, flows and uncertainty.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 24 — A. Detailed Tasks
 
+Experimental implementation: [scenario and Monte Carlo specification](docs/STRESS_MC.md). Ten hypothetical scenarios, four historical complete-window replay checks, five correlated path models, strategy-wide gross comparison and selected costed wealth/goal projection, individual Treasury and archived futures examples, six parameter sensitivities. Formal acceptance pending verified execution, actual rate/factor/FX sensitivities, full PIT history, independently validated forecasts and review.
 
 - [ ] **CH24.01** — Define scenario universe: historical dot-com, 2008, 2020 and 2022 when covered; label missing history.
 - [ ] **CH24.02** — Define equity crash, recession, inflation, +200bp rates, steepening/flattening, real yields, simultaneous equity/Treasury decline, FX and margin shocks.
