@@ -20,6 +20,7 @@ from riskmatch.analytics.forecast_batch import batch_report, batch_asset
 from riskmatch.analytics.risk_report import risk_batch_report, risk_batch_asset, asset_risk, matrix_risk
 from riskmatch.analytics.factor_report import factor_report, factor_asset
 from riskmatch.analytics.tail_report import tail_report, tail_asset, tail_matrix
+from riskmatch.analytics.objectives_report import objective_report
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -57,6 +58,8 @@ class Handler(SimpleHTTPRequestHandler):
                                                      data.get("confidence"), data.get("locales")))
             if self.path == "/api/mandate/preview":
                 return self.respond(validate_mandate(data))
+            if self.path == "/api/objectives/evaluate":
+                return self.respond(objective_report(ROOT,data))
             if self.path == "/api/universe":
                 as_of = date.fromisoformat(data["as_of"])
                 if as_of > date.today() or as_of < date(1900, 1, 1):

@@ -539,15 +539,17 @@ Implementation evidence (2026-11-25): `tail_risk.py`, `tail_report.py`, `build_t
 
 Notebook: [chapter 12](notebooks/RiskMatch_V3.ipynb#chapitre-12) · Guide chapter 5.
 
-- [ ] Study and formalize: Formalize the 11 objectives, units, constraints and loss function.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Formalize the 11 objectives, units, constraints and loss function.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `analytics/objectives.py`, `analytics/objectives_report.py`, `/api/objectives/evaluate`, `objectives.js`, `tests/unit/test_objectives.py`, `docs/FINANCIAL_OBJECTIVES.md`. Four fixed reference mixes, 2,000 common six-month block-bootstrap paths each, 223 aligned historical USD months (178 training / 45 holdout), 219 CHF months (175 / 44, two gaps; no block crosses a gap). Evaluate dated funding, priorities, capital floors, income proxies, risk, inflation shock and liability shortfall. Full net-income attribution, DV01 matching, contractual hedge cost/gap stress, point-in-time and independent review remain open rather than claiming certification. Detailed formal tickets retain prerequisite gates.
 
 ### 12 — A. Detailed Tasks
 

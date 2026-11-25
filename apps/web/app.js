@@ -8,6 +8,7 @@ let sessionUnlocked = false, sessionEpoch = 0;
 function setSaveSession(open) {
   sessionEpoch++;
   sessionUnlocked=Boolean(open);
+  if(!open)window.GoalsView?.clear();
   document.body.dataset.session=sessionUnlocked?"unlocked":"locked";
   $("studio-nav").hidden=!sessionUnlocked;
 }
@@ -36,6 +37,7 @@ function page(name) {
   document.querySelectorAll(".page").forEach(x => x.hidden = x.id!==name);
   document.querySelectorAll("[data-page]").forEach(x => x.classList.toggle("active", x.dataset.page===name));
   if (name==="compare") compare();
+  if (name==="mandate") window.GoalsView?.mount(fullMandate,api);
   if (name==="saves") document.dispatchEvent(new Event("riskmatch:saves"));
   changed();
 }
@@ -162,6 +164,7 @@ document.addEventListener("riskmatch:language",()=>{
   if(activePage==="universe")window.UniverseView.render();
   if(activePage==="sources")window.SourcesView.render();
   if(activePage==="mandate"&&!$("mandate-report").hidden)renderMandateReport();
+  if(activePage==="mandate")window.GoalsView?.render();
 });
 
 // Serialize only the synthetic simulation, not passwords or computed market data.
@@ -169,6 +172,7 @@ function simulationSnapshot() {
   return {version:1,mandate,fullMandate,answers,index,swipes,activePage:lastSimulationPage,discoverySeed,discoveryVersion,discoveryCurrency,discoveryConsent,responseLocales,discoveryConfidence};
 }
 function clearSimulation(){
+  window.GoalsView?.clear();
   mandate=null;resetDiscovery();portfolios=[];swipes=[];shortlist=[];confirmed.clear();scoreReport=null;
   fullMandate=null;mandateReport=null;pendingMandate=null;pendingReport=null;
   lastSimulationPage="home";
