@@ -834,18 +834,19 @@ Experimental implementation: [model specifications and limitations](docs/ALTERNA
 
 Notebook: [chapter 21](notebooks/RiskMatch_V3.ipynb#chapitre-21) · Guide chapter 4.
 
-- [ ] Study and formalize: T-Bills, Notes, Bonds, TIPS: cash flows, clean/dirty prices, duration, convexity, DV01 and curve risk.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: T-Bills, Notes, Bonds, TIPS: cash flows, clean/dirty prices, duration, convexity, DV01 and curve risk.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 21 — A. Detailed Tasks
 
+Experimental implementation: [Treasury methods and limitations](docs/TREASURIES.md). 444 active identities as of 2026-11-25; 438 computed on 2026-11-23 valuation marks, 6 initial coupon periods not verified. Nominal/real par curves dated 2026-11-20, approximate spot/forward bootstrap, key-rate sensitivities, TIPS ratios and published cash payments, funded nominal cash-flow/LDI linear programs. Detailed formal acceptance remains open for exact settlement, executable liquidity, missing first-period dates, PIT publication and independent review.
 
 - [ ] **CH21.01** — Build Treasury security master: CUSIP, issuer, type, coupon, calendar, settlement, day count, maturity and TIPS index ratio.
 - [ ] **CH21.02** — Generate coupon, accrued interest and maturity redemption schedules; handle zero-coupon T-Bills and indexed TIPS principal/coupons.
