@@ -10,6 +10,7 @@ function setSaveSession(open) {
   sessionUnlocked=Boolean(open);
   if(!open)window.GoalsView?.clear();
   if(!open)window.BaselinesView?.clear();
+  if(!open)window.MeanVarianceView?.clear();
   document.body.dataset.session=sessionUnlocked?"unlocked":"locked";
   $("studio-nav").hidden=!sessionUnlocked;
 }
@@ -39,6 +40,7 @@ function page(name) {
   document.querySelectorAll("[data-page]").forEach(x => x.classList.toggle("active", x.dataset.page===name));
   if (name==="compare") compare();
   if (name==="compare")window.BaselinesView?.mount(api,mandate?.currency);
+  if (name==="compare")window.MeanVarianceView?.mount(api,fullMandate);
   if (name==="mandate") window.GoalsView?.mount(fullMandate,api);
   if (name==="saves") document.dispatchEvent(new Event("riskmatch:saves"));
   changed();
@@ -164,6 +166,7 @@ document.addEventListener("riskmatch:language",()=>{
   if(activePage==="explore"&&portfolios.length)showPortfolio();
   if(activePage==="compare")compare();
   if(activePage==="compare")window.BaselinesView?.render();
+  if(activePage==="compare")window.MeanVarianceView?.render();
   if(activePage==="universe")window.UniverseView.render();
   if(activePage==="sources")window.SourcesView.render();
   if(activePage==="mandate"&&!$("mandate-report").hidden)renderMandateReport();
@@ -177,6 +180,7 @@ function simulationSnapshot() {
 function clearSimulation(){
   window.GoalsView?.clear();
   window.BaselinesView?.clear();
+  window.MeanVarianceView?.clear();
   mandate=null;resetDiscovery();portfolios=[];swipes=[];shortlist=[];confirmed.clear();scoreReport=null;
   fullMandate=null;mandateReport=null;pendingMandate=null;pendingReport=null;
   lastSimulationPage="home";

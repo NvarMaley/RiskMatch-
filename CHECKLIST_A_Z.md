@@ -602,15 +602,17 @@ Implementation evidence (2026-11-25): `backtesting/baselines.py`, `baseline_repo
 
 Notebook: [chapter 14](notebooks/RiskMatch_V3.ipynb#chapitre-14) · Guide chapter 6.
 
-- [ ] Study and formalize: Minimum variance, maximum Sharpe, maximum utility, frontier and constraints.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Minimum variance, maximum Sharpe, maximum utility, frontier and constraints.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `optimization/mean_variance.py`, `mean_variance_report.py`, `build_mean_variance.py`, `/api/mean-variance`, `mean-variance.js`, unit tests and `docs/MEAN_VARIANCE.md`. Four default reference configurations (575-asset cohort and five ETF core in USD/CHF) computed with all four model statuses optimal by LP gap/residual checks. Default shrinkage of extreme Chapter 8 forecasts is explicit, raw alternative available. Chronological training-only holdout, 9 frontier points, lambda sensitivity, linear exposure/turnover API, infeasible target checks, allocation and risk contribution diagnostics. Signed comparison only for core, gross-only; hard issuer/sector/liquidity/volatility/stress/actual turnover constraints without certified inputs remain unverified. No independent acceptance or PIT membership certification; formal tasks keep prerequisite gates.
 
 ### 14 — A. Detailed Tasks
 

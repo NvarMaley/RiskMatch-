@@ -22,6 +22,7 @@ from riskmatch.analytics.factor_report import factor_report, factor_asset
 from riskmatch.analytics.tail_report import tail_report, tail_asset, tail_matrix
 from riskmatch.analytics.objectives_report import objective_report
 from riskmatch.backtesting.baseline_report import baseline_report
+from riskmatch.optimization.mean_variance_report import cached_report as mean_variance_report
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -63,6 +64,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.respond(objective_report(ROOT,data))
             if self.path == "/api/baselines":
                 return self.respond(baseline_report(ROOT,data))
+            if self.path == "/api/mean-variance":
+                return self.respond(mean_variance_report(ROOT,data))
             if self.path == "/api/universe":
                 as_of = date.fromisoformat(data["as_of"])
                 if as_of > date.today() or as_of < date(1900, 1, 1):
