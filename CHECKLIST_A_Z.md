@@ -700,15 +700,17 @@ Implementation evidence (2026-11-25): `optimization/hierarchical.py`, `hierarchi
 
 Notebook: [chapter 17](notebooks/RiskMatch_V3.ipynb#chapitre-17) · Guide chapter 6.
 
-- [ ] Study and formalize: CVaR, Sortino, Omega, drawdown, tracking error and IR.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: CVaR, Sortino, Omega, drawdown, tracking error and IR.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `optimization/downside.py`, `downside_report.py`, `build_downside.py`, `/api/downside`, bilingual frontier/active exposure/path diagnostics, [methodology](docs/DOWNSIDE.md). CVaR LP and additive CDaR LP with objective reconciliation, positive Sortino QP tangency, Omega homogeneous LP, exact signed small-universe vertex search, benchmark-relative TE/IR using exact benchmark identity and regularized active covariance. Same matched monthly USD/CHF cohort/core; train-only net holdout, tail scenario and alpha sensitivities, explicit zero-downside and infeasible states. Small tail samples, current static membership, actual fills and unsupported hard mandate constraints remain unverified; formal dependency gates remain open.
 
 ### 17 — A. Detailed Tasks
 
