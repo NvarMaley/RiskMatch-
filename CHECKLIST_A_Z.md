@@ -797,18 +797,19 @@ Implementation evidence (2026-11-25): `strategies/long_only.py`, `long_only_repo
 
 Notebook: [chapter 20](notebooks/RiskMatch_V3.ipynb#chapitre-20) · Guide chapter 7.
 
-- [ ] Study and formalize: Long/short, neutral, macro, CTA, arbitrage, carry, momentum and others.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Long/short, neutral, macro, CTA, arbitrage, carry, momentum and others.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 20 — A. Detailed Tasks
 
+Experimental implementation: [model specifications and limitations](docs/ALTERNATIVE.md). Signed and defensive ETF strategies run on the chronological common monthly cohort. Dated futures and carry are explicitly unavailable; pair selection may reject all pairs. Exact borrow and release data, market-impact, mandate certification and independent review remain open. Detailed production acceptance tickets remain open.
 
 - [ ] **CH20.01** — Implement long/short with borrow availability and costs, gross/net, position caps and collateral.
 - [ ] **CH20.02** — Implement market-neutral beta and optional dollar-neutral constraints; measure realized beta.
