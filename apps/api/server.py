@@ -24,6 +24,7 @@ from riskmatch.analytics.objectives_report import objective_report
 from riskmatch.backtesting.baseline_report import baseline_report
 from riskmatch.optimization.mean_variance_report import cached_report as mean_variance_report
 from riskmatch.optimization.black_litterman_report import cached_report as black_litterman_report
+from riskmatch.analytics.sentiment_report import sentiment_report, sentiment_asset
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -69,6 +70,10 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.respond(mean_variance_report(ROOT,data))
             if self.path == "/api/black-litterman":
                 return self.respond(black_litterman_report(ROOT,data))
+            if self.path in ("/api/sentiment","/api/sentiment/asset"):
+                as_of=date.fromisoformat(data['as_of'])
+                if as_of>date.today() or as_of<date(1900,1,1):raise ValueError('invalid_universe_date')
+                return self.respond(sentiment_asset(ROOT,as_of,data['id']) if self.path.endswith('/asset') else sentiment_report(ROOT,as_of))
             if self.path == "/api/universe":
                 as_of = date.fromisoformat(data["as_of"])
                 if as_of > date.today() or as_of < date(1900, 1, 1):

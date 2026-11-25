@@ -416,6 +416,8 @@ Notebook: [chapter 08](notebooks/RiskMatch_V3.ipynb#chapitre-08) · Guide chapte
 
 Evidence: [Return forecasting](docs/RETURN_FORECASTING.md), corrected corporate-action returns, bounded unlevered forecasts, synthetic tests and local API/asset profile. All 1,474 items examined: 1,008 have all ten core forecasts, 464 have separate conditional estimates, two remain unavailable. No fit errors or forecasts below -100%. A separate 575-asset monthly USD total-return cohort at 2025-12-31 is historical research only; different horizons/targets are not merged. Prior chapter coverage audit found 1,473 assets with returns and descriptive profiles. G02/G07 and CH10/CH15 dependencies remain open.
 
+Optional cross-chapter StockTwits research (CH08/10/15): [sentiment evidence](docs/SENTIMENT.md). Historical course archive safely read from Parquet; 753 matched catalogue assets, 61,141 asset-months, 562/575 common cohort. Seven pooled paired prediction experiments with three simple mean references, historical sentiment factor and scalar relative-view diagnostic; 26 held-out months and calendar-block uncertainty. No current signal after March 2020; no validated incremental gain or production forecast/view promotion. Asset sheets and Sources panel show historical data only.
+
 
 
 ## 09. Volatility and Covariance

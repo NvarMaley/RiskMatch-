@@ -85,7 +85,7 @@ def source_report(as_of, root=ROOT):
       "BENCHMARKS":("local_partial","Local CRSP index columns and ETF proxies; historical index weights missing"),
       "FUTURES":("missing","No verified contract-level settlement/volume/OI/margin history"),
       "COSTS_LIQUIDITY":("local_partial" if daily or present("data_plus/raw/wrds/crsp_dsf.csv") else "missing","Bid/ask present; daily volume, dated fund expenses and execution assumptions missing"),
-      "SENTIMENT":("local_partial" if present("data1/raw/sentratio_and_price_for_pf2.pkl") else "missing","Course files present if accessible; optional and rights unverified"),
+      "SENTIMENT":("local_partial" if present("data1/processed/sentiment_firm_daily.parquet") else "missing","Historical course StockTwits archive 2009–2020; strictly lagged historical research only; no current signal"),
     }
     audit_dir = root / "data/processed/universe"
     def local_audit(name):

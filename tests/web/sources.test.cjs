@@ -4,6 +4,14 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 
+test("StockTwits research explicitly reports no current signal", async () => {
+  const el={innerHTML:"",addEventListener(){}};
+  const context={document:{getElementById:()=>el},window:{RM:{t:k=>k,language:"fr"}}};
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname,"../../apps/web/sources.js"),"utf8"),context);
+  await context.window.SourcesView.load(async key=>key==="sentiment"?{status:"historical_only",asset_count:753,eligible_count:1022,aligned_rows:61141,first:"2009-08-01",last:"2020-02-01",split:{test_start:"2018-03-29",test_end:"2020-04-30"},models:{ridge:{baseline:{rmse:.1},sentiment:{rmse:.099},rmse_improvement:.001,uncertainty:{conditional_block_interval:[-.01,.02]}}},factor:{test_months:26,mean_test_spread:-.004,mean_test_rank_ic:-.009}}:{rows:[]});
+  assert.match(el.innerHTML,/StockTwits/);assert.match(el.innerHTML,/Aucun signal actuel/);assert.match(el.innerHTML,/Intervalle bootstrap/);
+});
+
 test("The Sources view shows audited evidence in the selected language", async () => {
   const report = { innerHTML: "", textContent: "" };
   const button = { addEventListener() {} };
