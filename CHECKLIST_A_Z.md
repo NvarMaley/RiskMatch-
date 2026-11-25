@@ -505,15 +505,17 @@ Evidence: [Factors and regressions](docs/FACTORS_REGRESSIONS.md), 1,474 examined
 
 Notebook: [chapter 11](notebooks/RiskMatch_V3.ipynb#chapitre-11) · Guide chapter 10.
 
-- [ ] Study and formalize: VaR, ES, EVT, copulas, drawdown and validation.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: VaR, ES, EVT, copulas, drawdown and validation.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `tail_risk.py`, `tail_report.py`, `build_tail_universe.py`, `test_tail_risk.py`, bilingual asset sheet and aligned comparison. Local run: 1,474 catalogue items; 1,008 regular 95% profiles, 28 also support 99%, 302 support 95% POT; 463 descriptive only and 3 unavailable. Threshold sensitivity and conditional intervals are experimental; portfolio risk limits and independent acceptance remain open. Formal tickets below retain prerequisite gates.
 
 ### 11 — A. Detailed Tasks
 

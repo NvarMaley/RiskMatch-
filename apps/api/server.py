@@ -19,6 +19,7 @@ from riskmatch.analytics.forecast_report import asset_forecast
 from riskmatch.analytics.forecast_batch import batch_report, batch_asset
 from riskmatch.analytics.risk_report import risk_batch_report, risk_batch_asset, asset_risk, matrix_risk
 from riskmatch.analytics.factor_report import factor_report, factor_asset
+from riskmatch.analytics.tail_report import tail_report, tail_asset, tail_matrix
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -75,6 +76,11 @@ class Handler(SimpleHTTPRequestHandler):
                 if as_of > date.today() or as_of < date(1900,1,1):
                     raise ValueError("invalid_universe_date")
                 return self.respond(returns_report(ROOT, as_of))
+            if self.path in ("/api/tail/universe","/api/tail/universe/asset","/api/tail/matrix"):
+                as_of=date.fromisoformat(data['as_of'])
+                if as_of>date.today() or as_of<date(1900,1,1):raise ValueError('invalid_universe_date')
+                if self.path.endswith('/matrix'):return self.respond(tail_matrix(ROOT,as_of,data))
+                return self.respond(tail_asset(ROOT,as_of,data['id']) if self.path.endswith('/asset') else tail_report(ROOT,as_of))
             if self.path in ("/api/factors/universe","/api/factors/universe/asset"):
                 as_of=date.fromisoformat(data["as_of"])
                 if as_of>date.today() or as_of<date(1900,1,1):
