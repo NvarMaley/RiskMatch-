@@ -31,6 +31,7 @@ from riskmatch.optimization.advanced_report import cached_report as advanced_rep
 from riskmatch.strategies.long_only_report import cached_report as long_only_report
 from riskmatch.strategies.alternative_report import run_report as alternative_report
 from riskmatch.analytics.treasury_report import run_report as treasury_report
+from riskmatch.analytics.futures_report import report as futures_report
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -88,6 +89,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.respond(alternative_report(ROOT,data))
             if self.path == "/api/treasury":
                 return self.respond(treasury_report(ROOT,data))
+            if self.path == "/api/futures":
+                return self.respond(futures_report(ROOT,data))
             if self.path in ("/api/sentiment","/api/sentiment/asset"):
                 as_of=date.fromisoformat(data['as_of'])
                 if as_of>date.today() or as_of<date(1900,1,1):raise ValueError('invalid_universe_date')

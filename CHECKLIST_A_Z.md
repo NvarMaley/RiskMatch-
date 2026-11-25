@@ -867,18 +867,19 @@ Experimental implementation: [Treasury methods and limitations](docs/TREASURIES.
 
 Notebook: [chapter 22](notebooks/RiskMatch_V3.ipynb#chapitre-22) · Guide chapter 3.1.
 
-- [ ] Study and formalize: Expiries, multipliers, margin, collateral and roll.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Expiries, multipliers, margin, collateral and roll.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 22 — A. Detailed Tasks
 
+Experimental implementation: [futures specification and gaps](docs/FUTURES.md). All ten archived families support conditional daily variation-margin/roll accounting on the default 2022–2024 archive window. Earlier unresolved rolls stop rather than fabricate fills. Zero active futures. Formal acceptance pending actual exchange settlements, per-expiry specifications/expiry/volume/open interest, clearing margins, executable roll and bid/ask, CTD/spot, PIT and independent review.
 
 - [ ] **CH22.01** — Build contract specifications (ticker, expiry, multiplier, settlement, tick, margin, last trading date).
 - [ ] **CH22.02** — Load historical per-expiry quotes, volume/open interest and margin schedules; preserve negative prices.
