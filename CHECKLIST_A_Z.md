@@ -765,15 +765,17 @@ Implementation evidence (2026-11-25): `optimization/advanced.py`, `advanced_repo
 
 Notebook: [chapter 19](notebooks/RiskMatch_V3.ipynb#chapitre-19) · Guide chapter 7.
 
-- [ ] Study and formalize: Passive, long-only, smart beta, core-satellite and factors.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Passive, long-only, smart beta, core-satellite and factors.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
+
+Implementation evidence (2026-11-25): `strategies/long_only.py`, `long_only_report.py`, `build_long_only.py`, `/api/long-only`, bilingual strategy/ledger panel, [methodology](docs/LONG_ONLY.md). Sixteen registry entries including eight factor sleeves; 15 admissible computed on the 575-asset USD/CHF cohorts (single SPY replication incompatible with default 5% cap, still external benchmark). Core ETF-only factor/fundamental sleeves explicitly unavailable. Dated stock top-1000 eligibility, verified factor score archive, positive accepted original book equity, rolling alpha, aggregate core/satellite budgets, drift and actual fee-adjusted turnover limits, chronological sequential holdout, risk-matched external reference and cost shock. Historical index constituent sampling, original market availability/execution, unsupported mandate hard limits and independent acceptance remain open; formal dependency gates remain open.
 
 ### 19 — A. Detailed Tasks
 

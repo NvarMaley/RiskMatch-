@@ -28,6 +28,7 @@ from riskmatch.analytics.sentiment_report import sentiment_report, sentiment_ass
 from riskmatch.optimization.hierarchical_report import cached_report as hierarchical_report
 from riskmatch.optimization.downside_report import cached_report as downside_report
 from riskmatch.optimization.advanced_report import cached_report as advanced_report
+from riskmatch.strategies.long_only_report import cached_report as long_only_report
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -79,6 +80,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.respond(downside_report(ROOT,data))
             if self.path == "/api/advanced":
                 return self.respond(advanced_report(ROOT,data))
+            if self.path == "/api/long-only":
+                return self.respond(long_only_report(ROOT,data))
             if self.path in ("/api/sentiment","/api/sentiment/asset"):
                 as_of=date.fromisoformat(data['as_of'])
                 if as_of>date.today() or as_of<date(1900,1,1):raise ValueError('invalid_universe_date')
