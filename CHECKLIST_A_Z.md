@@ -901,18 +901,19 @@ Experimental implementation: [futures specification and gaps](docs/FUTURES.md). 
 
 Notebook: [chapter 23](notebooks/RiskMatch_V3.ipynb#chapitre-23) · Guide chapter 9.
 
-- [ ] Study and formalize: Chronology, benchmarks, fees, delayed execution and ledger.
-- [ ] Document assumptions, formulas, data and units.
-- [ ] Run the notebook on a fixture and analyze errors.
-- [ ] Test analytical equivalence, edge cases and robustness.
-- [ ] Extract code into the shared module.
-- [ ] Write automated tests and make them pass.
-- [ ] Add the API contract and relevant screen.
+- [x] Study and formalize: Chronology, benchmarks, fees, delayed execution and ledger.
+- [x] Document assumptions, formulas, data and units.
+- [x] Run the notebook on a fixture and analyze errors.
+- [x] Test analytical equivalence, edge cases and robustness.
+- [x] Extract code into the shared module.
+- [x] Write automated tests and make them pass.
+- [x] Add the API contract and relevant screen.
 - [ ] Verify local rendering and update documentation.
 - [ ] Create a PR, obtain review and merge.
 
 ### 23 — A. Detailed Tasks
 
+Experimental implementation: [walk-forward specification](docs/WALK_FORWARD.md). Core and retrospective cohort exact monthly data, dated eligibility, delayed fills, rolling/expanding training, validation-only λ/model selection, frozen final holdout and subsequent prior-only refits, signed fees scenarios, benchmarks, joint moving-block diagnostic, export and local run registry. Detailed formal acceptance remains open for full historical constituents/delistings, actual execution/ADV/tax, dated rolling ML forecasts, individual Treasury/futures common execution and independent review.
 
 - [ ] **CH23.01** — Define initial capital, benchmark, execution timing, decision timestamp, cash-flow convention and rebalance schedule.
 - [ ] **CH23.02** — Build event ledger: snapshot → signal → target → orders → fills → costs → cash/P&L/NAV.
